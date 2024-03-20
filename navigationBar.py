@@ -16,7 +16,7 @@ class NavigationBar(tk.Frame):
         self.navbarBtn.grid(row=0, column=0, sticky="nw")
 
         # Setting Navbar frame
-        self.navRoot = tk.Frame(parent, bg=self.color["nero"], height=500, width=300)
+        self.navRoot = tk.Frame(parent, bg=self.color["nero"], height=400, width=300)
 
         # Set y coord of navbar widgets
         y = 80
@@ -29,8 +29,8 @@ class NavigationBar(tk.Frame):
                 self.switch()
                 self.controller.showFrame(page)
                 
-            tk.Button(self.navRoot, text=option, bg=self.color["nero"], fg=self.color["orange"], activebackground=self.color["nero"], activeforeground="green", bd=0,command=switchPage).place(x=25, y=y)
-            y += 40
+            tk.Button(self.navRoot, text=option, bg=self.color["nero"], fg=self.color["orange"], activebackground=self.color["orange"], activeforeground="green", bd=0,command=switchPage, width=20, height=2, padx=20, pady=10).place(x=25, y=y)
+            y += 80
         
         # Navbar close button
         self.closeBtn = tk.Button(self.navRoot, bg=self.color["orange"], activebackground=self.color["orange"], text="✖", bd=0, command=self.switch)
