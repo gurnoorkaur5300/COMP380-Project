@@ -17,8 +17,8 @@ class NavigationBar(tk.Frame):
             self.headerFrame.grid_columnconfigure(col, weight=1) 
         
         # Header label text
-        self.homeLabel = tk.Label(self.headerFrame, text="Titan Hotel Reservations", bg="beige", fg="gray17", height=2, padx=20, pady=5, font=("Ariel",28))
-        self.homeLabel.grid(row=0, column=1, sticky="w")
+        self.homeLabel = tk.Label(self.headerFrame, text="Titan Hotel Reservations", bg="beige", fg="gray17", height=2, padx= 20, pady=5, font=("Ariel",28))
+        self.homeLabel.grid(row=0, column=1, sticky="e")
         
         # Setting switch start
         self.btnState = initialState  
