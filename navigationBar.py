@@ -20,10 +20,10 @@ class NavigationBar(tk.Frame):
         self.homeLabel = tk.Label(self.headerFrame, text="Titan Hotel Reservations", bg="beige", fg="gray17", height=2, padx=20, pady=5, font=("Ariel",28))
         self.homeLabel.grid(row=0, column=1, sticky="w")
         
-
         # Setting switch start
         self.btnState = initialState  
 
+        #main navigation bar button. when clicked will call switch() which animates the bar open and closed
         self.navbarBtn = tk.Button(self.headerFrame, text="☰", bg=self.color["nero"], activebackground=self.color["nero"], bd=0, height=3,padx=20, pady=10,command=self.switch)
         self.navbarBtn.grid(row=0, column=0, padx=10, pady=(10,10),sticky="nw")
 
@@ -42,15 +42,15 @@ class NavigationBar(tk.Frame):
                 self.headerFrame.grid_remove()
                 self.controller.showFrame(page)
                 
+            #each item in navbar menu is a button. when the button in the navbar is clicked, that page should be populated using the function switchPage()
             tk.Button(self.navRoot, text=option, bg=self.color["nero"], fg=self.color["orange"], activebackground=self.color["orange"], activeforeground="green", bd=0,command=switchPage, width=20, height=2, padx=20, pady=10).place(x=25, y=y)
             y += 80
                 
-                
-        
         # Navbar close button
         self.closeBtn = tk.Button(self.navRoot, bg=self.color["orange"], activebackground=self.color["orange"], text="✖", bd=0, command=self.switch)
         self.closeBtn.place(x=250, y=10)
         
+        #if the 
         if initialState:
             self.navRoot.grid(row=1, column=0, sticky="nsw")
 
