@@ -17,7 +17,7 @@ class App(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         
-        self.loginPage = None
+        # self.loginPage = None
         
         #minimum window size when app opens
         self.minsize(width=800, height=600)
@@ -63,11 +63,6 @@ class App(tk.Tk):
         def showNavbar():
             self.navbar = NavigationBar(self, self, initialState=False)
             self.navbar.grid(row=0, column=0, sticky="w")
-
-        # def loginClose():
-        #     self.showFrame("Home")     
-        #     if hasattr(self, "loginPage")and self.loginPage:
-        #         self.loginPage.destroy()
         
         if pageName == "Home" or pageName == "Policies":
             showNavbar() 
@@ -82,10 +77,7 @@ class App(tk.Tk):
             if not isLoggedIn:
                 self.loginPage.grid(row=0, column=0, sticky="nsew")
                 self.loginPage.tkraise()
-               
-                # loginClose()
-            else:
-                
+            else:               
                 showNavbar()
                 self.accountPage.grid(row=0, column=0, sticky="nsew")  
                 self.accountPage.tkraise()
