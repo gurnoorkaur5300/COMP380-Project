@@ -11,3 +11,6 @@ class Customer:
     #add reservation to a list of reservations
     def addReservations(self, reservation):
         self.reservations.append(reservation)
+        
+    def getCustomer(self):
+        return self.name
