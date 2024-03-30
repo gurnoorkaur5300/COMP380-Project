@@ -1,13 +1,23 @@
 import tkinter as tk
 from page import Page
-#from customer import Customer
+from customer import Customer
 
 
 class Account(Page):
-    def __init__(self,parent,controller, customer):
+    def __init__(self,parent,controller):
         super().__init__(parent,controller)
+        
+         #test customer case
+        customerInfo = {
+            "name": "Greg",
+            "email": "gregory.calderon.514@my.csun.edu",
+            "dob": "02/06/1987",
+            "reservations": ["2jaifj", "33roij", "8a9a98"]
+        } 
+        
+        self.customer = Customer(**customerInfo)
 
-        self.customer = customer
+
         
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=0)
@@ -39,7 +49,7 @@ class Account(Page):
         userDOBLabel = tk.Label(infoBox,text=self.customer.dob, bg="white", fg="black", anchor="w", width=15)
         userDOBLabel.grid(row=2, column=1, pady=15, sticky="w")
         
-        for i, reservation in enumerate(customer.reservations):
+        for i, reservation in enumerate(self.customer.reservations):
             userReservationsLabel = tk.Label(infoBox, text=reservation, anchor="w", bg="white", fg="black", width=50)
             userReservationsLabel.grid(row=i+4, column=1, pady=10, sticky="w")
 
