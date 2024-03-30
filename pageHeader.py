@@ -44,7 +44,6 @@ class PageHeader:
     
     # set the label for the page header
     def setPageType(self, pageName):
-        print("Setting page type:", pageName)
         self.pageIs= pageName
         self.pageLabel.config(text=self.pageIs)
         
