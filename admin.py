@@ -6,10 +6,6 @@ class Admin(Page):
     def __init__(self,parent, controller):
         super().__init__(parent, controller)
         
-        #add the header 
-        # self.pageHeader=PageHeader(self, controller)
-        # self.pageHeader.setPageType("Admin")
-        
         #create frame 
         self.spreadsheetFrame=ttk.Frame(self)
         

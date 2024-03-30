@@ -51,14 +51,13 @@ class App(tk.Tk):
         # By default, display home page
         self.showFrame("Home")
         self.showNavbar()
-       
+
+        
         self.isLoggedIn = False
         self.isAdmin = False
     
     #change page frames
     def showFrame(self, pageName):
-        global isLoggedIn
-        global isAdmin
         
         # Show specific pages
         if pageName in ["Home", "Policies"]:
