@@ -43,7 +43,7 @@ class NavigationBar(tk.Frame):
                 self.controller.showFrame(page)
                 
             #each item in navbar menu is a button. when the button in the navbar is clicked, that page should be populated using the function switchPage()
-            tk.Button(self.navRoot, text=option, bg=self.color["nero"], fg=self.color["orange"], activebackground=self.color["orange"], activeforeground="green", bd=0,command=switchPage, width=20, height=2, padx=20, pady=10).place(x=25, y=y)
+            tk.Button(self.navRoot, text=option, bg=self.color["nero"], fg=self.color["orange"], activebackground=self.color["orange"], activeforeground="green", bd=0,command= switchPage, width=20, height=2, padx=20, pady=10).place(x=25, y=y)
             y += 80
                 
         # Navbar close button

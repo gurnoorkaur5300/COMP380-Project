@@ -6,3 +6,5 @@ class Home(Page):
         super().__init__(parent,controller)
         label = tk.Label(self, text="Home is Alive")
         label.pack()
+        
+        
