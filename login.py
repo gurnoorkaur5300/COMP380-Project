@@ -1,5 +1,6 @@
 import tkinter as tk
 from page import Page
+from create import Create
 
 
 class Login(Page):
@@ -68,6 +69,9 @@ class Login(Page):
             self.controller.isLoggedIn = True
             self.controller.isAdmin = True
             self.controller.showFrame("Admin")
+
+      def showCreate(self):
+         createAccountWindow = Create(self)
             
       #buttons frame
       buttonsFrame = tk.Frame(self)
@@ -76,7 +80,7 @@ class Login(Page):
       submitButton = tk.Button(buttonsFrame, text = "SUBMIT", borderwidth = 10, font = ("Arial", 32), bg = "white", fg = "black", command=showUser)
       submitButton.pack(side=tk.LEFT, padx = 135)
 
-      createButton = tk.Button(buttonsFrame, text = "CREATE", borderwidth = 10, font = ("Arial", 32), bg = "white", fg = "black")
+      createButton = tk.Button(buttonsFrame, text = "CREATE", borderwidth = 10, font = ("Arial", 32), bg = "white", fg = "black", command=lambda: showCreate(self))
       createButton.pack(side=tk.RIGHT, padx = (0, 135))
 
       #display frames on page 
