@@ -67,9 +67,9 @@ class App(tk.Tk):
             if not self.isLoggedIn:
                 pageName="Login"
                 self.pageHeader.setPageType(pageName)
-            elif pageName=="Account" and not self.isAdmin and self.isLoggedIn:               
-                self.showNavbar()
-                pageName="Account"
+        elif pageName=="Account" and not self.isAdmin and self.isLoggedIn:               
+            self.showNavbar()
+            pageName="Account"
         elif pageName == "Admin" and self.isAdmin and self.isLoggedIn:
             pageName="Admin"
             self.pageHeader.setPageType(pageName)

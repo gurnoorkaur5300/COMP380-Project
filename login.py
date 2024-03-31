@@ -1,5 +1,6 @@
 import tkinter as tk
 from page import Page
+from create import Create
 
 
 class Login(Page):
@@ -57,7 +58,8 @@ class Login(Page):
       self.userEmail.pack(side=tk.TOP, pady=(50, 10))
       self.userPassword.pack(side=tk.TOP, pady=(10, 50))
 
-      
+      def showCreate(self):
+        createAccountWindow = Create(self) 
       #dummy submit buttun function to view admin page
       def showUser():
          if self.isUser:
@@ -76,7 +78,7 @@ class Login(Page):
       submitButton = tk.Button(buttonsFrame, text = "SUBMIT", borderwidth = 10, font = ("Arial", 32), bg = "white", fg = "black", command=showUser)
       submitButton.pack(side=tk.LEFT, padx = 135)
 
-      createButton = tk.Button(buttonsFrame, text = "CREATE", borderwidth = 10, font = ("Arial", 32), bg = "white", fg = "black")
+      createButton = tk.Button(buttonsFrame, text = "CREATE", borderwidth = 10, font = ("Arial", 32), bg = "white", fg = "black", command = lambda:showCreate(self))
       createButton.pack(side=tk.RIGHT, padx = (0, 135))
 
       #display frames on page 
