@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 from pageHeader import PageHeader
 
 class Create(tk.Toplevel):
@@ -13,8 +14,8 @@ class Create(tk.Toplevel):
         self.userLastName = tk.Entry(self, width=30,font = ("Arial",20), bg="white", fg="black")
         self.userDOB = tk.Entry(self, width =30, font=("Arial", 20), bg="white", fg="black")
         self.userEmail = tk.Entry(self, width = 30, font = ("Arial", 20), bg="white", fg="black")
-        self.userPassword = tk.Entry(self,width = 30, font = ("Arial",20), bg="white", fg="black")
-        self.userPasswordConfirm = tk.Entry(self, width =30, font =("Arial", 20), bg="white", fg="black")
+        self.userPassword = tk.Entry(self,width = 30, font = ("Arial",20), bg="white", fg="black", show="*")
+        self.userPasswordConfirm = tk.Entry(self, width =30, font =("Arial", 20), bg="white", fg="black", show="*")
         self.securityWord = tk.Entry(self, font = ("Arial", 20), bg ="white", fg ="black")
 
         self.userName.insert(0, "Enter first name")
@@ -73,7 +74,14 @@ class Create(tk.Toplevel):
         passWord = self.userPassword.get()
         passWordConfirma = self.userPasswordConfirm.get()
         if passWord == passWordConfirma:
-            self.controller.showFrame("Login") 
+            self.showSuccessMessage("Successful","Account Created") 
+            self.destroy()
+        else:
+            self.showSuccessMessage("Error", "Passwords do not match, Press OK and try again")   
+    
+    #function that displays success message
+    def showSuccessMessage(self, title, message):
+        messagebox.showerror(title, message)    
 
 # Creates instance of App class and starts GUI   
 if __name__=="__main__":
