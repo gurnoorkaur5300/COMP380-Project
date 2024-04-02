@@ -14,8 +14,8 @@ class Create(tk.Toplevel):
         self.userLastName = tk.Entry(self, width=30,font = ("Arial",20), bg="white", fg="black")
         self.userDOB = tk.Entry(self, width =30, font=("Arial", 20), bg="white", fg="black")
         self.userEmail = tk.Entry(self, width = 30, font = ("Arial", 20), bg="white", fg="black")
-        self.userPassword = tk.Entry(self,width = 30, font = ("Arial",20), bg="white", fg="black", show="*")
-        self.userPasswordConfirm = tk.Entry(self, width =30, font =("Arial", 20), bg="white", fg="black", show="*")
+        self.userPassword = tk.Entry(self,width = 30, font = ("Arial",20), bg="white", fg="black")
+        self.userPasswordConfirm = tk.Entry(self, width =30, font =("Arial", 20), bg="white", fg="black")
         self.securityWord = tk.Entry(self, font = ("Arial", 20), bg ="white", fg ="black")
 
         self.userName.insert(0, "Enter first name")
@@ -58,8 +58,12 @@ class Create(tk.Toplevel):
         self.userLastName.bind("<FocusIn>", self.clearEntries)
         self.userDOB.bind("<FocusIn>",self.clearEntries)
         self.userEmail.bind("<FocusIn>", self.clearEntries)
-        self.userPassword.bind("<FocusIn>", self.clearEntries)
-        self.userPasswordConfirm.bind("<FocusIn>", self.clearEntries)
+        # self.userPassword.bind("<FocusIn>", self.clearEntries)
+        # self.userPasswordConfirm.bind("<FocusIn>", self.clearEntries)
+        self.userPassword.bind("<FocusIn>", self.handlePasswordFocusIn)
+        self.userPassword.bind("<FocusOut>", self.handlePasswordFocusOut)
+        self.userPasswordConfirm.bind("<FocusIn>", self.handleConfirmPasswordFocusIn)
+        self.userPasswordConfirm.bind("<FocusOut>", self.handleConfirmPasswordFocusOut)
 
     #create function that clears entry boxes when default text is present ONLY
     def clearEntries(self,event):
@@ -82,6 +86,31 @@ class Create(tk.Toplevel):
     #function that displays success message
     def showSuccessMessage(self, title, message):
         messagebox.showerror(title, message)    
+
+    #create function to cover password
+    def handlePasswordFocusIn(self, event):
+        password = self.userPassword.get()
+        if password == self.userPassword.defaultText:
+            self.userPassword.delete(0, tk.END)
+            self.userPassword.config(show="*")
+
+    def handlePasswordFocusOut(self, event):
+        password = self.userPassword.get()
+        if not password:
+            self.userPassword.insert(0, self.userPassword.defaultText)
+            self.userPassword.config(show="")
+
+    def handleConfirmPasswordFocusIn(self, event):
+        password = self.userPasswordConfirm.get()
+        if password == self.userPasswordConfirm.defaultText:
+            self.userPasswordConfirm.delete(0, tk.END)
+            self.userPasswordConfirm.config(show="*")
+
+    def handleConfirmPasswordFocusOut(self, event):
+        password = self.userPasswordConfirm.get()
+        if not password:
+            self.userPasswordConfirm.insert(0, self.userPasswordConfirm.defaultText)
+            self.userPasswordConfirm.config(show="")        
 
 # Creates instance of App class and starts GUI   
 if __name__=="__main__":
