@@ -65,6 +65,8 @@ class Create(tk.Toplevel):
         self.userPasswordConfirm.bind("<FocusIn>", self.handleConfirmPasswordFocusIn)
         self.userPasswordConfirm.bind("<FocusOut>", self.handleConfirmPasswordFocusOut)
 
+        self.update_idletasks()
+
     #create function that clears entry boxes when default text is present ONLY
     def clearEntries(self,event):
         entryBox = event.widget
@@ -88,25 +90,25 @@ class Create(tk.Toplevel):
         messagebox.showerror(title, message)    
 
     #create function to cover password
-    def handlePasswordFocusIn(self, event):
+    def handlePasswordFocusIn(self):
         password = self.userPassword.get()
         if password == self.userPassword.defaultText:
             self.userPassword.delete(0, tk.END)
             self.userPassword.config(show="*")
 
-    def handlePasswordFocusOut(self, event):
+    def handlePasswordFocusOut(self):
         password = self.userPassword.get()
         if not password:
             self.userPassword.insert(0, self.userPassword.defaultText)
             self.userPassword.config(show="")
 
-    def handleConfirmPasswordFocusIn(self, event):
+    def handleConfirmPasswordFocusIn(self):
         password = self.userPasswordConfirm.get()
         if password == self.userPasswordConfirm.defaultText:
             self.userPasswordConfirm.delete(0, tk.END)
             self.userPasswordConfirm.config(show="*")
 
-    def handleConfirmPasswordFocusOut(self, event):
+    def handleConfirmPasswordFocusOut(self):
         password = self.userPasswordConfirm.get()
         if not password:
             self.userPasswordConfirm.insert(0, self.userPasswordConfirm.defaultText)
