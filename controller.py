@@ -95,4 +95,7 @@ if __name__ == "__main__":
     app.title("Titan Reservations")
     app.mainloop()
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 044ce5882c77e57bbf1f936587ca86363ae1b011
