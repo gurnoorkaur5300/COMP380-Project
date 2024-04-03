@@ -8,14 +8,11 @@ class Login(Page):
       super().__init__(parent,controller)
       self.controller = controller
 
-        
       #create fields
       self.userEmail = tk.Entry(self, width=35, font =("Arial", 24), bg="white",fg="black")
 
       self.isAdminVar = tk.IntVar()
       self.isUserVar = tk.IntVar()
-
-      
 
       self.userPassword = tk.Entry(self, width=35, font =("Arial", 24), bg="white",fg="black")
       self.userEmail.insert(0, "Enter username ")
@@ -27,8 +24,6 @@ class Login(Page):
       #check box frame 
       checkBoxFrame = tk.Frame(self)
       
-      
-
       #only let one checkbox be checked at one time 
       def checkBox():
          global isUser
@@ -45,7 +40,6 @@ class Login(Page):
 
       self.isUser=True
 
-
       #check box attributes 
       self.isAdminVar = tk.IntVar()
       self.isUserVar = tk.IntVar()
@@ -59,7 +53,7 @@ class Login(Page):
       self.userPassword.pack(side=tk.TOP, pady=(10, 50))
 
       def showCreate(self):
-        createAccountWindow = Create(self) 
+        Create(self) 
       #dummy submit buttun function to view admin page
       def showUser():
          if self.isUser:
@@ -85,6 +79,8 @@ class Login(Page):
       entryFrame.pack()
       checkBoxFrame.pack()
       buttonsFrame.pack()
+
+      self.update_idletasks()
         
    #reset function to be caught by page header
    def reset(self):
