@@ -80,11 +80,13 @@ class App(tk.Tk):
             # Grid the page
             page.grid(row=0, column=0, sticky="nsew")
             page.tkraise()
+        self.update_idletasks()
             
     #display main navbar
     def showNavbar(self):
         self.navbar = NavigationBar(self, self, initialState=False)
         self.navbar.grid(row=0, column=0, sticky="w")
+        self.update_idletasks()
 
 
 # Creates instance of App class and starts GUI      
@@ -92,3 +94,8 @@ if __name__ == "__main__":
     app = App()
     app.title("Titan Reservations")
     app.mainloop()
+
+<<<<<<< HEAD
+=======
+
+>>>>>>> 044ce5882c77e57bbf1f936587ca86363ae1b011

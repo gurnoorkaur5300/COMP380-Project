@@ -3,6 +3,7 @@ from tkinter import font
 from page import Page
 
 class Policies(Page):
+
     def __init__(self, parent, controller):
         super().__init__(parent, controller)
         
@@ -79,3 +80,11 @@ We offer a range of accessible guest rooms equipped with features like wheelchai
         self.policiesText.insert("end", f"{header}\n", "bold")
         self.policiesText.insert("end", f"{policy}\n")
         self.policiesText.config(state="disabled")  # Disable editing after insertion
+
+    def __init__(self,parent,controller):
+        super().__init__(parent,controller)
+        label = tk.Label(self, text="Policies is Alive")
+        label.pack()
+
+        self.update_idletasks()
+
