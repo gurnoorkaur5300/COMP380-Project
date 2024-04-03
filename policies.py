@@ -6,3 +6,5 @@ class Policies(Page):
         super().__init__(parent,controller)
         label = tk.Label(self, text="Policies is Alive")
         label.pack()
+
+        self.update_idletasks()

@@ -59,7 +59,7 @@ class NavigationBar(tk.Frame):
             # Close navbar animation
             for x in range(0,301,5):
                 self.navRoot.place(x=-x, y=0)
-                self.update()
+                self.update_idletasks()
 
             # Turn button off
             self.btnState = False
@@ -67,7 +67,7 @@ class NavigationBar(tk.Frame):
             # Open navbar animation
             for x in range(-301, 0, 5):
                 self.navRoot.place(x=x, y=0)
-                self.update()
+                self.update_idletasks()
                 self.navbarBtn.config(bg=self.color["nero"],activebackground=self.color["nero"])
             self.btnState = True
           
