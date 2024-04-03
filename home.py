@@ -127,3 +127,5 @@ class Home(Page):
     def book_room(self, room):
         # Placeholder for booking function (console)
         print(f"Booking {room['name']}...")
+
+# new push
