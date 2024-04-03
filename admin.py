@@ -40,6 +40,8 @@ class Admin(Page):
         # display spreadsheet button
         adminDisplayButton = tk.Button(self, text="Fetch Data", command=displayData)
         adminDisplayButton.pack()
+
+        self.update_idletasks()
     
     #reset fuction to be caught by the header close button
     def reset(self):
