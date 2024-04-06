@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-from pageHeader import PageHeader
+# from pageHeader import PageHeader
 
 class Create(tk.Toplevel):
     def __init__(self,controller, master=None):
@@ -90,25 +90,25 @@ class Create(tk.Toplevel):
         messagebox.showerror(title, message)    
 
     #create function to cover password
-    def handlePasswordFocusIn(self):
+    def handlePasswordFocusIn(self,event):
         password = self.userPassword.get()
         if password == self.userPassword.defaultText:
             self.userPassword.delete(0, tk.END)
             self.userPassword.config(show="*")
 
-    def handlePasswordFocusOut(self):
+    def handlePasswordFocusOut(self,event):
         password = self.userPassword.get()
         if not password:
             self.userPassword.insert(0, self.userPassword.defaultText)
             self.userPassword.config(show="")
 
-    def handleConfirmPasswordFocusIn(self):
+    def handleConfirmPasswordFocusIn(self, event):
         password = self.userPasswordConfirm.get()
         if password == self.userPasswordConfirm.defaultText:
             self.userPasswordConfirm.delete(0, tk.END)
             self.userPasswordConfirm.config(show="*")
 
-    def handleConfirmPasswordFocusOut(self):
+    def handleConfirmPasswordFocusOut(self,event):
         password = self.userPasswordConfirm.get()
         if not password:
             self.userPasswordConfirm.insert(0, self.userPasswordConfirm.defaultText)
