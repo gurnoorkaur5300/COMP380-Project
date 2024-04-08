@@ -14,6 +14,9 @@ class Admin(Page):
         
         #dummy test data 
         def displayData():
+            #check if data already displayed
+            if self.spreadsheet.get_children():
+                return
             #dummy list of tuple representing customers to be imported 
             data = [
             (1, "Gregory", "12/5/24"),
