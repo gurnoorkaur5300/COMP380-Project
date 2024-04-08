@@ -1,4 +1,5 @@
 import tkinter as tk 
+from tkinter import ttk 
 from page import Page
 from navigationBar import NavigationBar
 from home import Home
@@ -21,6 +22,10 @@ class App(tk.Tk):
         
         #minimum window size when app opens
         self.minsize(width=800, height=600)
+
+        #set theme 
+        style=ttk.Style()
+        style.theme_use("clam")
         
         # Configure main window to expand and contract proportionally
         self.grid_rowconfigure(0, weight=0)
@@ -95,7 +100,3 @@ if __name__ == "__main__":
     app.title("Titan Reservations")
     app.mainloop()
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 044ce5882c77e57bbf1f936587ca86363ae1b011
