@@ -9,7 +9,7 @@ class Policies(Page):
         
         # create the header
         headerFont = ("Arial", 32, "bold", "underline")
-        headerLabel = tk.Label(self, text="POLICIES", font=headerFont,bg="white", fg="black",)
+        headerLabel = tk.Label(self, text="POLICIES", font=headerFont,bg="white", fg="black", pady=10)
         headerLabel.pack(side="top", fill="x",anchor="center")
 
         # Creating a frame for the policies text and scrollbar
@@ -17,7 +17,7 @@ class Policies(Page):
         textFrame.pack(fill="both", expand=True)
         
         # Creating the Text widget
-        self.policiesText = tk.Text(textFrame, wrap="word", font=("Arial", 15), bg="white", fg="black", bd=0, highlightthickness=0, padx=150, pady = 30)
+        self.policiesText = tk.Text(textFrame, wrap="word", font=("Arial", 15), bg="white", fg="black", bd=0, highlightthickness=0, padx=20, pady = 30)
         
         # Creating a Scrollbar widget
         scrollbar = tk.Scrollbar(textFrame, command=self.policiesText.yview)
