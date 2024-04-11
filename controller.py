@@ -22,6 +22,7 @@ class App(tk.Tk):
         
         #minimum window size when app opens
         self.minsize(width=800, height=600)
+        self.maxsize(width=800, height=600)
 
         #set theme 
         style=ttk.Style()
