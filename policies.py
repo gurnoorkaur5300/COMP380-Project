@@ -9,15 +9,15 @@ class Policies(Page):
         
         # create the header
         headerFont = ("Arial", 32, "bold", "underline")
-        headerLabel = tk.Label(self, text="HOTEL POLICIES", font=headerFont)
-        headerLabel.pack(side="top", fill="x", pady=(10, 20), anchor="center")
+        headerLabel = tk.Label(self, text="POLICIES", font=headerFont,bg="white", fg="black",)
+        headerLabel.pack(side="top", fill="x",anchor="center")
 
         # Creating a frame for the policies text and scrollbar
         textFrame = tk.Frame(self)
-        textFrame.pack(pady=30, fill="both", expand=True)
+        textFrame.pack(fill="both", expand=True)
         
         # Creating the Text widget
-        self.policiesText = tk.Text(textFrame, wrap="word", font=("Arial", 15), bg="white", bd=0, highlightthickness=0, padx=150, pady = 30)
+        self.policiesText = tk.Text(textFrame, wrap="word", font=("Arial", 15), bg="white", fg="black", bd=0, highlightthickness=0, padx=150, pady = 30)
         
         # Creating a Scrollbar widget
         scrollbar = tk.Scrollbar(textFrame, command=self.policiesText.yview)
@@ -81,10 +81,6 @@ We offer a range of accessible guest rooms equipped with features like wheelchai
         self.policiesText.insert("end", f"{policy}\n")
         self.policiesText.config(state="disabled")  # Disable editing after insertion
 
-    def __init__(self,parent,controller):
-        super().__init__(parent,controller)
-        label = tk.Label(self, text="Policies is Alive")
-        label.pack()
 
         self.update_idletasks()
 
