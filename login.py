@@ -4,9 +4,10 @@ from create import Create
 
 
 class Login(Page):
-   def __init__(self,parent,controller):
+   def __init__(self,parent, database, controller):
       super().__init__(parent,controller)
       self.controller = controller
+      self.database = database 
 
       #create fields
       self.userEmail = tk.Entry(self, width=35, font =("Arial", 24), bg="white",fg="black")
@@ -53,7 +54,7 @@ class Login(Page):
       self.userPassword.pack(side=tk.TOP, pady=(10, 50))
 
       def showCreate(self):
-        Create(self) 
+        Create(self, self.database) 
       #dummy submit buttun function to view admin page
       def showUser():
          if self.isUser:
