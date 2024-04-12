@@ -37,7 +37,8 @@ class App(tk.Tk):
         # Configure main window to expand and contract proportionally
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=1)  # Container row
-        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(2, weight=0) # Footer Areaß
+        self.grid_columnconfigure(0, weight=1) 
       
         # Create a container frame for pages
         self.container = Page(self,self)
@@ -64,7 +65,7 @@ class App(tk.Tk):
         # By default, display home page
         self.showFrame("Home")
         self.showNavbar()
-
+        self.createFooter()
         
         self.isLoggedIn = False
         self.isAdmin = False
@@ -100,6 +101,11 @@ class App(tk.Tk):
         self.navbar = NavigationBar(self, self, initialState=False)
         self.navbar.grid(row=0, column=0, sticky="w")
         self.update_idletasks()
+
+    def createFooter(self):
+        footer = tk.Label(self, text="© 2024 Titan Reservations, Inc. All rights reserved.", bg="light grey", fg="black")
+        footer.grid(row=2, column=0, sticky="ew")  # Ensure it stretches across the bottom
+        self.grid_rowconfigure(2, weight=0)  # Make sure the footer doesn't expand
 
 
 # Creates instance of App class and starts GUI      
