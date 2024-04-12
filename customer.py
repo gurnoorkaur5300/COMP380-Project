@@ -1,3 +1,4 @@
+import uuid 
 
 class Customer:
     """
@@ -6,7 +7,7 @@ class Customer:
     :version 1.0
     """
 
-    def __init__(self, n_name="none", n_email="none@gnot.com", n_dob="01/01/0000", n_reservations=None):
+    def __init__(self, n_name="none", n_email="none@gnot.com", n_dob="01/01/0000", n_reservations=None, n_phone= "000-000-0000", n_hashPass=None):
 
         """
         Constructs a customer
@@ -20,12 +21,16 @@ class Customer:
         :param n_reservations: (Optional) List of reservations made by the customer. Defaults to an empty list.
         :type n_reservations: list, optional
         """
+        self.__customerId =  int(uuid.uuid4().int) #generate unique id
         self.__name= n_name
         self.__email= n_email
         self.__dob= n_dob
+        self.__phoneNumber = n_phone
+        self.__hashPass = n_hashPass
         self.__reservations = n_reservations if n_reservations is not None else []
 
     
+
     #set Cx name
     def setName(self, n_name):
         """
@@ -33,7 +38,7 @@ class Customer:
         :param n_name: Customer's name.
         :type n_name: str
         """
-        self.__name = n_name
+        self.name = n_name
 
    
     #set Cx email
@@ -43,8 +48,16 @@ class Customer:
         :param n_email: Customer's email.
         :type n_email: str
         """
-        self.__email = n_email
-
+        self.email = n_email
+        
+    #set Cx email
+    def setPhone(self, n_phone):
+        """  
+        Sets the customer Phone.
+        :param n_Phone: Customer's Phone number.
+        :type n_Phone: str
+        """
+        self.phoneNumber = n_phone
     
     #set Cx dob
     def setDob(self, n_dob):
@@ -53,7 +66,7 @@ class Customer:
         :param n_dob: Customer's dob.
         :type n_dob: str
         """
-        self.__dob = n_dob
+        self.dob = n_dob
 
       
     #add reservation to a list of reservations
@@ -65,46 +78,31 @@ class Customer:
         """  
         self.__reservations.append(n_reservation)
    
+
     @property
-    #return Cx name
-    def getName(self):
-         
-        """
-        Gets the customer name.
-        :return: The name of the customer.
-        :rtype: str 
-        """
+    def customerId(self):
+        return self.__customerId
+
+    @property
+    def name(self):
         return self.__name
 
-    
-    #return Cx email
     @property
-    def getEmail(self):
-        """
-        Gets the customer email.
-        :return: Customer's email.
-        :rtype: str
-        """
+    def email(self):
         return self.__email
 
-    
-    #get Cx date of birth
     @property
-    def getDob(self):
-        """
-        Gets the customer dob.
-        :return: Customer's dob.
-        :rtype: str
-        """
+    def dob(self):
         return self.__dob
 
-   
-    #get Cx reservation
     @property
-    def getReservations(self):
-        """
-        Gets the customer reservation list.
-        :return: Customer's reservation list.
-        :rtype: list
-        """
+    def phoneNumber(self):
+        return self.__phoneNumber
+
+    @property
+    def hashPass(self):
+        return self.__hashPass
+
+    @property
+    def reservations(self):
         return self.__reservations
