@@ -1,5 +1,7 @@
 import tkinter as tk 
 from tkinter import ttk 
+import sqlite3
+from database import Database
 from page import Page
 from navigationBar import NavigationBar
 from home import Home
@@ -9,7 +11,7 @@ from pageHeader import PageHeader
 from login import Login
 # from customer import Customer
 from admin import Admin
-        # from create import Create
+from create import Create
         # from room import Room
         # from view import View
         # from cancel import Cancel       
@@ -19,6 +21,10 @@ from admin import Admin
 class App(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
+
+        self.db = Database()
+
+        
         
         #minimum window size when app opens
         self.minsize(width=800, height=600)
@@ -38,13 +44,14 @@ class App(tk.Tk):
         self.container.grid(row=1, column=0, sticky="nsew")
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
+
       
         # Instantiate pages
         self.homePage = Home(self.container, self)
         self.policiesPage = Policies(self.container, self)
         self.accountPage = Account(self.container, self)
         self.adminPage = Admin(self.container, self)
-        self.loginPage = Login(self.container, self)
+        self.loginPage = Login(self.container, self.db, self)
         
         self.frames = {
             "Home": self.homePage,
