@@ -10,14 +10,25 @@ class Login(Page):
       self.database = database 
 
       #create fields
-      self.userEmail = tk.Entry(self, width=35, font =("Arial", 24), bg="white",fg="black")
+      self.userEmail = tk.Entry(self, width=35, font =("Arial", 24), bg="white",fg="black", insertbackground="black", insertwidth=4)
 
       self.isAdminVar = tk.IntVar()
       self.isUserVar = tk.IntVar()
 
-      self.userPassword = tk.Entry(self, width=35, font =("Arial", 24), bg="white",fg="black")
-      self.userEmail.insert(0, "Enter username ")
+      self.userPassword = tk.Entry(self, width=35, font =("Arial", 24), bg="white",fg="black", insertbackground="black", insertwidth=4)
+      self.userEmail.insert(0, "Enter username")
+      self.userEmail.defaultText = "Enter username"
+
       self.userPassword.insert(0, "Enter password")
+      self.userPassword.defaultText = "Enter password"
+
+      self.userEmail.bind("<FocusIn>", self.clearEntries)
+      self.userPassword.bind("<FocusIn>", self.clearEntries)
+      self.userPassword.bind("<FocusIn>", self.handlePasswordFocusIn)
+      self.userPassword.bind("<FocusOut>", self.handlePasswordFocusOut)
+
+      self.userEmail.bind("<FocusOut>", self.handleUserEmailFocusOut)
+
 
       # Create a new frame to contain the entry widgets
       entryFrame = tk.Frame(self)
@@ -88,10 +99,36 @@ class Login(Page):
       self.userEmail.delete(0,tk.END)
       self.userPassword.delete(0,tk.END)
       self.userEmail.insert(0, "Enter username ")
+
       self.userPassword.insert(0, "Enter password")
       global isLoggedIn, isAdmi
       self.controller.isLoggedIn = False
       self.controller.isAdmin = False
          
    
-        
+      #create function that clears entry boxes when default text is present ONLY
+   def clearEntries(self,event):
+      entryBox = event.widget
+      defaultText = entryBox.defaultText
+      currentText = entryBox.get()
+      if currentText == defaultText:
+         entryBox.delete(0, tk.END) 
+
+   #create function to cover password
+   def handlePasswordFocusIn(self,event):
+      password = self.userPassword.get()
+      if password == self.userPassword.defaultText:
+         self.userPassword.delete(0, tk.END)
+         self.userPassword.config(show="*")
+
+   def handlePasswordFocusOut(self,event):
+      password = self.userPassword.get()
+      if not password:
+         self.userPassword.insert(0, self.userPassword.defaultText)
+         self.userPassword.config(show="")      
+
+   def handleUserEmailFocusOut(self,event):
+        email = self.userEmail.get()
+        if not email:
+            self.userEmail.insert(0, self.userEmail.defaultText)
+            self.userEmail.config(show="")

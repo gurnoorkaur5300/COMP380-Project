@@ -14,13 +14,13 @@ class Create(tk.Toplevel):
         self.geometry("600x600")
 
         #create fields
-        self.userName = tk.Entry(self,width =30, font=("Arial", 20), bg="white", fg="black")
-        self.userLastName = tk.Entry(self, width=30,font = ("Arial",20), bg="white", fg="black")
-        self.userDOB = tk.Entry(self, width =30, font=("Arial", 20), bg="white", fg="black")
-        self.userEmail = tk.Entry(self, width = 30, font = ("Arial", 20), bg="white", fg="black")
-        self.userPhone = tk.Entry(self, width = 30, font = ("Arial", 20), bg="white", fg="black")
-        self.userPassword = tk.Entry(self,width = 30, font = ("Arial",20), bg="white", fg="black")
-        self.userPasswordConfirm = tk.Entry(self, width =30, font =("Arial", 20), bg="white", fg="black")
+        self.userName = tk.Entry(self,width =30, font=("Arial", 20), bg="white", fg="black", insertbackground="black", insertwidth=4 )
+        self.userLastName = tk.Entry(self, width=30,font = ("Arial",20), bg="white", fg="black", insertbackground ="black", insertwidth =4)
+        self.userDOB = tk.Entry(self, width =30, font=("Arial", 20), bg="white", fg="black", insertbackground="black", insertwidth =4)
+        self.userEmail = tk.Entry(self, width = 30, font = ("Arial", 20), bg="white", fg="black", insertbackground="black", insertwidth=4)
+        self.userPhone = tk.Entry(self, width = 30, font = ("Arial", 20), bg="white", fg="black", insertbackground="black", insertwidth =4)
+        self.userPassword = tk.Entry(self,width = 30, font = ("Arial",20), bg="white", fg="black", insertbackground="black", insertwidth=4)
+        self.userPasswordConfirm = tk.Entry(self, width =30, font =("Arial", 20), bg="white", fg="black", insertbackground="black", insertwidth=4)
         self.securityWord = tk.Entry(self, font = ("Arial", 20), bg ="white", fg ="black")
 
         self.userName.insert(0, "Enter first name")
@@ -68,10 +68,17 @@ class Create(tk.Toplevel):
         self.userDOB.bind("<FocusIn>",self.clearEntries)
         self.userEmail.bind("<FocusIn>", self.clearEntries)
         self.userPhone.bind("<FocusIn>", self.clearEntries)
-        # self.userPassword.bind("<FocusIn>", self.handlePasswordFocusIn)
-        # self.userPassword.bind("<FocusOut>", self.handlePasswordFocusOut)
-        # self.userPasswordConfirm.bind("<FocusIn>", self.handleConfirmPasswordFocusIn)
-        # self.userPasswordConfirm.bind("<FocusOut>", self.handleConfirmPasswordFocusOut)
+        self.userPassword.bind("<FocusIn>", self.handlePasswordFocusIn)
+        self.userPassword.bind("<FocusOut>", self.handlePasswordFocusOut)
+        self.userPasswordConfirm.bind("<FocusIn>", self.handleConfirmPasswordFocusIn)
+        self.userPasswordConfirm.bind("<FocusOut>", self.handleConfirmPasswordFocusOut)
+
+    
+        self.userName.bind("<FocusOut>", self.handleNameFocusOut)
+        self.userLastName.bind("<FocusOut>", self.handleLastNameFocusOut)
+        self.userDOB.bind("<FocusOut>", self.handleDOBFocusOut)
+        self.userEmail.bind("<FocusOut>", self.handleUserEmailFocusOut)
+        self.userPhone.bind("<FocusOut>", self.handleuserPhoneFocusOut)
 
         self.update_idletasks()
 
@@ -106,6 +113,10 @@ class Create(tk.Toplevel):
         if not self.validateEmail(email):
             return False
         if not self.validatePassword(passwrd):
+            return False
+        if not self.validateDOB(dob):
+            return False
+        if not self.validatePhoneNumber(phone):
             return False
 
         name = firstName + " " + lastName
@@ -144,7 +155,20 @@ class Create(tk.Toplevel):
         
         return True
 
-    
+    def validateDOB(self, dob):
+        format = r'^\d{2}-\d{2}-\d{4}$'
+        if not re.match(format,dob):
+            messagebox.showerror("Error", "Date of birth should have the format dd-mm-yyyy")
+            return False
+        return True
+        
+    def validatePhoneNumber(self, phone):
+        format = r'^\d{3}-\d{3}-\d{4}'
+        if not re.match(format, phone):
+            messagebox.showerror("Error", "Phone number should have the format ###-###-####")  
+            return False
+        return True
+
     #function that displays success message
     def showSuccessMessage(self, title, message):
         messagebox.showerror(title, message)    
@@ -172,7 +196,40 @@ class Create(tk.Toplevel):
         password = self.userPasswordConfirm.get()
         if not password:
             self.userPasswordConfirm.insert(0, self.userPasswordConfirm.defaultText)
-            self.userPasswordConfirm.config(show="")        
+            self.userPasswordConfirm.config(show="")
+    
+
+    def handleNameFocusOut(self,event):
+        name = self.userName.get()
+        if not name:
+            self.userName.insert(0, self.userName.defaultText)
+            self.userName.config(show="")
+
+    def handleLastNameFocusOut(self,event):
+        lastName = self.userLastName.get()
+        if not lastName:
+            self.userLastName.insert(0, self.userLastName.defaultText)
+            self.userLastName.config(show="")        
+
+    def handleDOBFocusOut(self,event):
+        dob = self.userDOB.get()
+        if not dob:
+            self.userDOB.insert(0, self.userDOB.defaultText)
+            self.userDOB.config(show="")
+
+    def handleUserEmailFocusOut(self,event):
+        email = self.userEmail.get()
+        if not email:
+            self.userEmail.insert(0, self.userDOB.defaultText)
+            self.userEmail.config(show="")    
+
+    def handleuserPhoneFocusOut(self,event):
+        phone = self.userPhone.get()
+        if not phone:
+            self.userPhone.insert(0, self.userPhone.defaultText)
+            self.userPhone.config(show="")            
+    
+        
 
 # Creates instance of App class and starts GUI   
 if __name__=="__main__":
