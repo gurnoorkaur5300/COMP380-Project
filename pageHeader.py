@@ -1,7 +1,34 @@
 import tkinter as tk
 
 class PageHeader:
+    """
+    This class represents the header component for pages.
+    :author: Gregory Calderon
+    :version: 1.0
+
+    Attributes:
+        parent: The parent widget to which the header belongs.
+        controller: The controller object responsible for managing page navigation.
+        color (dict): A dictionary containing color codes.
+        mainFrame (tk.Frame): The main frame of the header.
+        resetFunctions (list): A list of reset functions for all pages.
+        pageIs (str): The current page being displayed.
+        pageLabel (tk.Label): The label displaying the current page.
+        closeBtn (tk.Button): The close button to return to the home page.
+
+    Methods:
+        __init__(parent, controller): Initializes the PageHeader object.
+        resetPages(controller): Resets all page values and fields to default values.
+        setPageType(pageName): Sets the label for the page header.
+    """
     def __init__(self, parent, controller):
+        """
+        Initializes the PageHeader object.
+
+        Args:
+            parent: The parent widget to which the header belongs.
+            controller: The controller object responsible for managing page navigation.
+        """
         self.parent = parent
         self.controller = controller
         # Dictionary of colors
@@ -37,13 +64,25 @@ class PageHeader:
                 self.resetFunctions.append(page.reset)
          
     # collect all the reset fuctions and call them for their respective pages
-    def resetPages(self, controller): 
+    def resetPages(self, controller):
+        """
+        Resets all page values and fields to default values.
+
+        Args:
+            controller: The controller object responsible for managing page navigation.
+        """ 
         for resetFunction in self.resetFunctions:
             resetFunction()
         controller.showFrame("Home")
     
     # set the label for the page header
     def setPageType(self, pageName):
+        """
+        Sets the label for the page header.
+
+        Args:
+            pageName (str): The name of the page.
+        """
         self.pageIs= pageName
         self.pageLabel.config(text=self.pageIs)
         
