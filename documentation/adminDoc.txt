@@ -1,0 +1,56 @@
+Help on module administrator:
+
+NAME
+    administrator
+
+CLASSES
+    builtins.object
+        Administrator
+    
+    class Administrator(builtins.object)
+     |  Administrator(n_adminName=None, n_adminEmail=None, n_hashPass=None)
+     |  
+     |  This class represents an adminstrator
+     |  :Gregory Calderon
+     |  :version 1.0
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, n_adminName=None, n_adminEmail=None, n_hashPass=None)
+     |      Constructs a administrator
+     |      
+     |      :param n_name: (Optional) The name of the administrator.
+     |      :type n_name: str
+     |      :param n_email: (Optional) The email address of the administrator.
+     |      :type n_email: str
+     |      :param n_hashPass: (Optional) The hashed password of the administrator. 
+     |      :type n_hashPass: str
+     |  
+     |  ----------------------------------------------------------------------
+     |  Readonly properties defined here:
+     |  
+     |  adminName
+     |      str: The name of the administrator.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+     |  
+     |  adminEmail
+     |      str: The email of the administrator.
+     |  
+     |  hashPass
+     |      str: The hashPass.
+     |  
+     |  setAdminName
+     |      str: The name of the administrator.
+
+FILE
+    /Users/gregcalderon/Desktop/380 CompSys/COMP380-Project/administrator.py
+
+
