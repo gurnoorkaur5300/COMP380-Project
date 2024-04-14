@@ -62,6 +62,16 @@ class Login(Page):
       def showCreate(self):
         Create(self, database) 
 
+      # def chooseUserType(self):
+      #    if self.isUserVal == 1:
+      #       validateUserLogin()
+      #    else:
+      #       validateAdminLogin()
+
+      # def validateAdminLogin(self): 
+      #    email.s
+
+
       def validateUserLogin(self):
          email = self.userEmail.get()
          # print(email)
@@ -69,11 +79,19 @@ class Login(Page):
          # print(passWord)
          hashPasswrd = hashlib.sha256(passWord.encode()).hexdigest()
          # print(hashPasswrd)
+
          
-         if database.isVerified(email, hashPasswrd):
-            self.isUser=True
-            isCustomer = database.getEmail(email)
-            showUser(isCustomer)
+         if database.isVerified(email, hashPasswrd, self.isUserVar.get()):
+            if self.isUserVar.get() ==1:
+               self.isAdmin=False
+               self.isUser=True
+               isCustomer = database.getEmail(email)
+               showUser(isCustomer)
+            else:
+               self.isUser=False
+               self.isAdmin=True
+               isAdmin = database.getAdminEmail(email)
+               showUser(isAdmin)
          else:
             self.isUser=False
             # Assuming you want to bind the clearEntries function to the userEmail and userPassword entry fields
