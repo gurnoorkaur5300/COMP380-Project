@@ -2,7 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 import sqlite3
 from customer import Customer
-
+from administrator import Administrator
+import hashlib
 
 class Database:
     def __init__(self, dbFile="defaultDatabase.db"):
@@ -20,6 +21,13 @@ class Database:
                        hashPass TEXT
 
         )''')
+        cursor.execute('''CREATE TABLE IF NOT EXISTS administrators (
+                       adminId INTEGER PRIMARY KEY AUTOINCREMENT, 
+                       adminName TEXT,
+                       adminEmail TEXT UNIQUE,
+                       hashPass TEXT
+
+        )''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS reservations (
                        reserveId INTEGER PRIMARY KEY,
                        customerId INTEGER, 
@@ -33,6 +41,18 @@ class Database:
                        FOREIGN KEY (roomId) REFERENCES rooms(roomId),
                        FOREIGN KEY (paidId) REFERENCES payment(paidId)
         )''')
+
+        #check for default administrator. create if none exists.
+        cursor.execute("SELECT COUNT(*) FROM administrators")
+        count = cursor.fetchone()[0]
+
+        if count == 0:
+            defaultPassword = "default2Pass"
+            defaultHashPass = hashlib.sha256(defaultPassword.encode()).hexdigest() 
+            defaultAdmin = ("defAdmin", "defAdmin@example.com", defaultHashPass)
+            cursor.execute("INSERT INTO administrators (adminName, adminEmail, hashPass) VALUES (?,?,?)", (defaultAdmin))
+        self.conn.commit()
+
         cursor.execute('''CREATE TABLE IF NOT EXISTS rooms (
                        roomId TEXT PRIMARY KEY,
                        roomNumber INTEGER,
@@ -49,8 +69,6 @@ class Database:
                        amount REAL, 
                        paidDate TEXT,
                        FOREIGN KEY (customerId) REFERENCES customers(customerId)
-                       
-
        )''')
     
 
@@ -74,6 +92,7 @@ class Database:
             return foundCustomer
         else:
             return None 
+        
     
 
     def getReservations(self, customerId):
@@ -91,18 +110,35 @@ class Database:
         except sqlite3.Error as e:
             messagebox.showerror("Error", f"Failed to cancel reservation: {e}")
 
-    def isVerified(self, checkForEmail, checkForHashPasswrd):
-        customer = self.getEmail(checkForEmail)
+    def getAdminEmail(self, adminEmail):
+        cursor = self.conn.cursor()
+        cursor.execute('''SELECT * FROM administrators WHERE adminEmail=?''', (adminEmail,))
+        adminData = cursor.fetchone()
 
-        if customer is None:
+        if adminData is not None:
+            admin = Administrator(adminData[1],adminData[2],adminData[3])
+            return admin
+        else:
+            return None 
+
+    def isVerified(self, checkForEmail, checkForHashPasswrd, isCustomer):
+        if isCustomer==1:
+            user = self.getEmail(checkForEmail)
+            
+        else: 
+            user = self.getAdminEmail(checkForEmail)
+
+        if user is None:
             #print("not email match")
             return False
         
-        if str(customer.hashPass) == str(checkForHashPasswrd):
+        if str(user.hashPass) == str(checkForHashPasswrd):
             #print("hash match")
             return True 
         else:
             #print("not hash match" + "" + str(customer.hashPass)+ "" + str(checkForHashPasswrd))
             return False
     
+    
 
+    
