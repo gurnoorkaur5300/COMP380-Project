@@ -4,7 +4,35 @@ import tkmacosx
 
 
 class NavigationBar(tk.Frame):
+    """
+    This class represents the navigation bar component.
+    :author: Gregory Calderon
+    :version: 1.0
+    
+    Attributes:
+        parent: The parent widget to which the navigation bar belongs.
+        controller: The controller object responsible for managing page navigation.
+        color (dict): A dictionary containing color codes.
+        headerFrame (tk.Frame): The frame containing the header.
+        homeLabel (tk.Label): The label displaying the home page text.
+        btnState (bool): The state of the navigation bar button.
+        navbarBtn (tkmacosx.Button): The main navigation bar button.
+        navRoot (tk.Frame): The frame for the navigation bar options.
+        closeBtn (tkmacosx.Button): The close button for the navigation bar.
+
+    Methods:
+        __init__(parent, controller, initialState=False): Initializes the NavigationBar object.
+        switch(): Toggles the state of the navigation bar.
+    """
     def __init__(self, parent, controller, initialState=False):
+        """
+        Initializes the NavigationBar object.
+
+        Args:
+            parent: The parent widget to which the navigation bar belongs.
+            controller: The controller object responsible for managing page navigation.
+            initialState (bool): The initial state of the navigation bar. Defaults to False.
+        """
         super().__init__(parent)
         self.controller = controller
         
@@ -52,11 +80,14 @@ class NavigationBar(tk.Frame):
         self.closeBtn = tkmacosx.Button(self.navRoot, text="✖", bd=0, command=self.switch, fg=self.color["nero"],font=("Helvetica", 14), padx=-20)
         self.closeBtn.place(x=230, y=10)
         
-        #if the 
+
         if initialState:
             self.navRoot.grid(row=1, column=0, sticky="nsw")
 
     def switch(self):
+        """
+        Toggles the state of the navigation bar.
+        """
         if self.btnState is True:
             # Close navbar animation
             for x in range(0,301,5):
