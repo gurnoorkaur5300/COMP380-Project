@@ -5,7 +5,30 @@ from tkinter import messagebox
 import hashlib
 
 class Login(Page):
+   """
+    This class represents the login page.
+    :author: Gregory Calderon and Martin Gallegos Cordero
+
+    Attributes:
+        parent: The parent widget to which the login page belongs.
+        database: The database object containing user information.
+        controller: The controller object responsible for managing page navigation.
+
+    Methods:
+        showCreate(): Opens the create user page.
+        validateUserLogin(): Validates the user's login credentials.
+        showUser(user): Displays the appropriate user interface based on the user's role.
+        reset(): Resets the login form fields and state.
+    """
    def __init__(self,parent, database, controller):
+      """
+        Initializes the Login object.
+
+        Args:
+            parent: The parent widget to which the login page belongs.
+            database: The database object containing user information.
+            controller: The controller object responsible for managing page navigation.
+        """
       super().__init__(parent,controller)
       self.controller = controller
       self.database = database 
@@ -34,6 +57,9 @@ class Login(Page):
       
       #only let one checkbox be checked at one time 
       def checkBox():
+         """
+         restricts one check box to being marked at a time
+         """
          global isUser
          if self.isAdminVar.get() == 1:
             self.isUserVar.set(0)
@@ -60,19 +86,17 @@ class Login(Page):
       self.userPassword.pack(side=tk.TOP, pady=(10, 50))
 
       def showCreate(self):
+        """
+        Opens the create user page.
+        """
         Create(self, database) 
-
-      # def chooseUserType(self):
-      #    if self.isUserVal == 1:
-      #       validateUserLogin()
-      #    else:
-      #       validateAdminLogin()
-
-      # def validateAdminLogin(self): 
-      #    email.s
 
 
       def validateUserLogin(self):
+         """
+        Validates the user's login credentials.
+        """
+
          email = self.userEmail.get()
          # print(email)
          passWord = self.userPassword.get()
@@ -94,14 +118,15 @@ class Login(Page):
                showUser(isAdmin)
          else:
             self.isUser=False
-            # Assuming you want to bind the clearEntries function to the userEmail and userPassword entry fields
+            
             # self.resetTxt()
-
             messagebox.showerror("Error", "Incorrect Password")
             
 
-      #dummy submit buttun function to view admin page
       def showUser(user):
+         """
+        Displays the appropriate user interface based on the user's role.
+        """
          if self.isUser:
             self.controller.isLoggedIn = True
             self.controller.isAdmin = False
@@ -131,6 +156,9 @@ class Login(Page):
         
    #reset function to be caught by page header
    def reset(self):
+      """
+      Resets the login form fields and state.
+      """
       self.userEmail.delete(0,tk.END)
       self.userPassword.delete(0,tk.END)
       self.userEmail.insert(0, "Enter username ")
@@ -170,5 +198,5 @@ class Login(Page):
          self.userEmail.insert(0, self.userEmail.defaultText)
          self.userEmail.config(show="")
 
-   def resetTxt(self):
-      self.clearEntries()
+   # def resetTxt(self):
+   #    self.clearEntries()
