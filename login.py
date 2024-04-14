@@ -24,9 +24,7 @@ class Login(Page):
       self.userPassword.bind("<FocusIn>", self.clearEntries)
       self.userPassword.bind("<FocusIn>", self.handlePasswordFocusIn)
       self.userPassword.bind("<FocusOut>", self.handlePasswordFocusOut)
-
       self.userEmail.bind("<FocusOut>", self.handleUserEmailFocusOut)
-
 
       # Create a new frame to contain the entry widgets
       entryFrame = tk.Frame(self)
@@ -48,10 +46,8 @@ class Login(Page):
          if self.isUserVar.get() == 0:
             self.isUser = False
 
-      self.isUser=True
 
       #check box attributes 
-
       self.isAdminVar = tk.IntVar()
       self.isUserVar = tk.IntVar(value =1)
       self.isAdminCheck = tk.Checkbutton(checkBoxFrame, text="Admin",variable=self.isAdminVar, command=checkBox)
@@ -75,19 +71,23 @@ class Login(Page):
          # print(hashPasswrd)
          
          if database.isVerified(email, hashPasswrd):
-            showUser()
+            self.isUser=True
+            isCustomer = database.getEmail(email)
+            showUser(isCustomer)
          else:
+            self.isUser=False
             # Assuming you want to bind the clearEntries function to the userEmail and userPassword entry fields
-            self.resetTxt()
+            # self.resetTxt()
 
             messagebox.showerror("Error", "Incorrect Password")
             
 
       #dummy submit buttun function to view admin page
-      def showUser():
+      def showUser(user):
          if self.isUser:
             self.controller.isLoggedIn = True
             self.controller.isAdmin = False
+            self.controller.accountPage.setCustomer(user)
             self.controller.showFrame("Account")
          elif not self.isUser:
             self.controller.isLoggedIn = True
@@ -121,6 +121,8 @@ class Login(Page):
       global isLoggedIn, isAdmin
       self.controller.isLoggedIn = False
       self.controller.isAdmin = False
+      self.isUser = False
+      self.isAdmin = False
          
    
       #create function that clears entry boxes when default text is present ONLY

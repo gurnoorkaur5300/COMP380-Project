@@ -50,8 +50,8 @@ class App(tk.Tk):
         # Instantiate pages
         self.homePage = Home(self.container, self)
         self.policiesPage = Policies(self.container, self)
-        self.accountPage = Account(self.container, self)
-        self.adminPage = Admin(self.container, self)
+        self.accountPage = Account(self.container, self.db, self)
+        self.adminPage = Admin(self.container, self.db, self)
         self.loginPage = Login(self.container, self.db, self)
         
         self.frames = {
@@ -69,32 +69,32 @@ class App(tk.Tk):
         
         self.isLoggedIn = False
         self.isAdmin = False
-    
-    #change page frames
+
+    #change pages
     def showFrame(self, pageName):
-        
         # Show specific pages
-        if pageName in ["Home", "Policies"]:
+        if pageName in ["Home","Policies"]:
             self.showNavbar()
-        elif pageName == "Account":
-            self.pageHeader = PageHeader(self,self)
-            if not self.isLoggedIn:
-                pageName="Login"
-                self.pageHeader.setPageType(pageName)
-        elif pageName=="Account" and not self.isAdmin and self.isLoggedIn:               
+        elif pageName ==  "Account" and self.isLoggedIn:
             self.showNavbar()
-            pageName="Account"
-        elif pageName == "Admin" and self.isAdmin and self.isLoggedIn:
-            pageName="Admin"
+
+        # Set the page header for the account page if not logged in
+        if pageName == "Account" and not self.isLoggedIn:
+            self.pageHeader = PageHeader(self, self)
+            pageName = "Login"
             self.pageHeader.setPageType(pageName)
-    
+
+        # Set the page type for the admin page if logged in as an admin
+        elif pageName == "Admin" and self.isAdmin and self.isLoggedIn:
+            self.pageHeader.setPageType(pageName)
+
         # Get the page from the frames dictionary
         page = self.frames.get(pageName)
         if page:    
-            # Grid the page
             page.grid(row=0, column=0, sticky="nsew")
             page.tkraise()
         self.update_idletasks()
+
             
     #display main navbar
     def showNavbar(self):
