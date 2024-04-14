@@ -3,7 +3,7 @@ from tkinter import messagebox
 import hashlib
 import re
 from customer import Customer
-from database import Database
+import uuid
 
 class Create(tk.Toplevel):
     def __init__(self,controller, database, master=None):
@@ -59,7 +59,7 @@ class Create(tk.Toplevel):
    
 
         #create button to submit
-        submitButton = tk.Button(self, text = "SUBMIT", borderwidth=10, font=("Arial", 22), bg = "white", fg ="black", command= self.getData)
+        submitButton = tk.Button(self, text = "SUBMIT", borderwidth=10, font=("Arial", 22), bg = "white", fg ="black",  activeforeground="blue", command= self.getData)
         submitButton.pack(padx = 200, side = "left")
 
         #bid clearEntries method to the FOCUSIN for all widgest that need to be cleared
@@ -101,10 +101,11 @@ class Create(tk.Toplevel):
             
 
     def getData(self):
+        
         firstName = self.userName.get()
         lastName = self.userLastName.get()
-        dob = self.userDOB.get()
-        phone = self.userPhone.get()
+        dob = self.userDOB.get() #00/00/0000
+        phone = self.userPhone.get() #000-000-0000
         email = self.userEmail.get()
         passwrd = self.userPassword.get()
 
@@ -125,8 +126,10 @@ class Create(tk.Toplevel):
         newCustomer = Customer(name, email, dob, phone, hashPasswrd)
 
         self.database.insertCustomer(newCustomer)
-
+            
+        self.closeCreate()
         return True
+        
 
     def validateName(self, firstN, lastN):
         if not firstN.strip() or not lastN.strip():
@@ -230,6 +233,10 @@ class Create(tk.Toplevel):
             self.userPhone.config(show="")            
     
         
+            self.userPasswordConfirm.config(show="")       
+
+    def closeCreate(self):
+        self.destroy() 
 
 # Creates instance of App class and starts GUI   
 if __name__=="__main__":

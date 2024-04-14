@@ -1,4 +1,4 @@
-import uuid 
+ 
 
 class Customer:
     """
@@ -7,7 +7,7 @@ class Customer:
     :version 1.0
     """
 
-    def __init__(self, n_name="none", n_email="none@gnot.com", n_dob="01/01/0000", n_reservations=None, n_phone= "000-000-0000", n_hashPass=None):
+    def __init__(self, n_name="none", n_email="none@gnot.com", n_dob="01/01/0000",n_phone= "000-000-0000", n_hashPass=None, n_reservations=None):
 
         """
         Constructs a customer
@@ -21,15 +21,12 @@ class Customer:
         :param n_reservations: (Optional) List of reservations made by the customer. Defaults to an empty list.
         :type n_reservations: list, optional
         """
-        self.__customerId =  int(uuid.uuid4().int) #generate unique id
         self.__name= n_name
         self.__email= n_email
         self.__dob= n_dob
         self.__phoneNumber = n_phone
         self.__hashPass = n_hashPass
         self.__reservations = n_reservations if n_reservations is not None else []
-
-    
 
     #set Cx name
     def setName(self, n_name):
@@ -78,10 +75,6 @@ class Customer:
         """  
         self.__reservations.append(n_reservation)
    
-
-    @property
-    def customerId(self):
-        return self.__customerId
 
     @property
     def name(self):

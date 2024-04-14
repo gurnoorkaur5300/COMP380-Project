@@ -1,6 +1,5 @@
-from tkinter import PhotoImage
+from tkinter import *
 import tkinter as tk
-# from tkmacosx import Button as MacButton
 import tkmacosx
 
 
@@ -10,7 +9,7 @@ class NavigationBar(tk.Frame):
         self.controller = controller
         
         # Dictionary of colors
-        self.color = {"nero": "#252726", "beige": "#F5F5DC", "orange": "#FF8700"}
+        self.color = {"nero": "#252726", "beige": "#F5F5DC"}
         
         # Header frame
         self.headerFrame = tk.Frame(parent, bg="beige")
@@ -27,7 +26,7 @@ class NavigationBar(tk.Frame):
         self.btnState = initialState  
 
         #main navigation bar button. when clicked will call switch() which animates the bar open and closed
-        self.navbarBtn = tkmacosx.Button(self.headerFrame, text="☰", activebackground="blue", bd=0, height=70, width= 75, padx=20, pady=10, command=self.switch, font=("Helvetica", 40))
+        self.navbarBtn = tkmacosx.Button(self.headerFrame, text="☰", activeforeground="blue", bd=0, height=70, width= 75, padx=20, pady=10, command=self.switch, font=("Helvetica", 40))
         self.navbarBtn.grid(row=0, column=0, padx=10, pady=(10,10), sticky="nw")
 
         # Setting Navbar frame
@@ -71,7 +70,6 @@ class NavigationBar(tk.Frame):
             for x in range(-301, 0, 5):
                 self.navRoot.place(x=x, y=0)
                 self.update_idletasks()
-                # self.navbarBtn.config(bg=self.color["orange"],activebackground=self.color["nero"])
             self.btnState = True
           
    
