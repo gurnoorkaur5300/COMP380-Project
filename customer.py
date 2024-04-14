@@ -1,13 +1,11 @@
- 
-
 class Customer:
     """
     This class represents a customer
     :Gregory Calderon
-    :version 1.0
+    :version 1.1
     """
 
-    def __init__(self, n_name="none", n_email="none@gnot.com", n_dob="01/01/0000",n_phone= "000-000-0000", n_hashPass=None, n_reservations=None):
+    def __init__(self, n_name=None, n_email=None, n_dob=None,n_phone= None, n_hashPass=None, n_reservations=None):
 
         """
         Constructs a customer
@@ -28,7 +26,12 @@ class Customer:
         self.__hashPass = n_hashPass
         self.__reservations = n_reservations if n_reservations is not None else []
 
-    #set Cx name
+    @property
+    def name(self):
+        """str: The name of the customer."""
+        return self.__name
+
+    @name.setter
     def setName(self, n_name):
         """
         Sets the customer name.
@@ -38,7 +41,12 @@ class Customer:
         self.name = n_name
 
    
-    #set Cx email
+    @property
+    def email(self):
+        """str: The email address of the customer."""
+        return self.__email
+
+    @email.setter
     def setEmail(self, n_email):
         """  
         Sets the customer email.
@@ -46,8 +54,13 @@ class Customer:
         :type n_email: str
         """
         self.email = n_email
-        
-    #set Cx email
+ 
+    @property
+    def phoneNumber(self):
+        """str: The phone number of the customer."""
+        return self.__phoneNumber
+    
+    @phoneNumber.setter
     def setPhone(self, n_phone):
         """  
         Sets the customer Phone.
@@ -56,7 +69,12 @@ class Customer:
         """
         self.phoneNumber = n_phone
     
-    #set Cx dob
+    @property
+    def dob(self):
+        """str: The date of birth of the customer."""
+        return self.__dob
+    
+    @dob.setter
     def setDob(self, n_dob):
         """
         Sets the customer dob.
@@ -65,8 +83,12 @@ class Customer:
         """
         self.dob = n_dob
 
-      
-    #add reservation to a list of reservations
+    @property
+    def reservations(self):
+        """list: List of reservations made by the customer."""
+        return self.__reservations
+    
+    @reservations.setter
     def addReservations(self, n_reservation):
         """
         Adds to the the customer reservation list.
@@ -77,25 +99,6 @@ class Customer:
    
 
     @property
-    def name(self):
-        return self.__name
-
-    @property
-    def email(self):
-        return self.__email
-
-    @property
-    def dob(self):
-        return self.__dob
-
-    @property
-    def phoneNumber(self):
-        return self.__phoneNumber
-
-    @property
     def hashPass(self):
+        """str: The hash of the customer's password."""
         return self.__hashPass
-
-    @property
-    def reservations(self):
-        return self.__reservations
