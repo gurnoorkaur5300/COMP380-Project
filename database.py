@@ -138,6 +138,19 @@ class Database:
         else:
             #print("not hash match" + "" + str(customer.hashPass)+ "" + str(checkForHashPasswrd))
             return False
+        
+
+    def getCustomerInfo(self):
+        cursor=self.conn.cursor()
+        cursor.execute("SELECT customerId, name FROM customers")
+        customers = cursor.fetchall()
+        return customers
+    
+    def getResInfo(self):
+        cursor=self.conn.cursor()
+        cursor.execute("SELECT reserveId, checkIn, checkOut, paid FROM reservations")
+        reservations = cursor.fetchall()
+        return reservations
     
     
 
