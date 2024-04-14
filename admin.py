@@ -13,31 +13,41 @@ class Admin(Page):
         
         #display the frame
         self.spreadsheetFrame.pack(expand=True, fill="both")
-        
-        #dummy test data 
+         
         def displayData():
             #check if data already displayed
             if self.spreadsheet.get_children():
                 return
-            #dummy list of tuple representing customers to be imported 
-            data = [
-            (1, "Gregory", "12/5/24"),
-            (2, "Martin", "10/2/24"),
-            (3, "Gurnoor", "10/22/24"),
-            (4, "Arameh", "11/2/24"),
-            ]
-        
-            #insert each row from database into a spreadsheet
-            for row in data: 
-                self.spreadsheet.insert("", "end", values=row)
+            
+            customers = self.database.getCustomerInfo()
+            reservations = self.database.getResInfo()
+            for customer in customers:
+                self.spreadsheet.insert("", "end", values=customer)
+
+            for reservation in reservations:
+                self.spreadsheet.insert("", "end", values=reservation)
+
+
             
         #create spreadsheet object
-        self.spreadsheet = ttk.Treeview(self.spreadsheetFrame,columns=("ID", "First Name", "Reservation Date"), show="headings")
+        self.spreadsheet = ttk.Treeview(self.spreadsheetFrame, columns=("ID", "Name", "ResID", "CheckIn", "CheckOut", "Cost"), show="headings")
+
+        self.spreadsheet.column("#1", width=50)  
+        self.spreadsheet.column("#2", width=100)
+        self.spreadsheet.column("#3", width=70)
+        self.spreadsheet.column("#4", width=75)
+        self.spreadsheet.column("#5", width=75)
+        self.spreadsheet.column("#6", width=60)
+    
+
         
         #create headings for spreadsheet columns
         self.spreadsheet.heading("#1", text="ID")
-        self.spreadsheet.heading("#2", text="First Name")
-        self.spreadsheet.heading("#3", text="Reservation Date")
+        self.spreadsheet.heading("#2", text="Name")
+        self.spreadsheet.heading("#3", text="ResID")
+        self.spreadsheet.heading("#4", text="CheckIn")
+        self.spreadsheet.heading("#5", text="CheckOut")
+        self.spreadsheet.heading("#6", text="Cost")
 
         #display spreadsheet .pack method 
         self.spreadsheet.pack(expand=True, fill="both")
