@@ -10,13 +10,15 @@ class Customer:
         """
         Constructs a customer
 
-        :param n_name: (Optional) The name of the customer. Default is None.
+        :param n_name: (Optional) The name of the customer..
         :type n_name: str
-        :param n_email: (Optional) The emial address of the customer. Default is none@gnot.com.
-        :type n_email str
-        :param n_dob: (Optional) The date of birth of the customer in the format 'MM/DD/YYYY'. Default is "01/01/0000".
+        :param n_email: (Optional) The email address of the customer. 
+        :type n_email: str
+        :param n_dob: (Optional) The date of birth of the customer in the format 'MM/DD/YYYY'.
         :type n_dob: str
-        :param n_reservations: (Optional) List of reservations made by the customer. Defaults to an empty list.
+        :param n_phone: (Optional) The phone number of the customer. 
+        :type n_phone: str
+        :param n_reservations: (Optional) List of reservations made by the customer. 
         :type n_reservations: list, optional
         """
         self.__name= n_name
