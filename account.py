@@ -3,13 +3,42 @@ from page import Page
 
 
 class Account(Page):
+    """
+    This class represents the account page.
+    :author: Gregory Calderon
+    :version: 1.0
+
+    Attributes:
+        parent: The parent widget to which the account page belongs.
+        database: The database object containing customer information.
+        controller: The controller object responsible for managing page navigation.
+        customer: The customer object whose account information is displayed.
+
+    Methods:
+        setCustomer(n_customer): Sets the customer whose account information will be displayed.
+    """
     def __init__(self,parent, database, controller, customer=None):
+        """
+        Initializes the Account object.
+
+        Args:
+            parent: The parent widget to which the account page belongs.
+            database: The database object containing customer information.
+            controller: The controller object responsible for managing page navigation.
+            customer: The customer object whose account information is displayed. Default is None.
+        """
         super().__init__(parent,controller)
         self.controller = controller
         self.database = database 
         self.customer = customer
 
     def setCustomer(self, n_customer):
+        """
+        Sets the customer whose account information will be displayed.
+
+        Args:
+            n_customer: The customer object whose account information will be displayed.
+        """
         self.customer = n_customer
         
         self.columnconfigure(0, weight=1)
