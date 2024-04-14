@@ -3,8 +3,10 @@ from tkinter import ttk
 from page import Page
 
 class Admin(Page):
-    def __init__(self,parent, controller):
-        super().__init__(parent, controller)
+    def __init__(self,parent, database, controller):
+        super().__init__(parent,controller)
+        self.controller = controller
+        self.database = database 
         
         #create frame 
         self.spreadsheetFrame=ttk.Frame(self)

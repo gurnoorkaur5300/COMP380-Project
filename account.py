@@ -1,28 +1,16 @@
 import tkinter as tk
 from page import Page
-from customer import Customer
 
 
 class Account(Page):
-    def __init__(self,parent,controller):
+    def __init__(self,parent, database, controller, customer=None):
         super().__init__(parent,controller)
-        
-         #test customer case
-        customerInfo = {
-            "n_name": "Greg",
-            "n_email": "gregory.calderon.514@my.csun.edu",
-            "n_dob": "02/06/1987",
-            "n_reservations": ["2jaifj", "33roij", "8a9a98"]
-        } 
-        
-        self.customer = Customer(
-            customerInfo["n_name"],
-            customerInfo["n_email"],
-            customerInfo["n_dob"],
-            customerInfo["n_reservations"]
-        )
+        self.controller = controller
+        self.database = database 
+        self.customer = customer
 
-
+    def setCustomer(self, n_customer):
+        self.customer = n_customer
         
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=0)
@@ -37,6 +25,9 @@ class Account(Page):
         
         userEmailLabel = tk.Label(infoBox, text="Email:", font=("Arial", 18, "bold"), bg="white", fg="black")
         userEmailLabel.grid(row=1, column=0, padx=15,sticky="e")
+
+        userPhoneLabel = tk.Label(infoBox, text="Phone:", font=("Arial", 18, "bold"), bg="white", fg="black")
+        userPhoneLabel.grid(row=1, column=0, padx=15,sticky="e")
         
         userDOBLabel = tk.Label(infoBox, text="DOB:", font=("Arial", 18, "bold"), bg="white", fg="black")
         userDOBLabel.grid(row=2, column=0, padx=15,sticky="e")
@@ -50,6 +41,9 @@ class Account(Page):
 
         userEmailLabel = tk.Label(infoBox,text=self.customer.email, bg="white", fg="black", anchor="w", width=50)
         userEmailLabel.grid(row=1, column=1, pady=15, sticky="w")
+
+        userPhoneLabel = tk.Label(infoBox,text=self.customer.phoneNumber, bg="white", fg="black", anchor="w", width=50)
+        userPhoneLabel.grid(row=1, column=1, pady=15, sticky="w")
 
         userDOBLabel = tk.Label(infoBox,text=self.customer.dob, bg="white", fg="black", anchor="w", width=15)
         userDOBLabel.grid(row=2, column=1, pady=15, sticky="w")
