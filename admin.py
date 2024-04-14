@@ -3,7 +3,30 @@ from tkinter import ttk
 from page import Page
 
 class Admin(Page):
+    """
+    This class represents the administrative page.
+    :author: Gregory Calderon
+    :version: 1.0
+
+    Attributes:
+        parent: The parent widget to which the administrative page belongs.
+        database: The database object containing customer and reservation information.
+        controller: The controller object responsible for managing page navigation.
+
+    Methods:
+        __init__(parent, database, controller): Initializes the Admin object.
+        displayData(): Displays customer and reservation data in the spreadsheet.
+        reset(): Resets the administrative page.
+    """
     def __init__(self,parent, database, controller):
+        """
+        Initializes the Admin object.
+
+        Args:
+            parent: The parent widget to which the administrative page belongs.
+            database: The database object containing customer and reservation information.
+            controller: The controller object responsible for managing page navigation.
+        """
         super().__init__(parent,controller)
         self.controller = controller
         self.database = database 
@@ -15,6 +38,9 @@ class Admin(Page):
         self.spreadsheetFrame.pack(expand=True, fill="both")
          
         def displayData():
+            """
+            Displays customer and reservation data in the spreadsheet.
+            """
             #check if data already displayed
             if self.spreadsheet.get_children():
                 return
@@ -60,6 +86,9 @@ class Admin(Page):
     
     #reset fuction to be caught by the header close button
     def reset(self):
+        """
+        Resets the administrative page.
+        """
         #clear spreadsheet
         for item in self.spreadsheet.get_children():
             self.spreadsheet.delete(item)
