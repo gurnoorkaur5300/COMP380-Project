@@ -3,10 +3,36 @@ from tkinter import messagebox
 import hashlib
 import re
 from customer import Customer
-import uuid
 
 class Create(tk.Toplevel):
+    """
+    This class represents the window for creating a new user account.
+    :author: Gregory Calderon and Martin Gallegos Cordero 
+
+    Attributes:
+        controller: The controller object responsible for managing page navigation.
+        database: The database object containing user information.
+        master: The master widget under which this window is placed.
+
+    Methods:
+        passwordMatch(): Verifies if Password and Confirm Password match.
+        getData(): Retrieves data from entry fields for creating a new user account.
+        validateName(firstN, lastN): Validates the user's first and last name.
+        validateEmail(email): Validates the user's email address.
+        validatePassword(passwrd): Validates the user's password.
+        validateDOB(dob): Validates the user's date of birth.
+        validatePhoneNumber(phone): Validates the user's phone number.
+        closeCreate(): Closes the create account window.
+    """
     def __init__(self,controller, database, master=None):
+        """
+        Initializes the Create window.
+
+        Args:
+            controller: The controller object responsible for managing page navigation.
+            database: The database object containing user information.
+            master: The master widget under which this window is placed.
+        """
         super().__init__(master)
         self.controller= controller
         self.database = database 
@@ -92,6 +118,12 @@ class Create(tk.Toplevel):
 
       #Create function that veryfies if Password and Confirm Password match
     def passwordMatch(self):
+        """
+        Checks if the entered passwords match.
+
+        Returns:
+        bool: True if passwords match, False otherwise.
+        """
         passWord = self.userPassword.get()
         passWordConfirma = self.userPasswordConfirm.get()
         if passWord != passWordConfirma:
@@ -101,7 +133,12 @@ class Create(tk.Toplevel):
             
 
     def getData(self):
-        
+        """
+        Retrieves data from entry fields for creating a new user account.
+
+        Returns:
+        bool: True if the data is successfully retrieved, False otherwise.
+        """
         firstName = self.userName.get()
         lastName = self.userLastName.get()
         dob = self.userDOB.get() #00/00/0000
@@ -132,12 +169,31 @@ class Create(tk.Toplevel):
         
 
     def validateName(self, firstN, lastN):
+        """
+        Validates the user's first and last name.
+
+        Args:
+            firstN (str): The user's first name.
+            lastN (str): The user's last name.
+
+        Returns:
+            bool: True if both first and last names are provided, False otherwise.
+        """
         if not firstN.strip() or not lastN.strip():
             messagebox.showerror("Error", "Please enter both a first and last name")
             return False
         return True
 
     def validateEmail(self, email):
+        """
+        Validates the user's email address.
+
+        Args:
+            email (str): The user's email address.
+
+        Returns:
+            bool: True if the email address is valid, False otherwise.
+        """
         pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         if not re.match(pattern, email):
             messagebox.showerror("Error", "Please enter a valid email address")
@@ -145,6 +201,15 @@ class Create(tk.Toplevel):
         return True
 
     def validatePassword(self, passwrd):
+        """
+        Validates the user's password.
+
+        Args:
+            passwrd (str): The user's password.
+
+        Returns:
+            bool: True if the password meets the requirements, False otherwise.
+        """
         if len(passwrd) < 8:
             messagebox.showerror("Error", "Password must be at least 8 characters long")
             return False
@@ -159,6 +224,15 @@ class Create(tk.Toplevel):
         return True
 
     def validateDOB(self, dob):
+        """
+        Validates the user's date of birth.
+
+        Args:
+            dob (str): The user's date of birth.
+
+        Returns:
+            bool: True if the date of birth has the correct format, False otherwise.
+        """
         format = r'^\d{2}-\d{2}-\d{4}$'
         if not re.match(format,dob):
             messagebox.showerror("Error", "Date of birth should have the format dd-mm-yyyy")
@@ -166,6 +240,15 @@ class Create(tk.Toplevel):
         return True
         
     def validatePhoneNumber(self, phone):
+        """
+        Validates the user's phone number.
+
+        Args:
+            phone (str): The user's phone number.
+
+        Returns:
+            bool: True if the phone number has the correct format, False otherwise.
+        """
         format = r'^\d{3}-\d{3}-\d{4}'
         if not re.match(format, phone):
             messagebox.showerror("Error", "Phone number should have the format ###-###-####")  
@@ -173,8 +256,8 @@ class Create(tk.Toplevel):
         return True
 
     #function that displays success message
-    def showSuccessMessage(self, title, message):
-        messagebox.showerror(title, message)    
+    # def showSuccessMessage(self, title, message):
+    #     messagebox.showerror(title, message)    
 
     #create function to cover password
     def handlePasswordFocusIn(self,event):
