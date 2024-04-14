@@ -1,7 +1,8 @@
 import tkinter as tk
 from page import Page
 from create import Create
-
+from tkinter import messagebox
+import hashlib
 
 class Login(Page):
    def __init__(self,parent, database, controller):
@@ -11,9 +12,6 @@ class Login(Page):
 
       #create fields
       self.userEmail = tk.Entry(self, width=35, font =("Arial", 24), bg="white",fg="black", insertbackground="black", insertwidth=4)
-
-      self.isAdminVar = tk.IntVar()
-      self.isUserVar = tk.IntVar()
 
       self.userPassword = tk.Entry(self, width=35, font =("Arial", 24), bg="white",fg="black", insertbackground="black", insertwidth=4)
       self.userEmail.insert(0, "Enter username")
@@ -53,8 +51,9 @@ class Login(Page):
       self.isUser=True
 
       #check box attributes 
+
       self.isAdminVar = tk.IntVar()
-      self.isUserVar = tk.IntVar()
+      self.isUserVar = tk.IntVar(value =1)
       self.isAdminCheck = tk.Checkbutton(checkBoxFrame, text="Admin",variable=self.isAdminVar, command=checkBox)
       self.isUserCheck = tk.Checkbutton(checkBoxFrame, text="User", variable=self.isUserVar, command=checkBox)
       self.isAdminCheck.grid(row=0, column=0)
@@ -65,7 +64,25 @@ class Login(Page):
       self.userPassword.pack(side=tk.TOP, pady=(10, 50))
 
       def showCreate(self):
-        Create(self, self.database) 
+        Create(self, database) 
+
+      def validateUserLogin(self):
+         email = self.userEmail.get()
+         # print(email)
+         passWord = self.userPassword.get()
+         # print(passWord)
+         hashPasswrd = hashlib.sha256(passWord.encode()).hexdigest()
+         # print(hashPasswrd)
+         
+         if database.isVerified(email, hashPasswrd):
+            showUser()
+         else:
+            # Assuming you want to bind the clearEntries function to the userEmail and userPassword entry fields
+            self.resetTxt()
+
+            messagebox.showerror("Error", "Incorrect Password")
+            
+
       #dummy submit buttun function to view admin page
       def showUser():
          if self.isUser:
@@ -81,10 +98,10 @@ class Login(Page):
       buttonsFrame = tk.Frame(self)
      
       #create buttons
-      submitButton = tk.Button(buttonsFrame, text = "SUBMIT", borderwidth = 10, font = ("Arial", 32), bg = "white", fg = "black", command=showUser)
+      submitButton = tk.Button(buttonsFrame, text = "SUBMIT", borderwidth = 10, font = ("Arial", 32), bg = "white", activeforeground="blue", command= lambda: validateUserLogin(self))
       submitButton.pack(side=tk.LEFT, padx = 135)
 
-      createButton = tk.Button(buttonsFrame, text = "CREATE", borderwidth = 10, font = ("Arial", 32), bg = "white", fg = "black", command = lambda:showCreate(self))
+      createButton = tk.Button(buttonsFrame, text = "CREATE", borderwidth = 10, font = ("Arial", 32), bg = "white", fg = "black", activeforeground="blue", command = lambda:showCreate(self))
       createButton.pack(side=tk.RIGHT, padx = (0, 135))
 
       #display frames on page 
@@ -101,18 +118,18 @@ class Login(Page):
       self.userEmail.insert(0, "Enter username ")
 
       self.userPassword.insert(0, "Enter password")
-      global isLoggedIn, isAdmi
+      global isLoggedIn, isAdmin
       self.controller.isLoggedIn = False
       self.controller.isAdmin = False
          
    
       #create function that clears entry boxes when default text is present ONLY
    def clearEntries(self,event):
-      entryBox = event.widget
-      defaultText = entryBox.defaultText
-      currentText = entryBox.get()
-      if currentText == defaultText:
-         entryBox.delete(0, tk.END) 
+        entryBox = event.widget
+        defaultText = entryBox.defaultText
+        currentText = entryBox.get()
+        if currentText == defaultText:
+            entryBox.delete(0, tk.END)
 
    #create function to cover password
    def handlePasswordFocusIn(self,event):
@@ -128,7 +145,10 @@ class Login(Page):
          self.userPassword.config(show="")      
 
    def handleUserEmailFocusOut(self,event):
-        email = self.userEmail.get()
-        if not email:
-            self.userEmail.insert(0, self.userEmail.defaultText)
-            self.userEmail.config(show="")
+      email = self.userEmail.get()
+      if not email:
+         self.userEmail.insert(0, self.userEmail.defaultText)
+         self.userEmail.config(show="")
+
+   def resetTxt(self):
+      self.clearEntries()

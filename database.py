@@ -3,6 +3,7 @@ from tkinter import messagebox
 import sqlite3
 from customer import Customer
 
+
 class Database:
     def __init__(self, dbFile="defaultDatabase.db"):
         self.conn =sqlite3.connect(dbFile)
@@ -11,7 +12,7 @@ class Database:
     def buildTable(self):
         cursor = self.conn.cursor() #create a cursor object to traverse records
         cursor.execute('''CREATE TABLE IF NOT EXISTS customers (
-                       customerId INTEGER PRIMARY KEY, 
+                       customerId INTEGER PRIMARY KEY AUTOINCREMENT, 
                        name TEXT,
                        email TEXT UNIQUE,
                        dob TEXT, 
@@ -63,13 +64,16 @@ class Database:
             messagebox.showerror("Error", "Email already in use. Please try a different email.")
 
 
-
-    
     def getEmail(self, email):
         cursor = self.conn.cursor()
         cursor.execute('''SELECT * FROM customers WHERE email=?''', (email,))
         customer = cursor.fetchone()
-        return customer
+
+        if customer is not None:
+            foundCustomer = Customer(customer[1],customer[2],customer[3],customer[4], customer[5])
+            return foundCustomer
+        else:
+            return None 
     
 
     def getReservations(self, customerId):
@@ -86,3 +90,18 @@ class Database:
             messagebox.showinfo("Success", "Reservation cancelled successfully")
         except sqlite3.Error as e:
             messagebox.showerror("Error", f"Failed to cancel reservation: {e}")
+
+    def isVerified(self, checkForEmail, checkForHashPasswrd):
+        customer = self.getEmail(checkForEmail)
+
+        if customer is None:
+            #print("not email match")
+            return False
+        
+        if str(customer.hashPass) == str(checkForHashPasswrd):
+            #print("hash match")
+            return True 
+        else:
+            #print("not hash match" + "" + str(customer.hashPass)+ "" + str(checkForHashPasswrd))
+            return False
+    

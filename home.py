@@ -5,7 +5,7 @@ from page import Page
 
 LOCATIONS = ["New York", "Los Angeles", "Chicago", "Houston", "Miami"]
 
-# Calendar dialog that lets users pick a date.
+
 class CalendarDialog(simpledialog.Dialog):
     def body(self, master):
         self.calendar = Calendar(master, selectmode='day')
@@ -37,6 +37,7 @@ class Home(Page):
         location_dropdown.set("Select Location")
 
         tk.Label(search_frame, text="Check-in:").pack(side=tk.LEFT, padx=5)
+
         self.checkin_var = tk.StringVar()
         self.checkin_entry = tk.Entry(search_frame, textvariable=self.checkin_var, width=15)
         self.checkin_entry.pack(side=tk.LEFT, padx=5)
@@ -65,4 +66,3 @@ class Home(Page):
         checkout_date = self.checkout_var.get()
         location = self.location_var.get()
         print(f"Searching for rooms in {location} from {checkin_date} to {checkout_date}")
-

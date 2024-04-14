@@ -6,8 +6,8 @@ class Page(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
         self.controller = controller
-    
+        
     # switch page/ frame
-    def show(self):
-        self.lift()
-    
+    # def show(self):
+    #     self.lift()
+        
