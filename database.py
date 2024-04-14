@@ -117,6 +117,27 @@ class Database:
             messagebox.showerror("Error", "Email already in use. Please try a different email.")
 
 
+    def getById(self, id):
+        """
+        Retrieves customer information based on their customerId.
+
+        Args:
+            customerId (str): The customerId of the customer.
+
+        Returns:
+            Customer: A Customer object containing the customer's information, or None if not found.
+        """
+        cursor = self.conn.cursor()
+        cursor.execute('''SELECT * FROM customers WHERE customerId=?''', (id,))
+        customer = cursor.fetchone()
+
+        if customer is not None:
+            foundCustomer = Customer(customer[1],customer[2],customer[3],customer[4], customer[5])
+            return foundCustomer
+        else:
+            return None 
+        
+
     def getEmail(self, email):
         """
         Retrieves customer information based on their email address.
