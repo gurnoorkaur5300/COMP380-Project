@@ -100,6 +100,12 @@ class App(tk.Tk):
         Args:
             pageName (str): The name of the page to be displayed.
         """
+        if pageName == "Logout":
+            pageName = "Home"
+            self.isLoggedIn = False
+            self.isAdmin = False
+            self.accountPage.clearAccountPage()
+
         # Show specific pages
         if pageName in ["Home","Policies"]:
             self.showNavbar()

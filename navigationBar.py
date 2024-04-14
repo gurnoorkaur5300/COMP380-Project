@@ -58,12 +58,12 @@ class NavigationBar(tk.Frame):
         self.navbarBtn.grid(row=0, column=0, padx=10, pady=(10,10), sticky="nw")
 
         # Setting Navbar frame
-        self.navRoot = tk.Frame(parent, bg="beige", height=350, width=300)
+        self.navRoot = tk.Frame(parent, bg="beige", height=400, width=300)
 
         # Set y coord of navbar widgets
         y = 80
         # Options in navbar
-        options = ["Home", "Account", "Policies"]
+        options = ["Home", "Account", "Policies", "Logout"]
         
         #for each option in the navbar, when an option is selected, switch to that page
         for option in options:
