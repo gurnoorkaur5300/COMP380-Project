@@ -1,6 +1,5 @@
 import tkinter as tk 
 from tkinter import ttk 
-import sqlite3
 from database import Database
 from page import Page
 from navigationBar import NavigationBar
@@ -9,17 +8,40 @@ from policies import Policies
 from account import Account
 from pageHeader import PageHeader
 from login import Login
-# from customer import Customer
-from admin import Admin
-from create import Create
-        # from room import Room
-        # from view import View
-        # from cancel import Cancel       
+from admin import Admin      
 
 
 #central controller class 
 class App(tk.Tk):
+    """
+    This class represents the central controller of the application.
+    :Gregory Calderon
+    :version 1.0
+
+    Attributes:
+        db (Database): An instance of the Database class.
+        isLoggedIn (bool): Flag indicating whether a user is logged in or not. Defaults to False.
+        isAdmin (bool): Flag indicating whether the logged-in user is an admin or not. Defaults to False.
+        homePage (Home): Instance of the Home page.
+        policiesPage (Policies): Instance of the Policies page.
+        accountPage (Account): Instance of the Account page.
+        adminPage (Admin): Instance of the Admin page.
+        loginPage (Login): Instance of the Login page.
+        frames (dict): Dictionary containing instances of all pages.
+
+    Methods:
+        showFrame(pageName): Displays the specified page.
+        showNavbar(): Displays the main navigation bar.
+        createFooter(): Creates the footer label for the application.
+    """
     def __init__(self, *args, **kwargs):
+        """
+        Initializes the App class.
+
+        Args:
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+        """
         tk.Tk.__init__(self, *args, **kwargs)
 
         self.db = Database()
@@ -72,6 +94,12 @@ class App(tk.Tk):
 
     #change pages
     def showFrame(self, pageName):
+        """
+        Displays the specified page.
+
+        Args:
+            pageName (str): The name of the page to be displayed.
+        """
         # Show specific pages
         if pageName in ["Home","Policies"]:
             self.showNavbar()
@@ -98,11 +126,13 @@ class App(tk.Tk):
             
     #display main navbar
     def showNavbar(self):
+        """Displays the main navigation bar."""
         self.navbar = NavigationBar(self, self, initialState=False)
         self.navbar.grid(row=0, column=0, sticky="w")
         self.update_idletasks()
 
     def createFooter(self):
+        """Creates the footer label for the application."""
         footer = tk.Label(self, text="© 2024 Titan Reservations, Inc. All rights reserved.", bg="light grey", fg="black")
         footer.grid(row=2, column=0, sticky="ew")  # Ensure it stretches across the bottom
         self.grid_rowconfigure(2, weight=0)  # Make sure the footer doesn't expand
