@@ -188,9 +188,12 @@ class Create(tk.Toplevel):
 
         newCustomer = Customer(name, email, dob, phone, hashPasswrd)
 
-        self.database.insertCustomer(newCustomer)
-            
-        self.closeCreate()
+
+    ##turn into If else statement to clear the email if the email already exists
+        if self.database.insertCustomer(newCustomer):
+            self.closeCreate()
+        else: 
+            self.resetToDefault(self.userEmail, self.defaultMessages[3])   
         return True
         
 
