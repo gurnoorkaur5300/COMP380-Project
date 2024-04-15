@@ -38,7 +38,7 @@ class EntryBoxUtility:
             event.widget.delete(0, tk.END)
             event.widget.config(show="*")
 
-    @staticmethod
+    # @staticmethod
     def handleEntryFocusOut(event):
         """
         Handles the focus out event for entry boxes.

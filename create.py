@@ -89,31 +89,52 @@ class Create(tk.Toplevel):
         submitButton = tk.Button(self, text = "SUBMIT", borderwidth=10, font=("Arial", 22), bg = "white", fg ="black",  activeforeground="blue", command= self.getData)
         submitButton.pack(padx = 200, side = "left")
 
-        #bid clearEntries method to the FOCUSIN for all widgest that need to be cleared
-        self.userName.bind("<FocusIn>", EntryBoxUtility.clearEntries)
-        self.userLastName.bind("<FocusIn>", EntryBoxUtility.clearEntries)
-        self.userDOB.bind("<FocusIn>",EntryBoxUtility.clearEntries)
-        self.userEmail.bind("<FocusIn>", EntryBoxUtility.clearEntries)
-        self.userPhone.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+        # #bid clearEntries method to the FOCUSIN for all widgest that need to be cleared
+        # self.userName.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+        # self.userLastName.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+        # self.userDOB.bind("<FocusIn>",EntryBoxUtility.clearEntries)
+        # self.userEmail.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+        # self.userPhone.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+        # self.userPassword.bind("<FocusIn>", EntryBoxUtility.handlePasswordFocusIn)
+        # self.userPassword.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+        # self.userPasswordConfirm.bind("<FocusIn>", EntryBoxUtility.handlePasswordFocusIn)
+        # self.userPasswordConfirm.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+        # self.userName.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+        # self.userLastName.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+        # self.userDOB.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+        # self.userEmail.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+        # self.userPhone.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+        # Create a list of widgets that need to be bound
+        # widgets = [self.userName, self.userLastName, self.userDOB, self.userEmail, self.userPhone, self.userPassword, self.userPasswordConfirm]
+
+        # # Bind the appropriate functions to the FOCUSIN and FOCUSOUT events for each widget
+        # for widget in widgets:
+        #     widget.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+        #     widget.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+
+        self.defaultMessages = ["Enter first name", "Enter last name","Enter DOB", "Enter email", "Enter Phone", "Enter password", "Confirm password"]
+
+        widgets = [self.userName, self.userLastName, self.userDOB, self.userEmail, self.userPhone, self.userPassword, self.userPasswordConfirm]
+
+        for widget in widgets:
+            widget.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+            widget.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+
+
+        # Special handling for password-related widgets
         self.userPassword.bind("<FocusIn>", EntryBoxUtility.handlePasswordFocusIn)
-        self.userPassword.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
         self.userPasswordConfirm.bind("<FocusIn>", EntryBoxUtility.handlePasswordFocusIn)
-        self.userPasswordConfirm.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
-        self.userName.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
-        self.userLastName.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
-        self.userDOB.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
-        self.userEmail.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
-        self.userPhone.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+
 
         self.update_idletasks()
 
-    #create function that clears entry boxes when default text is present ONLY
-    def clearEntries(self,event):
-        entryBox = event.widget
-        defaultText = entryBox.defaultText
-        currentText = entryBox.get()
-        if currentText == defaultText:
-            entryBox.delete(0, tk.END)
+    # #create function that clears entry boxes when default text is present ONLY
+    # def clearEntries(self,event):
+    #     entryBox = event.widget
+    #     defaultText = entryBox.defaultText
+    #     currentText = entryBox.get()
+    #     if currentText == defaultText:
+    #         entryBox.delete(0, tk.END)
 
       #Create function that veryfies if Password and Confirm Password match
     def passwordMatch(self):
@@ -127,6 +148,8 @@ class Create(tk.Toplevel):
         passWordConfirma = self.userPasswordConfirm.get()
         if passWord != passWordConfirma:
             self.showSuccessMessage("Error", "Passwords do not match, Press OK and try again")
+            self.userPassword.config(show= self.defaultMessages[5])
+            self.userPasswordConfirm.config(show= self.defaultMessages[6])
             return False
         return True
             
@@ -142,19 +165,22 @@ class Create(tk.Toplevel):
         lastName = self.userLastName.get()
         dob = self.userDOB.get() #00/00/0000
         phone = self.userPhone.get() #000-000-0000
-        email = self.userEmail.get()
+        email = self.userEmail.get().lower()
         passwrd = self.userPassword.get()
 
         if not self.validateName(firstName, lastName):
             return False
         if not self.validateEmail(email):
-            EntryBoxUtility.handleEntryFocusOut(self.userEmail)
+            #self.resetToDefault(self.userEmail, self.defaultMessages[3])
             return False
         if not self.validatePassword(passwrd):
+            self.resetToDefault(self.userPassword, self.defaultMessages[5])
+            self.resetToDefault(self.userPasswordConfirm, self.defaultMessages[6])
             return False
         if not self.validateDOB(dob):
             return False
         if not self.validatePhoneNumber(phone):
+            self.resetToDefault(self.userPhone, self.defaultMessages[4])
             return False
 
         name = firstName + " " + lastName
@@ -197,6 +223,7 @@ class Create(tk.Toplevel):
         pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         if not re.match(pattern, email):
             messagebox.showerror("Error", "Please enter a valid email address")
+            self.resetToDefault(self.userEmail, self.defaultMessages[3])
             return False
         return True
 
@@ -236,9 +263,19 @@ class Create(tk.Toplevel):
         format = r'^\d{2}-\d{2}-\d{4}$'
         if not re.match(format,dob):
             messagebox.showerror("Error", "Date of birth should have the format dd-mm-yyyy")
+            self.resetToDefault(self.userDOB, self.defaultMessages[2])
             return False
         return True
-        
+
+    def resetToDefault(self,widget, defaultMessage):
+        widget.delete(0, tk.END)  
+        widget.insert(0, defaultMessage)
+        widget.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+        self.focus_set()
+
+
+    
+    
     def validatePhoneNumber(self, phone):
         """
         Validates the user's phone number.
