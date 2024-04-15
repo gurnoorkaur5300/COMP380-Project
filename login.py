@@ -99,7 +99,7 @@ class Login(Page):
         Validates the user's login credentials.
         """
 
-         email = self.userEmail.get()
+         email = self.userEmail.get().lower()
          # print(email)
          passWord = self.userPassword.get()
          # print(passWord)
