@@ -1,7 +1,9 @@
 import tkinter as tk
-from tkinter import ttk, simpledialog, font
+from tkinter import ttk, simpledialog, font, messagebox
 from tkcalendar import Calendar
 from page import Page
+from hotels import Hotels
+
 
 LOCATIONS = ["New York", "Los Angeles", "Chicago", "Houston", "Miami"]
 
@@ -60,9 +62,27 @@ class Home(Page):
             elif date_type == 'checkout':
                 self.checkout_var.set(formatted_date)
 
+    # Inside the Home class
+    def display_results(self, results):
+        result_window = tk.Toplevel(self)
+        result_window.title("Search Results")
+        tree = ttk.Treeview(result_window, columns=("Name", "Price", "Rating"), show="headings")
+        tree.heading("Name", text="Name")
+        tree.heading("Price", text="Price")
+        tree.heading("Rating", text="Rating")
+
+        for hotel in results.get('hotels', []):
+            tree.insert("", "end", values=(hotel["name"], hotel["price"], hotel["rating"]))
+
+        tree.pack(expand=True, fill="both")
+
     def search(self):
-        # To be done - API integration.
+        location = self.location_var.get()
         checkin_date = self.checkin_var.get()
         checkout_date = self.checkout_var.get()
-        location = self.location_var.get()
-        print(f"Searching for rooms in {location} from {checkin_date} to {checkout_date}")
+        if location and checkin_date and checkout_date:
+            result = Hotels.fetch_hotels(location, checkin_date, checkout_date)
+            if "error" in result:
+                messagebox.showerror("Error", result["error"])
+            else:
+                self.display_results(result)
