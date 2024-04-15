@@ -1,25 +1,57 @@
 import requests
-import http.client
-import json
 
 class Hotels:
-    
-    def fetch_hotels(location, checkin, checkout):
-        conn = http.client.HTTPSConnection("hotels-com-free.p.rapidapi.com")
+    API_KEY = "a591c48a33mshfb582683b7ba583p1da719jsnbfb2f45d508a"
+    API_HOST = "hotels-com-free.p.rapidapi.com"
+    BASE_URL = "https://hotels-com-free.p.rapidapi.com"
+
+    @staticmethod
+    def get_destination_id(city_name):
+        """ Fetches the destination ID for a given city name using the suggest endpoint """
+        url = f"{Hotels.BASE_URL}/suggest/v1.7/json"
         headers = {
-            'X-RapidAPI-Key': "your_api_key",
-            'X-RapidAPI-Host': "hotels-com-free.p.rapidapi.com"
+            'X-RapidAPI-Key': Hotels.API_KEY,
+            'X-RapidAPI-Host': Hotels.API_HOST
         }
-
-        query = f"/path_to_search_endpoint?location={location}&checkin={checkin}&checkout={checkout}&locale=en_US"
-        conn.request("GET", query, headers=headers)
-
-        res = conn.getresponse()
-        data = res.read()
-        conn.close()
-
+        querystring = {"query": city_name, "locale": "en_US"}
+        response = requests.get(url, headers=headers, params=querystring)
+        data = response.json()
         try:
-            return json.loads(data.decode("utf-8"))
-        except json.JSONDecodeError:
-            return {"error": "Failed to decode response"}
+            # Extracting the first suggested destination ID
+            return data['suggestions'][0]['entities'][0]['destinationId']
+        except (IndexError, KeyError):
+            return None
 
+    @staticmethod
+    def fetch_hotels(destination_id, checkin, checkout):
+        url = f"{Hotels.BASE_URL}/srle/listing/v1/brands/hotels.com"
+        headers = {
+            'X-RapidAPI-Key': Hotels.API_KEY,
+            'X-RapidAPI-Host': Hotels.API_HOST
+        }
+        querystring = {
+            "destinationId": destination_id,
+            "checkIn": checkin,
+            "checkOut": checkout,
+            "rooms": "1",
+            "locale": "en_US",
+            "currency": "USD"
+        }
+        response = requests.get(url, headers=headers, params=querystring)
+        return response.json()
+
+    @staticmethod
+    def fetch_hotel_details(property_id):
+        url = f"{Hotels.BASE_URL}/pde/property-details/v1/hotels.com/{property_id}"
+        headers = {
+            'X-RapidAPI-Key': Hotels.API_KEY,
+            'X-RapidAPI-Host': Hotels.API_HOST
+        }
+        querystring = {
+            "rooms": "1",
+            "locale": "en_US",
+            "currency": "USD",
+            "include": "neighborhood"
+        }
+        response = requests.get(url, headers=headers, params=querystring)
+        return response.json()
