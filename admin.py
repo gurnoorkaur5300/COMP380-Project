@@ -31,6 +31,7 @@ class Admin(Page):
         super().__init__(parent,controller)
         self.controller = controller
         self.database = database 
+        self.prev_hovered_item = None
         
         #create frame 
         self.spreadsheetFrame=ttk.Frame(self)
@@ -78,29 +79,77 @@ class Admin(Page):
             for reservation in reservations:
                 self.spreadsheet.insert("", "end", values=reservation)
 
-            self.spreadsheet.bind("<<TreeviewSelect>>", self.on_select)
+            self.spreadsheet.bind("<Motion>", lambda event: self.onHover)
+            self.spreadsheet.bind("<<TreeviewSelect>>", self.onSelect)
+            # Bind leave event to clear hover effect
+            self.spreadsheet.bind("<Leave>", lambda event: self.clearHover())
+
+            self.schedHoverCheck()
 
          #display spreadsheet .pack method 
         self.spreadsheet.pack(expand=True, fill="both")
-
+        displayData()
         # display spreadsheet button
         adminDisplayButton = tkmacosx.Button(self, text="Fetch Data", command=displayData)
         adminDisplayButton.pack()
 
-    def on_select(self, event):
-        # Get the selected items
+
+    def onSelect(self, event):
+        
         items = self.spreadsheet.selection()
-        if items:  # Check if any item is selected
-            item = items[0]  # Get the first selected item
-            # Get the values of the selected item
+        if items:  
+            item = items[0]  
             values = self.spreadsheet.item(item, "values")
-            if values:  # Ensure values exist
+            if values:  
                 customerId = values[0]  
-                # write a function in the database
                 
                 self.showAccountPage(customerId)
 
 
+
+    def clearHover(self):
+        """
+        Clear the hover effect by resetting the background color of all items.
+        """
+        # Remove the 'hover' tag from all items
+        for item in self.spreadsheet.get_children():
+            self.spreadsheet.item(item, tags=())
+
+
+
+
+    def schedHoverCheck(self):
+        """
+        Schedules the onHover method to be   called repeatedly.
+        """
+        self.onHover()
+        self.after(100, self.schedHoverCheck)
+
+    def onHover(self):
+        """
+        Highlight the row under the mouse cursor.
+        """
+    # Get the item ID under the mouse cursor
+        item = self.spreadsheet.identify_row(self.spreadsheet.winfo_pointery() - self.spreadsheet.winfo_rooty())
+
+        if item:
+        # Check if there was a previously hovered item
+            if hasattr(self, 'prev_hovered_item') and self.prev_hovered_item != item:
+            # Clear the highlight effect of the previously hovered item
+                self.clearHover()
+
+        # Highlight the current hovered row
+            self.spreadsheet.item(item, tags=('hover',))
+            self.spreadsheet.tag_configure('hover', background='lightblue')
+
+        # Remember the current hovered row
+            self.prev_hovered_item = item
+        else:
+        # Clear the highlight if the mouse is not over any item
+            self.clearHover()
+
+
+    
     def showAccountPage(self, customerId):
         customer = self.database.getById(customerId)
         if customer:
