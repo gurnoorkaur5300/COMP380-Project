@@ -3,6 +3,7 @@ from tkinter import messagebox
 import hashlib
 import re
 from customer import Customer
+from entryBoxUtility import EntryBoxUtility
 
 class Create(tk.Toplevel):
     """
@@ -89,22 +90,20 @@ class Create(tk.Toplevel):
         submitButton.pack(padx = 200, side = "left")
 
         #bid clearEntries method to the FOCUSIN for all widgest that need to be cleared
-        self.userName.bind("<FocusIn>", self.clearEntries)
-        self.userLastName.bind("<FocusIn>", self.clearEntries)
-        self.userDOB.bind("<FocusIn>",self.clearEntries)
-        self.userEmail.bind("<FocusIn>", self.clearEntries)
-        self.userPhone.bind("<FocusIn>", self.clearEntries)
-        self.userPassword.bind("<FocusIn>", self.handlePasswordFocusIn)
-        self.userPassword.bind("<FocusOut>", self.handlePasswordFocusOut)
-        self.userPasswordConfirm.bind("<FocusIn>", self.handleConfirmPasswordFocusIn)
-        self.userPasswordConfirm.bind("<FocusOut>", self.handleConfirmPasswordFocusOut)
-
-    
-        self.userName.bind("<FocusOut>", self.handleNameFocusOut)
-        self.userLastName.bind("<FocusOut>", self.handleLastNameFocusOut)
-        self.userDOB.bind("<FocusOut>", self.handleDOBFocusOut)
-        self.userEmail.bind("<FocusOut>", self.handleUserEmailFocusOut)
-        self.userPhone.bind("<FocusOut>", self.handleuserPhoneFocusOut)
+        self.userName.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+        self.userLastName.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+        self.userDOB.bind("<FocusIn>",EntryBoxUtility.clearEntries)
+        self.userEmail.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+        self.userPhone.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+        self.userPassword.bind("<FocusIn>", EntryBoxUtility.handlePasswordFocusIn)
+        self.userPassword.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+        self.userPasswordConfirm.bind("<FocusIn>", EntryBoxUtility.handlePasswordFocusIn)
+        self.userPasswordConfirm.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+        self.userName.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+        self.userLastName.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+        self.userDOB.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+        self.userEmail.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+        self.userPhone.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
 
         self.update_idletasks()
 
@@ -127,7 +126,7 @@ class Create(tk.Toplevel):
         passWord = self.userPassword.get()
         passWordConfirma = self.userPasswordConfirm.get()
         if passWord != passWordConfirma:
-            self.showSuccessMessage("Error", "Passwords do not match, Press OK and try again") 
+            self.showSuccessMessage("Error", "Passwords do not match, Press OK and try again")
             return False
         return True
             
@@ -149,6 +148,7 @@ class Create(tk.Toplevel):
         if not self.validateName(firstName, lastName):
             return False
         if not self.validateEmail(email):
+            EntryBoxUtility.handleEntryFocusOut(self.userEmail)
             return False
         if not self.validatePassword(passwrd):
             return False
@@ -256,67 +256,9 @@ class Create(tk.Toplevel):
         return True
 
     #function that displays success message
-    # def showSuccessMessage(self, title, message):
-    #     messagebox.showerror(title, message)    
-
-    #create function to cover password
-    def handlePasswordFocusIn(self,event):
-        password = self.userPassword.get()
-        if password == self.userPassword.defaultText:
-            self.userPassword.delete(0, tk.END)
-            self.userPassword.config(show="*")
-
-    def handlePasswordFocusOut(self,event):
-        password = self.userPassword.get()
-        if not password:
-            self.userPassword.insert(0, self.userPassword.defaultText)
-            self.userPassword.config(show="")
-
-    def handleConfirmPasswordFocusIn(self, event):
-        password = self.userPasswordConfirm.get()
-        if password == self.userPasswordConfirm.defaultText:
-            self.userPasswordConfirm.delete(0, tk.END)
-            self.userPasswordConfirm.config(show="*")
-
-    def handleConfirmPasswordFocusOut(self,event):
-        password = self.userPasswordConfirm.get()
-        if not password:
-            self.userPasswordConfirm.insert(0, self.userPasswordConfirm.defaultText)
-            self.userPasswordConfirm.config(show="")
-    
-
-    def handleNameFocusOut(self,event):
-        name = self.userName.get()
-        if not name:
-            self.userName.insert(0, self.userName.defaultText)
-            self.userName.config(show="")
-
-    def handleLastNameFocusOut(self,event):
-        lastName = self.userLastName.get()
-        if not lastName:
-            self.userLastName.insert(0, self.userLastName.defaultText)
-            self.userLastName.config(show="")        
-
-    def handleDOBFocusOut(self,event):
-        dob = self.userDOB.get()
-        if not dob:
-            self.userDOB.insert(0, self.userDOB.defaultText)
-            self.userDOB.config(show="")
-
-    def handleUserEmailFocusOut(self,event):
-        email = self.userEmail.get()
-        if not email:
-            self.userEmail.insert(0, self.userDOB.defaultText)
-            self.userEmail.config(show="")    
-
-    def handleuserPhoneFocusOut(self,event):
-        phone = self.userPhone.get()
-        if not phone:
-            self.userPhone.insert(0, self.userPhone.defaultText)
-            self.userPhone.config(show="")            
-    
-        
-            self.userPasswordConfirm.config(show="")       
+    def showSuccessMessage(self, title, message):
+        messagebox.showerror(title, message)    
+     
 
     def closeCreate(self):
         self.destroy() 

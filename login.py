@@ -1,6 +1,7 @@
 import tkinter as tk
 from page import Page
 from create import Create
+from entryBoxUtility import EntryBoxUtility
 from tkinter import messagebox
 import hashlib
 
@@ -35,19 +36,20 @@ class Login(Page):
 
       #create fields
       self.userEmail = tk.Entry(self, width=35, font =("Arial", 24), bg="white",fg="black", insertbackground="black", insertwidth=4)
-
       self.userPassword = tk.Entry(self, width=35, font =("Arial", 24), bg="white",fg="black", insertbackground="black", insertwidth=4)
+      
+      #Creating the pre-defined text for entry boxes
       self.userEmail.insert(0, "Enter username")
       self.userEmail.defaultText = "Enter username"
-
       self.userPassword.insert(0, "Enter password")
       self.userPassword.defaultText = "Enter password"
-
-      self.userEmail.bind("<FocusIn>", self.clearEntries)
-      self.userPassword.bind("<FocusIn>", self.clearEntries)
-      self.userPassword.bind("<FocusIn>", self.handlePasswordFocusIn)
-      self.userPassword.bind("<FocusOut>", self.handlePasswordFocusOut)
-      self.userEmail.bind("<FocusOut>", self.handleUserEmailFocusOut)
+      
+      #Bind the entry boxes
+      self.userEmail.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+      self.userPassword.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+      self.userPassword.bind("<FocusIn>", EntryBoxUtility.handlePasswordFocusIn)
+      self.userPassword.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
+      self.userEmail.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
 
       # Create a new frame to contain the entry widgets
       entryFrame = tk.Frame(self)
@@ -171,32 +173,5 @@ class Login(Page):
       self.isAdmin = False
          
    
-      #create function that clears entry boxes when default text is present ONLY
-   def clearEntries(self,event):
-        entryBox = event.widget
-        defaultText = entryBox.defaultText
-        currentText = entryBox.get()
-        if currentText == defaultText:
-            entryBox.delete(0, tk.END)
-
-   #create function to cover password
-   def handlePasswordFocusIn(self,event):
-      password = self.userPassword.get()
-      if password == self.userPassword.defaultText:
-         self.userPassword.delete(0, tk.END)
-         self.userPassword.config(show="*")
-
-   def handlePasswordFocusOut(self,event):
-      password = self.userPassword.get()
-      if not password:
-         self.userPassword.insert(0, self.userPassword.defaultText)
-         self.userPassword.config(show="")      
-
-   def handleUserEmailFocusOut(self,event):
-      email = self.userEmail.get()
-      if not email:
-         self.userEmail.insert(0, self.userEmail.defaultText)
-         self.userEmail.config(show="")
-
    # def resetTxt(self):
    #    self.clearEntries()
