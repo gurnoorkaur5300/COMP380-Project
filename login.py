@@ -88,10 +88,13 @@ class Login(Page):
       self.userPassword.pack(side=tk.TOP, pady=(10, 50))
 
       def showCreate(self):
-        """
-        Opens the create user page.
-        """
-        Create(self, database) 
+         """
+         Opens the create user page.
+         """
+         if self.isUserVar.get() == 1:
+           Create(self, database)
+         else:
+            messagebox.showerror("ERROR", "Unathorized Action")
 
 
       def validateUserLogin(self):
