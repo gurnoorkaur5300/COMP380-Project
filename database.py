@@ -78,7 +78,7 @@ class Database:
         if count == 0:
             defaultPassword = "default2Pass"
             defaultHashPass = hashlib.sha256(defaultPassword.encode()).hexdigest() 
-            defaultAdmin = ("defAdmin", "defAdmin@example.com", defaultHashPass)
+            defaultAdmin = ("defAdmin", "defadmin@example.com", defaultHashPass)
             cursor.execute("INSERT INTO administrators (adminName, adminEmail, hashPass) VALUES (?,?,?)", (defaultAdmin))
         self.conn.commit()
 
