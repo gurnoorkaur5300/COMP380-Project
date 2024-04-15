@@ -104,8 +104,7 @@ class Admin(Page):
                 customerId = values[0]  
                 
                 self.showAccountPage(customerId)
-
-
+            self.spreadsheet.selection_set()
 
     def clearHover(self):
         """
