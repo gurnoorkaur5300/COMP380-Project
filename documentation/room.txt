@@ -1,0 +1,66 @@
+Help on module room:
+
+NAME
+    room
+
+CLASSES
+    builtins.object
+        Room
+    
+    class Room(builtins.object)
+     |  Room(n_hotelName=None, n_roomNum=None, n_location=None, n_cost=None)
+     |  
+     |  This class represents a customer
+     |  :Gregory Calderon
+     |  :version 1.0
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, n_hotelName=None, n_roomNum=None, n_location=None, n_cost=None)
+     |      Initialize self.  See help(type(self)) for accurate signature.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Static methods defined here:
+     |  
+     |  genRoomNum(n_roomNum)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Readonly properties defined here:
+     |  
+     |  cost
+     |      str: The cost of the room.
+     |  
+     |  hotelName
+     |      str: The name of the hotel the room is in.
+     |  
+     |  location
+     |      str: The number of people that the room is rated to sleep.
+     |  
+     |  roomNum
+     |      str: The room number.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+     |  
+     |  setCost
+     |      str: The cost of the room.
+     |  
+     |  setHotelName
+     |      str: The name of the hotel the room is in.
+     |  
+     |  setLocation
+     |      str: The number of people that the room is rated to sleep.
+     |  
+     |  setRoomNum
+     |      str: The room number.
+
+FILE
+    /Users/gregcalderon/Desktop/380 CompSys/COMP380-Project/room.py
+
+
