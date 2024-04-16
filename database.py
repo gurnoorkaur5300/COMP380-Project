@@ -85,9 +85,6 @@ class Database:
         cursor.execute('''CREATE TABLE IF NOT EXISTS rooms (
                        roomId TEXT PRIMARY KEY,
                        roomNumber INTEGER,
-                       roomType TEXT,
-                       capacity INTEGER,
-                       hotelId TEXT,
                        hotelName TEXT,
                        location TEXT,
                        cost REAL
