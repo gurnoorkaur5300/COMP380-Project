@@ -8,7 +8,7 @@ from policies import Policies
 from account import Account
 from pageHeader import PageHeader
 from login import Login
-from admin import Admin      
+from admin import Admin     
 
 
 #central controller class 
@@ -46,7 +46,6 @@ class App(tk.Tk):
 
         self.db = Database()
 
-        
         
         #minimum window size when app opens
         self.minsize(width=1000, height=600)

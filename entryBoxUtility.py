@@ -25,7 +25,7 @@ class EntryBoxUtility:
         if currentText == defaultText:
             entryBox.delete(0, tk.END)
 
-    @staticmethod
+    #@staticmethod
     def handlePasswordFocusIn(event):
         """
         Handles the focus in event for password entry.
@@ -35,8 +35,8 @@ class EntryBoxUtility:
         """
         password = event.widget.get()
         if password == event.widget.defaultText:
-            event.widget.delete(0, tk.END)
-            event.widget.config(show="*")
+            event.widget.delete(0, tk.END)  # Clear the entry field if default text is present
+        event.widget.config(show="*")   # Show asterisks (*) as user types
 
     # @staticmethod
     def handleEntryFocusOut(event):
@@ -50,6 +50,20 @@ class EntryBoxUtility:
         if not entryInput:
             event.widget.insert(0, event.widget.defaultText)
             event.widget.config(show="")
+    
+    # @staticmethod
+    def handleEntryFocusIn(event):
+        """
+        Handles the focus out event for entry boxes.
+
+        Args:
+            event (tk.Event): The event that triggered the action.
+        """
+        entryInout = event.widget.get()
+        if entryInout == event.widget.defaultText:
+            event.widget.delete(0, tk.END)  
+        event.widget.config(show="")   
+       
             
 
 

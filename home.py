@@ -50,28 +50,31 @@ class Home(Page):
 
     def select_date(self, date_type):
         dialog = CalendarDialog(self)
-        dialog.grab_set()
-        dialog.wait_window(dialog)
+        self.wait_window(dialog)  # Wait for the dialog to close before proceeding
+    
         if hasattr(dialog, 'result') and dialog.result:
             formatted_date = dialog.result.strftime("%Y-%m-%d")
             if date_type == 'checkin':
                 self.checkin_var.set(formatted_date)
             elif date_type == 'checkout':
                 self.checkout_var.set(formatted_date)
+    
+
+         
 
     def display_results(self, results):
-        self.result_window = tk.Toplevel(self)
-        self.result_window.title("Search Results")
-        self.tree = ttk.Treeview(self.result_window, columns=("Name", "Price", "Rating"), show="headings")
-        self.tree.heading("Name", text="Name")
-        self.tree.heading("Price", text="Price")
-        self.tree.heading("Rating", text="Rating")
+        result_window = tk.Toplevel(self)
+        result_window.title("Search Results")
+        tree = ttk.Treeview(result_window, columns=("Name", "Price", "Rating"), show="headings")
+        tree.heading("Name", text="Name")
+        tree.heading("Price", text="Price")
+        tree.heading("Rating", text="Rating")
 
         if results.get('hotels'):
             for hotel in results['hotels']:
-                self.tree.insert("", "end", values=(hotel["name"], hotel["price"], hotel["rating"]))
+                tree.insert("", "end", values=(hotel["name"], hotel["price"], hotel["rating"]))
 
-        self.tree.pack(expand=True, fill="both")
+        tree.pack(expand=True, fill="both")
 
     def search(self):
         location_name = self.location_var.get()
@@ -81,11 +84,19 @@ class Home(Page):
             destination_id = Hotels.get_destination_id(location_name)
             if destination_id:
                 result = Hotels.fetch_hotels(destination_id, checkin_date, checkout_date)
-                if result.get("error"):
-                    messagebox.showerror("Error", result["error"])
-                else:
+                if 'error' in result:
+                    messagebox.showerror("Error", result['error'])
+                elif 'hotels' in result and result['hotels']:
                     self.display_results(result)
+                else:
+                    messagebox.showinfo("No Results", "No hotels found. Please try different dates or another location.")
             else:
                 messagebox.showerror("Error", "Failed to get destination ID. Please try a different location.")
         else:
             messagebox.showerror("Error", "Please complete all fields.")
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = Home(root, None)
+    app.pack(expand=True, fill="both")
+    root.mainloop()
+
