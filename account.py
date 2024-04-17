@@ -1,5 +1,7 @@
 import tkinter as tk
 from page import Page
+from entryBoxUtility import EntryBoxUtility 
+from login import Login
 
 
 class Account(Page):
@@ -36,10 +38,18 @@ class Account(Page):
         """
         Clears the account page by resetting the text of displayed information.
         """
-        if hasattr(self, 'infoLabels'):
-            for label in self.infoLabels:
-                label.configure(text="")
-            
+        """
+        Logs out the user.
+        """
+        self.clearLoginEntryBoxes()
+
+    def clearLoginEntryBoxes(self):
+        """
+        Clears the login entry boxes.
+        """
+        if hasattr(self.controller, 'loginPage') and hasattr(self.controller.loginPage, 'reset'):
+            self.controller.loginPage.reset(self.controller.loginPage.userEmail, "Enter username")
+            self.controller.loginPage.reset(self.controller.loginPage.userPassword, "Enter password")        
 
     def setCustomer(self, n_customer):
         """

@@ -89,28 +89,6 @@ class Create(tk.Toplevel):
         submitButton = tk.Button(self, text = "SUBMIT", borderwidth=10, font=("Arial", 22), bg = "white", fg ="black",  activeforeground="blue", command= self.getData)
         submitButton.pack(padx = 200, side = "left")
 
-        # #bid clearEntries method to the FOCUSIN for all widgest that need to be cleared
-        # self.userName.bind("<FocusIn>", EntryBoxUtility.clearEntries)
-        # self.userLastName.bind("<FocusIn>", EntryBoxUtility.clearEntries)
-        # self.userDOB.bind("<FocusIn>",EntryBoxUtility.clearEntries)
-        # self.userEmail.bind("<FocusIn>", EntryBoxUtility.clearEntries)
-        # self.userPhone.bind("<FocusIn>", EntryBoxUtility.clearEntries)
-        # self.userPassword.bind("<FocusIn>", EntryBoxUtility.handlePasswordFocusIn)
-        # self.userPassword.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
-        # self.userPasswordConfirm.bind("<FocusIn>", EntryBoxUtility.handlePasswordFocusIn)
-        # self.userPasswordConfirm.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
-        # self.userName.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
-        # self.userLastName.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
-        # self.userDOB.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
-        # self.userEmail.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
-        # self.userPhone.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
-        # Create a list of widgets that need to be bound
-        # widgets = [self.userName, self.userLastName, self.userDOB, self.userEmail, self.userPhone, self.userPassword, self.userPasswordConfirm]
-
-        # # Bind the appropriate functions to the FOCUSIN and FOCUSOUT events for each widget
-        # for widget in widgets:
-        #     widget.bind("<FocusIn>", EntryBoxUtility.clearEntries)
-        #     widget.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
 
         self.defaultMessages = ["Enter first name", "Enter last name","Enter DOB", "Enter email", "Enter Phone", "Enter password", "Confirm password"]
 
@@ -128,13 +106,6 @@ class Create(tk.Toplevel):
 
         self.update_idletasks()
 
-    # #create function that clears entry boxes when default text is present ONLY
-    # def clearEntries(self,event):
-    #     entryBox = event.widget
-    #     defaultText = entryBox.defaultText
-    #     currentText = entryBox.get()
-    #     if currentText == defaultText:
-    #         entryBox.delete(0, tk.END)
 
       #Create function that veryfies if Password and Confirm Password match
     def passwordMatch(self):
@@ -148,8 +119,8 @@ class Create(tk.Toplevel):
         passWordConfirma = self.userPasswordConfirm.get()
         if passWord != passWordConfirma:
             self.showSuccessMessage("Error", "Passwords do not match, Press OK and try again")
-            self.userPassword.config(show= self.defaultMessages[5])
-            self.userPasswordConfirm.config(show= self.defaultMessages[6])
+            self.resetToDefault(self.userPassword, self.defaultMessages[5])
+            self.resetToDefault(self.userPasswordConfirm, self.defaultMessages[6])
             return False
         return True
             
@@ -174,8 +145,6 @@ class Create(tk.Toplevel):
             #self.resetToDefault(self.userEmail, self.defaultMessages[3])
             return False
         if not self.validatePassword(passwrd):
-            self.resetToDefault(self.userPassword, self.defaultMessages[5])
-            self.resetToDefault(self.userPasswordConfirm, self.defaultMessages[6])
             return False
         if not self.validateDOB(dob):
             return False
@@ -242,10 +211,14 @@ class Create(tk.Toplevel):
         """
         if len(passwrd) < 8:
             messagebox.showerror("Error", "Password must be at least 8 characters long")
+            self.resetToDefault(self.userPassword, self.defaultMessages[5])
+            self.resetToDefault(self.userPasswordConfirm, self.defaultMessages[6])
             return False
 
         if not re.search(r'[A-Z]', passwrd) or not re.search(r'[a-z]', passwrd) or not re.search(r'\d',passwrd):
             messagebox.showerror("Error", "Password must contain 1 upper case letter, 1 lower case letter, and 1 digit")
+            self.resetToDefault(self.userPassword, self.defaultMessages[5])
+            self.resetToDefault(self.userPasswordConfirm, self.defaultMessages[6])
             return False
         
         if not self.passwordMatch():
@@ -270,10 +243,23 @@ class Create(tk.Toplevel):
             return False
         return True
 
-    def resetToDefault(self,widget, defaultMessage):
-        widget.delete(0, tk.END)  
+
+    def resetToDefault(self, widget, defaultMessage):
+        """
+        Reset the entry widget to default text.
+
+        Args:
+            widget: The entry widget to reset.
+            defaultMessage: The default text to set.
+        """
+        widget.delete(0, tk.END)
         widget.insert(0, defaultMessage)
+        widget.config(show="")  
         widget.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+        if widget == self.userPassword or widget == self.userPasswordConfirm:
+            widget.bind("<FocusIn>", EntryBoxUtility.handlePasswordFocusIn)
+        else:
+            widget.bind("<FocusIn>", EntryBoxUtility.handleEntryFocusIn)
         self.focus_set()
 
 

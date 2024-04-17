@@ -95,7 +95,10 @@ class Login(Page):
            Create(self, database)
          else:
             messagebox.showerror("ERROR", "Unathorized Action")
-
+      
+      #arrays to help clear entry boxes
+      self.defaultMessages=["Enter username","Enter password"]
+      widgets = [self.userEmail, self.userPassword]
 
       def validateUserLogin(self):
          """
@@ -123,9 +126,10 @@ class Login(Page):
                showUser(isAdmin)
          else:
             self.isUser=False
+            messagebox.showerror("Error", "Incorrect Password or Email")
+            self.reset(self.userEmail, self.defaultMessages[0])
+            self.reset(self.userPassword, self.defaultMessages[1])
             
-            # self.resetTxt()
-            messagebox.showerror("Error", "Incorrect Password")
             
 
       def showUser(user):
@@ -160,20 +164,25 @@ class Login(Page):
       self.update_idletasks()
         
    #reset function to be caught by page header
-   def reset(self):
+   def reset(self, widget, defaultMessage):
       """
       Resets the login form fields and state.
       """
-      self.userEmail.delete(0,tk.END)
-      self.userPassword.delete(0,tk.END)
-      self.userEmail.insert(0, "Enter username ")
-
-      self.userPassword.insert(0, "Enter password")
       global isLoggedIn, isAdmin
       self.controller.isLoggedIn = False
       self.controller.isAdmin = False
       self.isUser = False
       self.isAdmin = False
+
+      widget.delete(0, tk.END)
+      widget.insert(0, defaultMessage)
+      widget.config(show="")  
+      widget.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+      if widget == self.userPassword:
+         widget.bind("<FocusIn>", EntryBoxUtility.handlePasswordFocusIn)
+      else:
+         widget.bind("<FocusIn>", EntryBoxUtility.handleEntryFocusIn)
+      self.focus_set()
          
    
    # def resetTxt(self):
