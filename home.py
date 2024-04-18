@@ -3,6 +3,7 @@ from tkinter import ttk, simpledialog, font
 from PIL import Image, ImageTk
 from tkcalendar import Calendar
 from page import Page
+from tkmacosx import Button  
 
 LOCATIONS = ["New York", "Los Angeles", "Chicago", "Houston", "Miami"]
 
@@ -21,9 +22,9 @@ class Home(Page):
         self.controller = controller
         self.setupBackground()
 
-        titleFont = font.Font(family="Helvetica", size=24, weight="bold")
-        title = tk.Label(self, text="Welcome to Titan Reservations", font=titleFont, fg="blue")
-        title.pack(pady=20)
+        titleFont = font.Font(family="Helvetica", size=30, weight="bold")
+        title = tk.Label(self, text="Share Your Travel Dates, and We'll Handle the Rest!", font=titleFont, fg="#003366")
+        title.pack(pady=30)
 
         self.buildSearchForm()
         self.addQuotes()
@@ -35,28 +36,28 @@ class Home(Page):
         bgLabel.place(relwidth=1, relheight=1, x=0, y=0)
 
     def buildSearchForm(self):
-        searchFrame = tk.Frame(self, bg='white', borderwidth=1, relief="solid")
-        searchFrame.pack(pady=30, padx=100)
+        searchFrame = tk.Frame(self, bg='white', borderwidth=2, relief="solid", padx=45, pady=20)
+        searchFrame.pack(pady=60, padx=100)
 
-        tk.Label(searchFrame, text="Destination:", bg='white').pack(pady=5)
+        tk.Label(searchFrame, text="Destination:", bg='white', font=("Arial", 16)).pack(pady=10)
         self.locationVar = tk.StringVar()
-        locationDropdown = ttk.Combobox(searchFrame, textvariable=self.locationVar, values=LOCATIONS, state="readonly")
-        locationDropdown.pack(pady=5)
+        locationDropdown = ttk.Combobox(searchFrame, textvariable=self.locationVar, values=LOCATIONS, state="readonly", font=("Arial", 14))
+        locationDropdown.pack(pady=10)
         locationDropdown.set("Select Location")
 
-        tk.Label(searchFrame, text="Check-in Date:", bg='white').pack(pady=5)
+        tk.Label(searchFrame, text="Check-in Date:", bg='white', font=("Arial", 16)).pack(pady=10)
         self.checkinVar = tk.StringVar()
-        self.checkinEntry = tk.Entry(searchFrame, textvariable=self.checkinVar, width=15)
-        self.checkinEntry.pack(pady=5)
+        self.checkinEntry = tk.Entry(searchFrame, textvariable=self.checkinVar, width=20, font=("Arial", 14))
+        self.checkinEntry.pack(pady=10)
         self.checkinEntry.bind("<Button-1>", lambda event: self.selectDate('checkin'))
 
-        tk.Label(searchFrame, text="Check-out Date:", bg='white').pack(pady=5)
+        tk.Label(searchFrame, text="Check-out Date:", bg='white', font=("Arial", 16)).pack(pady=10)
         self.checkoutVar = tk.StringVar()
-        self.checkoutEntry = tk.Entry(searchFrame, textvariable=self.checkoutVar, width=15)
-        self.checkoutEntry.pack(pady=5)
+        self.checkoutEntry = tk.Entry(searchFrame, textvariable=self.checkoutVar, width=20, font=("Arial", 14))
+        self.checkoutEntry.pack(pady=10)
         self.checkoutEntry.bind("<Button-1>", lambda event: self.selectDate('checkout'))
 
-        tk.Button(searchFrame, text="Search Rooms", command=self.search).pack(pady=20)
+        Button(searchFrame, text="Search Rooms", command=self.search, bg="#003366", fg="white", font=("Arial", 18)).pack(pady=30)
 
     def selectDate(self, dateType):
         dialog = CalendarDialog(self)
@@ -75,9 +76,6 @@ class Home(Page):
 
     def addQuotes(self):
         quotesFrame = tk.Frame(self, bg='white', borderwidth=0)
-        quotesFrame.pack(pady=20, fill=tk.X)
-        quote1 = tk.Label(quotesFrame, text="“Travel is the only thing you buy that makes you richer.”", bg='white', fg="black")
-        quote1.pack()
-        quote2 = tk.Label(quotesFrame, text="“To Travel is to Live.” – Hans Christian Andersen", bg='white', fg="black")
+        quotesFrame.pack(pady=10, fill=tk.X)  # Reduced padding here
+        quote2 = tk.Label(quotesFrame, text= "To Travel is to Live!", bg='white', fg="#003366", font=("Georgia", 24, "italic"))
         quote2.pack()
-
