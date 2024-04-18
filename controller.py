@@ -48,7 +48,7 @@ class App(tk.Tk):
 
         
         #minimum window size when app opens
-        self.minsize(width=1000, height=1000)
+        self.minsize(width=800, height=800)
         #self.maxsize(width=1000, height=1000)
 
         #set theme 
@@ -63,6 +63,7 @@ class App(tk.Tk):
       
         # Create a container frame for pages
         self.container = Page(self,self)
+        self.container = tk.Frame(self)  
         self.container.grid(row=1, column=0, sticky="nsew")
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
