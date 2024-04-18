@@ -1,0 +1,70 @@
+Help on module home:
+
+NAME
+    home
+
+CLASSES
+    tkinter.Frame(tkinter.BaseWidget, tkinter.Wm)
+        Home
+
+    class Home(tkinter.Frame)
+     |  Home(controller, parent=None)
+     |  
+     |  This class represents the main window for managing travel reservations.
+     |  :author: Gurnoor Kaur
+     |  
+     |  Attributes:
+     |      controller: The controller object responsible for managing page navigation.
+     |      parent: The master widget under which this window is placed.
+     |  
+     |  Methods:
+     |      setupBackground(): Sets up the background image of the window.
+     |      buildSearchForm(): Builds the search form for travel reservations.
+     |      selectDate(dateType): Handles date selection for check-in and check-out.
+     |      search(): Retrieves data from form and performs search operation.
+     |      addQuotes(): Adds inspirational quotes to the home page.
+     |  
+     |  Method resolution order:
+     |      Home
+     |      tkinter.Frame
+     |      tkinter.BaseWidget
+     |      tkinter.Misc
+     |      tkinter.Wm
+     |      builtins.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, controller, parent=None)
+     |      Initializes the Home window with a controller and optional parent.
+     |      
+     |      Args:
+     |          controller: Controller for managing navigation between pages.
+     |          parent: The master widget; defaults to None if not specified.
+     |  
+     |  setupBackground(self)
+     |      Sets the background image of the window.
+     |  
+     |  buildSearchForm(self)
+     |      Constructs the search form with fields for destination, dates, and search button.
+     |  
+     |  selectDate(self, dateType)
+     |      Opens a calendar dialog for date selection.
+     |      
+     |      Args:
+     |          dateType (str): Specifies whether 'checkin' or 'checkout' date is being selected.
+     |  
+     |  search(self)
+     |      Processes the search based on the user's input and displays results.
+     |  
+     |  addQuotes(self)
+     |      Adds motivational quotes to the home page layout.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from tkinter.BaseWidget:
+     |  
+     |  destroy(self)
+     |      Destroys the widget and its children.
+
+FILE
+      /Users/gk785417/Desktop/COMP380-Project/documentation/home.txt
+
