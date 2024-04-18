@@ -127,8 +127,8 @@ class Login(Page):
          else:
             self.isUser=False
             messagebox.showerror("Error", "Incorrect Password or Email")
-            self.reset(self.userEmail, self.defaultMessages[0])
-            self.reset(self.userPassword, self.defaultMessages[1])
+            self.reset()
+            
             
             
 
@@ -164,7 +164,7 @@ class Login(Page):
       self.update_idletasks()
         
    #reset function to be caught by page header
-   def reset(self, widget, defaultMessage):
+   def reset(self):
       """
       Resets the login form fields and state.
       """
@@ -174,14 +174,21 @@ class Login(Page):
       self.isUser = False
       self.isAdmin = False
 
-      widget.delete(0, tk.END)
-      widget.insert(0, defaultMessage)
-      widget.config(show="")  
-      widget.bind("<FocusIn>", EntryBoxUtility.clearEntries)
-      if widget == self.userPassword:
-         widget.bind("<FocusIn>", EntryBoxUtility.handlePasswordFocusIn)
-      else:
-         widget.bind("<FocusIn>", EntryBoxUtility.handleEntryFocusIn)
+      self.userEmail.delete(0, tk.END)
+      self.userEmail.insert(0, self.userEmail.defaultText)
+
+      self.userPassword.delete(0, tk.END)
+      self.userPassword.insert(0, self.userPassword.defaultText)
+
+
+      # widget.delete(0, tk.END)
+      # widget.insert(0, defaultMessage)
+      # widget.config(show="")  
+      # widget.bind("<FocusIn>", EntryBoxUtility.clearEntries)
+      # if widget == self.userPassword:
+      #    widget.bind("<FocusIn>", EntryBoxUtility.handlePasswordFocusIn)
+      # else:
+      #    widget.bind("<FocusIn>", EntryBoxUtility.handleEntryFocusIn)
       self.focus_set()
          
    

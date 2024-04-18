@@ -19,7 +19,7 @@ class Account(Page):
     Methods:
         setCustomer(n_customer): Sets the customer whose account information will be displayed.
     """
-    def __init__(self,parent, database, controller, customer=None):
+    def __init__(self,parent, database, controller, loginPage = None, customer=None):
         """
         Initializes the Account object.
 
@@ -33,6 +33,7 @@ class Account(Page):
         self.controller = controller
         self.database = database 
         self.customer = customer
+        self.loginPage = loginPage
 
     def clearAccountPage(self):
         """
@@ -41,15 +42,15 @@ class Account(Page):
         """
         Logs out the user.
         """
-        self.clearLoginEntryBoxes()
-
-    def clearLoginEntryBoxes(self):
-        """
-        Clears the login entry boxes.
-        """
-        if hasattr(self.controller, 'loginPage') and hasattr(self.controller.loginPage, 'reset'):
-            self.controller.loginPage.reset(self.controller.loginPage.userEmail, "Enter username")
-            self.controller.loginPage.reset(self.controller.loginPage.userPassword, "Enter password")        
+        if self.loginPage and hasattr(self.loginPage, 'reset'):  
+            self.loginPage.reset()
+    # def clearLoginEntryBoxes(self):
+    #     """
+    #     Clears the login entry boxes.
+    #     """
+    #     if hasattr(self.controller, 'loginPage') and hasattr(self.controller.loginPage, 'reset'):
+    #         self.controller.loginPage.reset(self.controller.loginPage.userEmail, "Enter username")
+    #         self.controller.loginPage.reset(self.controller.loginPage.userPassword, "Enter password")        
 
     def setCustomer(self, n_customer):
         """
