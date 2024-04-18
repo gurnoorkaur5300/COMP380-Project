@@ -7,12 +7,21 @@ class Room:
     :version 1.0
     """
     def __init__(self, n_hotelName=None, n_roomNum=None, n_location=None, n_cost=None):
-          
+        """
+        Initializes a Room object with the provided attributes.
+
+        Args:
+            n_hotelName (str, optional): The name of the hotel. Defaults to None.
+            n_roomNum (str, optional): The room number. Defaults to None.
+            n_location (str, optional): The location of the hotel. Defaults to None.
+            n_cost (float, optional): The cost of the room. Defaults to None.
+        """  
+        
         self.__hotelName = n_hotelName
         self.__roomNum= n_roomNum
         self.__location = n_location
         self.__cost = n_cost
-
+        
     @property
     def hotelName(self):
         """str: The name of the hotel the room is in."""

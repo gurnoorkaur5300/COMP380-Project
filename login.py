@@ -61,12 +61,9 @@ class Login(Page):
             insertbackground="black",
             insertwidth=4)
         
-        
+
         self.defaultMessages = ["Enter username", "Enter password"]
         widgets = [self.userEmail, self.userPassword]
-      #   self.defaultBoxes(self.userEmail, self.defaultMessages[0])
-      
-      #   self.defaultBoxes(self.userPassword, self.defaultMessages[1])
         for widget, defaultmsg in zip(widgets, self.defaultMessages):
             self.defaultBoxes(widget, defaultmsg)
 
@@ -75,8 +72,6 @@ class Login(Page):
         self.userPassword.defaultText = self.defaultMessages[1]
 
         # Bind the entry boxes
-      #   self.userEmail.bind("<FocusIn>", EntryBoxUtility.clearEntries)
-      #   self.userPassword.bind("<FocusIn>", EntryBoxUtility.clearEntries)
         self.userPassword.bind("<FocusIn>",
                                EntryBoxUtility.handlePasswordFocusIn)
         self.userPassword.bind(
