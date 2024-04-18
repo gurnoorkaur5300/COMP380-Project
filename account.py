@@ -46,10 +46,9 @@ class Account(Page):
     def clearLoginEntryBoxes(self):
         """
         Clears the login entry boxes.
-        """
-        if hasattr(self.controller, 'loginPage') and hasattr(self.controller.loginPage, 'reset'):
-            self.controller.loginPage.reset(self.controller.loginPage.userEmail, "Enter username")
-            self.controller.loginPage.reset(self.controller.loginPage.userPassword, "Enter password")        
+        """     
+        if hasattr(self.controller, 'loginPage') and callable(getattr(self.controller.loginPage, 'reset', None)):
+            self.controller.loginPage.reset()
 
     def setCustomer(self, n_customer):
         """

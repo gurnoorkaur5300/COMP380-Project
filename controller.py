@@ -114,6 +114,7 @@ class App(tk.Tk):
         # Set the page header for the account page if not logged in
         if pageName == "Account" and not self.isLoggedIn:
             self.pageHeader = PageHeader(self, self)
+            self.pageHeader.resetFunctions.append(self.loginPage.reset)
             pageName = "Login"
             self.pageHeader.setPageType(pageName)
 

@@ -81,14 +81,12 @@ class Admin(Page):
 
             self.spreadsheet.bind("<Motion>", lambda event: self.onHover)
             self.spreadsheet.bind("<<TreeviewSelect>>", self.onSelect)
-            # Bind leave event to clear hover effect
             self.spreadsheet.bind("<Leave>", lambda event: self.clearHover())
-
             self.schedHoverCheck()
 
          #display spreadsheet .pack method 
         self.spreadsheet.pack(expand=True, fill="both")
-        displayData()
+       
         # display spreadsheet button
         adminDisplayButton = tkmacosx.Button(self, text="Fetch Data", command=displayData)
         adminDisplayButton.pack()
@@ -170,4 +168,6 @@ class Admin(Page):
         global isLoggedIn, isAdmi
         self.controller.isLoggedIn = False
         self.controller.isAdmin = False
+     
+        
         
