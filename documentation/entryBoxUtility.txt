@@ -1,0 +1,50 @@
+Help on module entryBoxUtility:
+
+NAME
+    entryBoxUtility
+
+CLASSES
+    builtins.object
+        EntryBoxUtility
+    
+    class EntryBoxUtility(builtins.object)
+     |  A utility class for handling entry boxes in tkinter applications.
+     |  
+     |  Methods:
+     |      clearEntries(event): Clears the entry box when default text is present.
+     |      handlePasswordFocusIn(event): Handles the focus in event for password entry.
+     |      handleEntryFocusOut(event): Handles the focus out event for entry boxes.
+     |  
+     |  Static methods defined here:
+     |  
+     |  clearEntries(event)
+     |      Clears the entry box when default text is present.
+     |      
+     |      Args:
+     |          event (tk.Event): The event that triggered the action.
+     |  
+     |  handleEntryFocusOut(event)
+     |      Handles the focus out event for entry boxes.
+     |      
+     |      Args:
+     |          event (tk.Event): The event that triggered the action.
+     |  
+     |  handlePasswordFocusIn(event)
+     |      Handles the focus in event for password entry.
+     |      
+     |      Args:
+     |          event (tk.Event): The event that triggered the action.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+
+FILE
+    /Users/mgc/Desktop/Project_380/COMP380-Project/entryBoxUtility.py
+
+
