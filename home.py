@@ -1,91 +1,94 @@
 import tkinter as tk
-from tkinter import ttk, simpledialog, font, messagebox
+from tkinter import ttk, simpledialog, font
+from PIL import Image, ImageTk
 from tkcalendar import Calendar
 from page import Page
-from hotels import Hotels
+import tkmacosx
+import threading
+
+LOCATIONS = ["New York", "Los Angeles", "Chicago", "Houston", "Miami"]
 
 class CalendarDialog(simpledialog.Dialog):
     def body(self, master):
         self.calendar = Calendar(master, selectmode='day')
         self.calendar.pack()
         return self.calendar
-
+  
     def apply(self):
         self.result = self.calendar.selection_get()
+        
 
 class Home(Page):
     def __init__(self, parent, controller):
         super().__init__(parent, controller)
         self.controller = controller
-        self.title_font = font.Font(family="Helvetica", size=24, weight="bold")
-        self.build_search_form()
+        self.setupBackground()
+       
 
-    def build_search_form(self):
-        self.title = tk.Label(self, text="Welcome to Titan Reservations", font=self.title_font, fg="blue")
-        self.title.pack(pady=20)
+        titleFont = font.Font(family="Helvetica", size=30, weight="bold")
+        title = tk.Label(self, text="Share Your Travel Dates, and We'll Handle the Rest!", font=titleFont, fg="#003366", bg="white")
+        title.pack(pady=30)
 
-        self.search_frame = tk.Frame(self)
-        self.search_frame.pack(pady=10, fill=tk.X)
+        self.buildSearchForm()
+        self.addQuotes()
+        self.focus_set()
+        
 
-        tk.Label(self.search_frame, text="Location:").pack(side=tk.LEFT, padx=5)
-        self.location_var = tk.StringVar()
-        self.location_dropdown = ttk.Combobox(self.search_frame, textvariable=self.location_var, values=["New York", "Los Angeles", "Chicago", "Houston", "Miami"], state="readonly")
-        self.location_dropdown.pack(side=tk.LEFT, padx=5)
-        self.location_dropdown.set("Select Location")
+    def setupBackground(self):
+        self.bgImage = Image.open('assets/bk.jpeg')  
+        self.bgPhoto = ImageTk.PhotoImage(self.bgImage)
+        bgLabel = tk.Label(self, image=self.bgPhoto)
+        bgLabel.place(relwidth=1, relheight=1, x=0, y=0)
 
-        tk.Label(self.search_frame, text="Check-in:").pack(side=tk.LEFT, padx=5)
-        self.checkin_var = tk.StringVar()
-        self.checkin_entry = tk.Entry(self.search_frame, textvariable=self.checkin_var, width=15)
-        self.checkin_entry.pack(side=tk.LEFT, padx=5)
-        self.checkin_entry.bind("<Button-1>", lambda event: self.select_date('checkin'))
+    def buildSearchForm(self):
+        searchFrame = tk.Frame(self, bg='white', borderwidth=2, relief="solid", padx=45, pady=20)
+        searchFrame.pack(pady=60, padx=100)
 
-        tk.Label(self.search_frame, text="Check-out:").pack(side=tk.LEFT, padx=5)
-        self.checkout_var = tk.StringVar()
-        self.checkout_entry = tk.Entry(self.search_frame, textvariable=self.checkout_var, width=15)
-        self.checkout_entry.pack(side=tk.LEFT, padx=5)
-        self.checkout_entry.bind("<Button-1>", lambda event: self.select_date('checkout'))
+        tk.Label(searchFrame, text="Destination:", bg="white", fg='black', font=("Arial", 16)).pack(pady=10)
+        self.locationVar = tk.StringVar()
+        locationDropdown = ttk.Combobox(searchFrame, textvariable=self.locationVar, values=LOCATIONS, state="readonly", font=("Arial", 14))
+        locationDropdown.pack(pady=10)
+        locationDropdown.set("Select Location")
 
-        self.search_button = tk.Button(self.search_frame, text="Search", command=self.search)
-        self.search_button.pack(side=tk.LEFT, padx=10)
+        tk.Label(searchFrame, text="Check-in Date:", bg='white', font=("Arial", 16)).pack(pady=10)
+        self.checkinVar = tk.StringVar()
+        self.checkinEntry = tk.Entry(searchFrame, textvariable=self.checkinVar, width=20, fg="black", bg= "white",font=("Arial", 14))
+        self.checkinEntry.pack(pady=10)
+        self.checkinEntry.bind("<Button-1>", lambda event: self.selectDate('checkin'))
 
-    def select_date(self, date_type):
+        tk.Label(searchFrame, text="Check-out Date:", bg='white', font=("Arial", 16)).pack(pady=10)
+        self.checkoutVar = tk.StringVar()
+        self.checkoutEntry = tk.Entry(searchFrame, textvariable=self.checkoutVar, width=20, fg="black", bg= "white", font=("Arial", 14))
+        self.checkoutEntry.pack(pady=10)
+        self.checkoutEntry.bind("<Button-1>", lambda event: self.selectDate('checkout'))
+
+        button = tkmacosx.Button(searchFrame, text="Search Rooms", command=self.search, bg="#003366", fg="white", font=("Arial", 18))
+        button.pack(pady=30)
+
+    def selectDate(self, dateType):
         dialog = CalendarDialog(self)
-        dialog.grab_set()
-        dialog.wait_window(dialog)
-        if hasattr(dialog, 'result') and dialog.result:
-            formatted_date = dialog.result.strftime("%Y-%m-%d")
-            if date_type == 'checkin':
-                self.checkin_var.set(formatted_date)
-            elif date_type == 'checkout':
-                self.checkout_var.set(formatted_date)
+        
+        if dialog.result:
+            formattedDate = dialog.result.strftime("%Y-%m-%d")
+            if dateType == 'checkin':
+                self.checkinVar.set(formattedDate)
+            elif dateType == 'checkout':
+                self.checkoutVar.set(formattedDate)
+        self.after(100, self.focus_set)
+        dialog.update()
 
-    def display_results(self, results):
-        self.result_window = tk.Toplevel(self)
-        self.result_window.title("Search Results")
-        self.tree = ttk.Treeview(self.result_window, columns=("Name", "Price", "Rating"), show="headings")
-        self.tree.heading("Name", text="Name")
-        self.tree.heading("Price", text="Price")
-        self.tree.heading("Rating", text="Rating")
 
-        if results.get('hotels'):
-            for hotel in results['hotels']:
-                self.tree.insert("", "end", values=(hotel["name"], hotel["price"], hotel["rating"]))
-
-        self.tree.pack(expand=True, fill="both")
+       
 
     def search(self):
-        location_name = self.location_var.get()
-        checkin_date = self.checkin_var.get()
-        checkout_date = self.checkout_var.get()
-        if location_name and checkin_date and checkout_date:
-            destination_id = Hotels.get_destination_id(location_name)
-            if destination_id:
-                result = Hotels.fetch_hotels(destination_id, checkin_date, checkout_date)
-                if result.get("error"):
-                    messagebox.showerror("Error", result["error"])
-                else:
-                    self.display_results(result)
-            else:
-                messagebox.showerror("Error", "Failed to get destination ID. Please try a different location.")
-        else:
-            messagebox.showerror("Error", "Please complete all fields.")
+        checkinDate = self.checkinVar.get()
+        checkoutDate = self.checkoutVar.get()
+        location = self.locationVar.get()
+        print(f"Searching for rooms in {location} from {checkinDate} to {checkoutDate}")
+       
+
+    def addQuotes(self):
+        quotesFrame = tk.Frame(self, bg='white', borderwidth=0)
+        quotesFrame.pack(pady=10, fill=tk.X)  # Reduced padding here
+        quote2 = tk.Label(quotesFrame, text= "To Travel is to Live!", bg='white', fg="#003366", font=("Georgia", 24, "italic"))
+        quote2.pack()

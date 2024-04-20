@@ -42,15 +42,14 @@ class Account(Page):
         """
         Logs out the user.
         """
-        if self.loginPage and hasattr(self.loginPage, 'reset'):  
-            self.loginPage.reset()
-    # def clearLoginEntryBoxes(self):
-    #     """
-    #     Clears the login entry boxes.
-    #     """
-    #     if hasattr(self.controller, 'loginPage') and hasattr(self.controller.loginPage, 'reset'):
-    #         self.controller.loginPage.reset(self.controller.loginPage.userEmail, "Enter username")
-    #         self.controller.loginPage.reset(self.controller.loginPage.userPassword, "Enter password")        
+        self.clearLoginEntryBoxes()
+
+    def clearLoginEntryBoxes(self):
+        """
+        Clears the login entry boxes.
+        """     
+        if hasattr(self.controller, 'loginPage') and callable(getattr(self.controller.loginPage, 'reset', None)):
+            self.controller.loginPage.reset()
 
     def setCustomer(self, n_customer):
         """

@@ -58,15 +58,15 @@ class Database:
 
         )''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS reservations (
-                       reserveId INTEGER PRIMARY KEY,
-                       customerId INTEGER, 
+                       reserveId INTEGER PRIMARY KEY AUTOINCREMENT,
+                       customerName TEXT,
+                       hotelName TEXT,
                        roomId TEXT, 
                        paidId INTEGER, 
                        checkIn TEXT,
                        checkOut TEXT,
-                       paid REAL,
-                       payDate TEXT,
-                       FOREIGN KEY (customerId) REFERENCES customers(customerId),
+                       paid REAL,    
+                       FOREIGN KEY (customerName) REFERENCES customers(name),
                        FOREIGN KEY (roomId) REFERENCES rooms(roomId),
                        FOREIGN KEY (paidId) REFERENCES payment(paidId)
         )''')
@@ -83,11 +83,8 @@ class Database:
         self.conn.commit()
 
         cursor.execute('''CREATE TABLE IF NOT EXISTS rooms (
-                       roomId TEXT PRIMARY KEY,
-                       roomNumber INTEGER,
-                       roomType TEXT,
-                       capacity INTEGER,
-                       hotelId TEXT,
+                       roomId TEXT PRIMARY KEY AUTOINCREMENT,
+                       roomNum INTEGER,
                        hotelName TEXT,
                        location TEXT,
                        cost REAL
@@ -115,6 +112,9 @@ class Database:
             messagebox.showinfo("Success", "Account Created")
         except sqlite3.IntegrityError:
             messagebox.showerror("Error", "Email already in use. Please try a different email.")
+        except sqlite3.OperationalError as e:
+            messagebox.showerror("Error", f"Database operation failed: {e}") 
+
 
 
     def getById(self, id):
@@ -265,5 +265,52 @@ class Database:
         return reservations
     
     
+    def insertRoom(self, room):
+        """Inserts a new room into the 'room' table.
 
-    
+
+        Args:
+            room (Room): The Room object to be inserted into the database.
+        """
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute('''INSERT INTO rooms (hotelName, roomNum, location, cost) VALUES (?,?,?,?)''', (room.hotelName, room.roomNum, room.location, room.cost))
+            self.conn.commit()
+            messagebox.showinfo("Success", "Room added.")
+        except sqlite3.IntegrityError:
+            messagebox.showerror("Error", "Duplicate entry or integrity constraint violation.")
+        except sqlite3.OperationalError as e:
+            messagebox.showerror("Error", f"Database operation failed: {e}") 
+            
+            
+    def insertReservation(self, reservation):
+        """
+        Inserts a new reservation into the 'reservations' table.
+
+        Args:
+            
+            customerName (str): The ID of the customer making the reservation.
+            roomId (str): The ID of the room being reserved.
+            paidId (int): The ID of the payment associated with the reservation.
+            checkIn (str): The check-in date of the reservation.
+            checkOut (str): The check-out date of the reservation.
+            paid (float): The amount paid for the reservation.
+            payDate (str): The date when the payment was made.
+        """
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute('''INSERT INTO reservations (customerName, hotelName, roomId, paidId, checkIn, checkOut, paid, payDate)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
+                        (reservation.customerName, reservation.hotelName, reservation.roomId, reservation.paidId,
+                            reservation.checkIn, reservation.checkOut, reservation.paid, reservation.payDate))
+            self.conn.commit()
+            messagebox.showinfo("Success", "Reservation added.")
+        except sqlite3.IntegrityError:
+            messagebox.showerror("Error", "Integrity constraint violation: Duplicate reservation ID.")
+        except sqlite3.OperationalError as e:
+            messagebox.showerror("Error", f"Database operation failed: {e}")
+
+
+
+
+        

@@ -7,7 +7,6 @@ class Hotels:
 
     @staticmethod
     def get_destination_id(city_name):
-        """ Fetches the destination ID for a given city name using the suggest endpoint """
         url = f"{Hotels.BASE_URL}/suggest/v1.7/json"
         headers = {
             'X-RapidAPI-Key': Hotels.API_KEY,
@@ -15,12 +14,15 @@ class Hotels:
         }
         querystring = {"query": city_name, "locale": "en_US"}
         response = requests.get(url, headers=headers, params=querystring)
-        data = response.json()
-        try:
-            # Extracting the first suggested destination ID
-            return data['suggestions'][0]['entities'][0]['destinationId']
-        except (IndexError, KeyError):
+        if response.status_code == 200:
+            data = response.json()
+            try:
+                return data['suggestions'][0]['entities'][0]['destinationId']
+            except (IndexError, KeyError):
+                return None
+        else:
             return None
+    
 
     @staticmethod
     def fetch_hotels(destination_id, checkin, checkout):
