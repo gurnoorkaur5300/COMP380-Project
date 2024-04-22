@@ -25,7 +25,7 @@ class Create(tk.Toplevel):
         validatePhoneNumber(phone): Validates the user's phone number.
         closeCreate(): Closes the create account window.
     """
-    def __init__(self,controller, database, master=None):
+    def __init__(self,controller, database, master=None, validatePassword=None, passwordMatch=None):
         """
         Initializes the Create window.
 
@@ -37,6 +37,8 @@ class Create(tk.Toplevel):
         super().__init__(master)
         self.controller= controller
         self.database = database 
+        self.validatePassword = validatePassword or self.validatePassword
+        self.passwordMatch = passwordMatch or self.passwordMatch
         self.title("Create Account")
         self.geometry("600x600")
 
