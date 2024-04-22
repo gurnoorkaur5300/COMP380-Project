@@ -13,8 +13,8 @@ class CalendarDialog(simpledialog.Dialog):
     """
     Represents a calendar dialog box used for selecting dates.
     :author: Gurnoor Kaur
-    :version: 3.0
-    
+    :version: 1.2
+
     Methods:
         body(master): Builds the body of the dialog with a calendar widget.
         apply(): Applies the selected date from the calendar.
