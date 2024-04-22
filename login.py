@@ -7,6 +7,7 @@ from tkinter import messagebox
 import hashlib
 
 
+
 class Login(Page):
     """
      This class represents the login page.
@@ -109,11 +110,13 @@ class Login(Page):
             checkBoxFrame,
             text="Admin",font=("Ariel", 34),
             variable=self.isAdminVar,
+            activebackground="blue",
             command=checkBox)
         self.isUserCheck = tk.Checkbutton(
             checkBoxFrame,
             text="User",font=("Ariel", 34),
             variable=self.isUserVar,
+            activebackground="blue",
             command=checkBox)
         self.isAdminCheck.grid(row=0, column=0)
         self.isUserCheck.grid(row=0, column=1)
@@ -173,25 +176,24 @@ class Login(Page):
                 self.controller.isLoggedIn = True
                 self.controller.isAdmin = True
                 self.controller.showFrame("Admin")
-
-        # buttons frame
-        buttonsFrame = tk.Frame(self)
-
+        
         # create buttons
         submitButton = tk.Button(
-            buttonsFrame,
+            self,
             text="SUBMIT",
             borderwidth=10,
             font=(
                 "Arial",
                 32),
-            bg="white",
+            bg="white",fg="black",
             activeforeground="blue",
             command=lambda: validateUserLogin(self))
-        submitButton.pack(side=tk.LEFT, padx=135, pady=80)
+        # submitButton.pack(side=tk.LEFT, padx=135, pady=80)
+        submitButton.place(relx=0.3, rely=.8, anchor=tk.CENTER)
+        # submitButton.lift()
 
         createButton = tk.Button(
-            buttonsFrame,
+            self,
             text="CREATE",
             borderwidth=10,
             font=(
@@ -201,12 +203,12 @@ class Login(Page):
             fg="black",
             activeforeground="blue",
             command=lambda: showCreate(self))
-        createButton.pack(side=tk.RIGHT, padx=(0, 135), pady=80)
+        createButton.place(relx=0.7, rely=.8, anchor=tk.CENTER)
 
         # display frames on page
         entryFrame.pack()
         checkBoxFrame.pack()
-        buttonsFrame.pack()
+
 
         self.update_idletasks()
 

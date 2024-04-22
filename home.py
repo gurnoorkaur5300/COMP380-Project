@@ -22,7 +22,7 @@ class Home(Page):
     def __init__(self, parent, controller):
         super().__init__(parent, controller)
         self.controller = controller
-        self.setupBackground()
+        # self.setupBackground()
        
 
         titleFont = font.Font(family="Helvetica", size=30, weight="bold")
@@ -34,11 +34,11 @@ class Home(Page):
         self.focus_set()
         
 
-    def setupBackground(self):
-        self.bgImage = Image.open('assets/bk.jpeg')  
-        self.bgPhoto = ImageTk.PhotoImage(self.bgImage)
-        bgLabel = tk.Label(self, image=self.bgPhoto)
-        bgLabel.place(relwidth=1, relheight=1, x=0, y=0)
+    # def setupBackground(self):
+    #     self.bgImage = Image.open('assets/bk.jpeg')  
+    #     self.bgPhoto = ImageTk.PhotoImage(self.bgImage)
+    #     bgLabel = tk.Label(self, image=self.bgPhoto)
+    #     bgLabel.place(relwidth=1, relheight=1, x=0, y=0)
 
     def buildSearchForm(self):
         searchFrame = tk.Frame(self, bg='white', borderwidth=2, relief="solid", padx=45, pady=20)
