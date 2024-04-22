@@ -58,15 +58,15 @@ class Database:
 
         )''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS reservations (
-                       reserveId INTEGER PRIMARY KEY,
-                       customerId INTEGER, 
+                       reserveId INTEGER PRIMARY KEY AUTOINCREMENT,
+                       customerName TEXT,
+                       hotelName TEXT,
                        roomId TEXT, 
                        paidId INTEGER, 
                        checkIn TEXT,
                        checkOut TEXT,
-                       paid REAL,
-                       payDate TEXT,
-                       FOREIGN KEY (customerId) REFERENCES customers(customerId),
+                       paid REAL,    
+                       FOREIGN KEY (customerName) REFERENCES customers(name),
                        FOREIGN KEY (roomId) REFERENCES rooms(roomId),
                        FOREIGN KEY (paidId) REFERENCES payment(paidId)
         )''')
@@ -281,16 +281,15 @@ class Database:
             messagebox.showerror("Error", "Duplicate entry or integrity constraint violation.")
         except sqlite3.OperationalError as e:
             messagebox.showerror("Error", f"Database operation failed: {e}") 
-
-    
-    
+            
+            
     def insertReservation(self, reservation):
         """
         Inserts a new reservation into the 'reservations' table.
 
         Args:
-            reserveId (int): The reservation ID.
-            customerId (int): The ID of the customer making the reservation.
+            
+            customerName (str): The ID of the customer making the reservation.
             roomId (str): The ID of the room being reserved.
             paidId (int): The ID of the payment associated with the reservation.
             checkIn (str): The check-in date of the reservation.
@@ -300,9 +299,10 @@ class Database:
         """
         cursor = self.conn.cursor()
         try:
-            cursor.execute('''INSERT INTO reservations (reserveId, customerId, roomId, paidId, checkIn, checkOut, paid, payDate)
-                              VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
-                           (reservation.reserveId, reservation.customerId, reservation.roomId, reservation.paidId, reservation.checkIn, reservation.checkOut, reservation.paid, reservation.payDate))
+            cursor.execute('''INSERT INTO reservations (customerName, hotelName, roomId, paidId, checkIn, checkOut, paid, payDate)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
+                        (reservation.customerName, reservation.hotelName, reservation.roomId, reservation.paidId,
+                            reservation.checkIn, reservation.checkOut, reservation.paid, reservation.payDate))
             self.conn.commit()
             messagebox.showinfo("Success", "Reservation added.")
         except sqlite3.IntegrityError:
@@ -312,4 +312,5 @@ class Database:
 
 
 
-    
+
+        

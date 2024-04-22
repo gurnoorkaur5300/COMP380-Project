@@ -49,7 +49,7 @@ class App(tk.Tk):
         
         #minimum window size when app opens
         self.minsize(width=800, height=800)
-        #self.maxsize(width=1000, height=1000)
+        self.maxsize(width=800, height=800)
 
         #set theme 
         style=ttk.Style()
@@ -72,9 +72,10 @@ class App(tk.Tk):
         # Instantiate pages
         self.homePage = Home(self.container, self)
         self.policiesPage = Policies(self.container, self)
-        self.accountPage = Account(self.container, self.db, self)
-        self.adminPage = Admin(self.container, self.db, self)
         self.loginPage = Login(self.container, self.db, self)
+        self.accountPage = Account(self.container, self.db,self, self.loginPage)
+        self.adminPage = Admin(self.container, self.db, self)
+        
         
         self.frames = {
             "Home": self.homePage,
@@ -149,4 +150,3 @@ if __name__ == "__main__":
     app = App()
     app.title("Titan Reservations")
     app.mainloop()
-

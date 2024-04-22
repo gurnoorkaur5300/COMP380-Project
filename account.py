@@ -19,7 +19,7 @@ class Account(Page):
     Methods:
         setCustomer(n_customer): Sets the customer whose account information will be displayed.
     """
-    def __init__(self,parent, database, controller, customer=None):
+    def __init__(self,parent, database, controller, loginPage = None, customer=None):
         """
         Initializes the Account object.
 
@@ -33,6 +33,7 @@ class Account(Page):
         self.controller = controller
         self.database = database 
         self.customer = customer
+        self.loginPage = loginPage
 
     def clearAccountPage(self):
         """
@@ -64,7 +65,7 @@ class Account(Page):
 
          
         infoBox = tk.Frame(self)
-        infoBox.grid(row=0,column=0, pady=5,sticky="ew")
+        infoBox.grid(row=0,column=0,padx=(35,35), pady=75,sticky="ew")
 
 
         labelsInfo = [
@@ -76,20 +77,20 @@ class Account(Page):
 
         self.infoLabels = []
 
-        for i, (label_text, value) in enumerate(labelsInfo):
-            label = tk.Label(infoBox, text=label_text, font=("Arial", 18, "bold"), bg="white", fg="black")
+        for i, (labelText, value) in enumerate(labelsInfo):
+            label = tk.Label(infoBox, text=labelText, font=("Arial", 24, "bold"), bg="white", fg="black")
             label.grid(row=i, column=0, padx=15, sticky="e")
 
-            valueLabel = tk.Label(infoBox, text=value, bg="white", fg="black", anchor="w", width=50)
+            valueLabel = tk.Label(infoBox, text=value, bg="white", fg="black", anchor="w", font=("Ariel",24), width=50)
             valueLabel.grid(row=i, column=1, pady=15, sticky="w")
-            self.infoLabels.append(valueLabel)  # Append label objects to info_labels list
+            self.infoLabels.append(valueLabel)
 
         
-        reservationsLabel = tk.Label(infoBox, text="Reservations:", font=("Arial", 18, "bold"), bg="white", fg="black")
+        reservationsLabel = tk.Label(infoBox, text="Reservations:", font=("Arial", 24, "bold"), bg="white", fg="black")
         reservationsLabel.grid(row=len(labelsInfo), column=0, padx=15, sticky="e")
 
         
         for i, reservation in enumerate(self.customer.reservations):
-            reservationLabel = tk.Label(infoBox, text=reservation, anchor="w", bg="white", fg="black", width=50)
+            reservationLabel = tk.Label(infoBox, text=reservation, anchor="w", bg="white", fg="black",font=(34), width=50)
             reservationLabel.grid(row=i + len(labelsInfo) + 1, column=1, pady=10, sticky="w")
             self.infoLabels.append(reservationLabel)  

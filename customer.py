@@ -40,7 +40,7 @@ class Customer:
         :param n_name: Customer's name.
         :type n_name: str
         """
-        self.name = n_name
+        self.__name = n_name
 
    
     @property
@@ -55,7 +55,7 @@ class Customer:
         :param n_email: Customer's email.
         :type n_email: str
         """
-        self.email = n_email
+        self.__email = n_email
  
     @property
     def phoneNumber(self):
@@ -69,7 +69,7 @@ class Customer:
         :param n_Phone: Customer's Phone number.
         :type n_Phone: str
         """
-        self.phoneNumber = n_phone
+        self.__phoneNumber = n_phone
     
     @property
     def dob(self):
@@ -83,14 +83,14 @@ class Customer:
         :param n_dob: Customer's dob.
         :type n_dob: str
         """
-        self.dob = n_dob
+        self.__dob = n_dob
 
     @property
     def reservations(self):
         """list: List of reservations made by the customer."""
         return self.__reservations
     
-    @reservations.setter
+
     def addReservations(self, n_reservation):
         """
         Adds to the the customer reservation list.
