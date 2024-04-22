@@ -82,7 +82,7 @@ class Account(Page):
 
             valueLabel = tk.Label(infoBox, text=value, bg="white", fg="black", anchor="w", width=50)
             valueLabel.grid(row=i, column=1, pady=15, sticky="w")
-            self.infoLabels.append(valueLabel)  # Append label objects to info_labels list
+            self.infoLabels.append(valueLabel)
 
         
         reservationsLabel = tk.Label(infoBox, text="Reservations:", font=("Arial", 18, "bold"), bg="white", fg="black")

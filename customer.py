@@ -90,7 +90,7 @@ class Customer:
         """list: List of reservations made by the customer."""
         return self.__reservations
     
-    @reservations.setter
+
     def addReservations(self, n_reservation):
         """
         Adds to the the customer reservation list.
