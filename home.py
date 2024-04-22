@@ -74,17 +74,37 @@ class Home(Page):
         # new thread to not have indefinite loading
         threading.Thread(target=self.search, daemon=True).start()
 
+    # def search(self):
+    #     checkinDate = self.checkinVar.get()
+    #     checkoutDate = self.checkoutVar.get()
+    #     location = self.locationVar.get()
+    #     destination_id = Hotels.get_destination_id(location)
+    #     if destination_id:
+    #         hotel_data = Hotels.fetch_hotels(destination_id, checkinDate, checkoutDate)
+    #         self.show_hotels(hotel_data)
+    #     else:
+    #         self.after(0, lambda: messagebox.showerror("Error", "Failed to find the destination. Please try again."))
+    
     def search(self):
         checkinDate = self.checkinVar.get()
         checkoutDate = self.checkoutVar.get()
         location = self.locationVar.get()
+    
+        if not location or location == "Select Location":
+            messagebox.showerror("Error", "Please select a valid location.")
+            return
+    
         destination_id = Hotels.get_destination_id(location)
         if destination_id:
             hotel_data = Hotels.fetch_hotels(destination_id, checkinDate, checkoutDate)
-            self.show_hotels(hotel_data)
+            if hotel_data:
+                self.controller.after(0, lambda: self.show_hotels(hotel_data))
+            else:
+                self.controller.after(0, lambda: messagebox.showerror("Search Failed", "Could not retrieve hotel data."))
         else:
-            messagebox.showerror("Error", "Failed to find the destination. Please try again.")
-
+            self.controller.after(0, lambda: messagebox.showerror("Error", "Failed to find the destination. Please try again."))
+    
+    
     def show_hotels(self, hotel_data):
         # must be called on the main thread
         if 'data' in hotel_data:
