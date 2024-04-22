@@ -1,5 +1,5 @@
 import tkinter as tk
-
+from PIL import Image, ImageTk
 #base class for individual pages
 class Page(tk.Frame):
     """
@@ -21,5 +21,12 @@ class Page(tk.Frame):
         """
         tk.Frame.__init__(self,parent)
         self.controller = controller
+        self.setupBackground()
         
+    def setupBackground(self):
+        self.bgImage = Image.open('assets/bk.jpeg')  
+        self.bgPhoto = ImageTk.PhotoImage(self.bgImage)
+        bgLabel = tk.Label(self, image=self.bgPhoto)
+        bgLabel.place(relwidth=1, relheight=1, x=0, y=0)
         
+   
