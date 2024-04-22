@@ -45,7 +45,7 @@ class TestCustomer(unittest.TestCase):
 
     def testAddReservation(self):
         customer = Customer()
-        customer.addReservations = "Reservation 1"
+        customer.addReservations("Reservation 1")
         self.assertEqual(customer.reservations, ["Reservation 1"])
 
     def testGetHashPassword(self):
