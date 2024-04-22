@@ -1,0 +1,70 @@
+Help on module hotels:
+
+NAME
+    hotels
+
+CLASSES
+    builtins.object
+        Hotels
+    
+    class Hotels(builtins.object)
+     |  Provides various methods for interacting with hotel-related data.
+     |  :author: Gurnoor Kaur
+     |  :version: 1.0
+     |  
+     |  Attributes:
+     |      API_KEY: The API key used for authentication with the hotel data provider.
+     |      API_HOST: The host name for the hotel data API.
+     |      BASE_URL: The base URL for the hotel data API.
+     |  
+     |  Methods:
+     |      get_destination_id(city_name): Returns the destination ID for a given city.
+     |      fetch_hotels(destination_id, checkin, checkout): Fetches hotel data for the specified destination and dates.
+     |      fetch_hotel_details(property_id): Fetches detailed information about a specific hotel property.
+     |  
+     |  Method resolution order:
+     |      Hotels
+     |      builtins.object
+     |  
+     |  Methods defined here:
+     |  
+     |  get_destination_id(city_name)
+     |      Retrieves the destination ID for a given city name.
+     |      
+     |      Args:
+     |          city_name (str): The name of the city to retrieve the destination ID for.
+     |      
+     |      Returns:
+     |          The destination ID if found, otherwise None.
+     |  
+     |  fetch_hotels(destination_id, checkin, checkout)
+     |      Fetches hotel data for the specified destination and dates.
+     |      
+     |      Args:
+     |          destination_id (str): The destination ID for the city.
+     |          checkin (str): The check-in date in YYYY-MM-DD format.
+     |          checkout (str): The check-out date in YYYY-MM-DD format.
+     |      
+     |      Returns:
+     |          JSON object containing the hotel data.
+     |  
+     |  fetch_hotel_details(property_id)
+     |      Fetches detailed information about a specific hotel property.
+     |      
+     |      Args:
+     |          property_id (str): The ID of the hotel property to fetch details for.
+     |      
+     |      Returns:
+     |          JSON object containing detailed information about the hotel.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data and other attributes defined here:
+     |  
+     |  API_KEY = 'a591c48a33mshfb582683b7ba583p1da719jsnbfb2f45d508a'
+     |  
+     |  API_HOST = 'hotels-com-free.p.rapidapi.com'
+     |  
+     |  BASE_URL = 'https://hotels-com-free.p.rapidapi.com'
+
+FILE
+      /Users/gk785417/Desktop/COMP380-Project/documentation/hotels.txt
