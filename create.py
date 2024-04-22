@@ -295,4 +295,3 @@ class Create(tk.Toplevel):
 if __name__=="__main__":
     create = Create()
     create.mainloop()           
-

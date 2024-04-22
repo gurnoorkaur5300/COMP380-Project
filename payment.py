@@ -271,4 +271,3 @@ class Payment(tk.Toplevel):
 if __name__=="__main__":
     create = Payment()
     create.mainloop()           
-

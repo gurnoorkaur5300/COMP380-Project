@@ -150,4 +150,3 @@ if __name__ == "__main__":
     app = App()
     app.title("Titan Reservations")
     app.mainloop()
-

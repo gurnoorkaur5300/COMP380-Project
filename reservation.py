@@ -92,4 +92,3 @@ class Reservation:
         :type checkOutDate: str
         """
         self.dob = checkOutDate
-
