@@ -4,7 +4,11 @@ from unittest.mock import MagicMock
 from login import Login
 
 class TestLogin(unittest.TestCase):
-
+    """
+    Tests the Login class to ensure proper functionality
+    :author: Gregory Calderon
+    :version: 1.0
+    """
     def setUp(self):
         self.root = tk.Tk()
         self.database = MagicMock()

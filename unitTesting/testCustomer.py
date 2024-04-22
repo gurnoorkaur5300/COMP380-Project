@@ -3,6 +3,11 @@ from datetime import datetime
 from customer import Customer  
 
 class TestCustomer(unittest.TestCase):
+    """
+    Tests the Customer class to ensure proper functionality
+    :author: Gregory Calderon
+    :version: 1.0
+    """
 
     def testInitWithAllParameters(self):
         dob = "01/01/2000"

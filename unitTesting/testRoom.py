@@ -2,6 +2,11 @@ import unittest
 from room import Room
 
 class TestRoom(unittest.TestCase):
+    """
+    Tests the Room class to ensure proper functionality
+    :author: Gregory Calderon
+    :version: 1.0
+    """
     def testRoomCreation(self):
         room = Room(n_hotelName="Hotel A", n_roomNum=101, n_location="City Center", n_cost=100.0)
         self.assertEqual(room.hotelName, "Hotel A")

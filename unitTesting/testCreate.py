@@ -3,6 +3,11 @@ from unittest.mock import MagicMock
 from create import Create
 
 class TestCreate(unittest.TestCase):
+    """
+    Tests the Create class to ensure proper functionality
+    :author: Gregory Calderon
+    :version: 1.0
+    """
     def setUp(self):
         self.controller = MagicMock()
         self.database = MagicMock()
