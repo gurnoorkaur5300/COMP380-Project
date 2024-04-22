@@ -2,6 +2,11 @@ from customer import Customer
 from room import Room
 
 class Reservation:
+    """
+    This class represents a Reservation
+    :Author: Gregory Calderon and Arameh Baghdassarian
+    :Version 1.0
+    """
     def __init__(self, customerName=None, room=None, checkInDate=None, checkOutDate=None, paymentID=None):
         """
         Initialize a new Reservation instance.
