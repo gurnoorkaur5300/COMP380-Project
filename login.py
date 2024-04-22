@@ -181,25 +181,22 @@ class Login(Page):
         submitButton = tk.Button(
             self,
             text="SUBMIT",
-            borderwidth=10,
+            borderwidth=0,
             font=(
                 "Arial",
-                32),
-            bg="white",fg="black",
+                32),fg="black",
             activeforeground="blue",
             command=lambda: validateUserLogin(self))
-        # submitButton.pack(side=tk.LEFT, padx=135, pady=80)
         submitButton.place(relx=0.3, rely=.8, anchor=tk.CENTER)
-        # submitButton.lift()
+        
 
         createButton = tk.Button(
             self,
             text="CREATE",
-            borderwidth=10,
+            borderwidth=0,
             font=(
                 "Arial",
                 32),
-            bg="white",
             fg="black",
             activeforeground="blue",
             command=lambda: showCreate(self))
