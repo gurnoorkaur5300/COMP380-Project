@@ -9,7 +9,8 @@ class Payment(tk.Toplevel):
     def __init__(self,controller, database, master=None):
         """
         Initializes the Create window.
-
+        :author: Martin Cordero
+        :version: 2.0
         Args:
             controller: The controller object responsible for managing page navigation.
             database: The database object containing user information.
