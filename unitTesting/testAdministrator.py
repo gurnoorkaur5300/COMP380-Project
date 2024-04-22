@@ -2,6 +2,11 @@ import unittest
 from administrator import Administrator
 
 class TestAdmin(unittest.TestCase):
+    """
+    Tests the Administrator class to ensure proper functionality
+    :author: Gregory Calderon
+    :version: 1.0
+    """
     def setUp(self):
         self.admin = Administrator()
 

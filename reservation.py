@@ -3,25 +3,10 @@ from room import Room
 
 class Reservation:
     """
-    Represents a reservation made by a customer.
-    :author: Gurnoor Kaur
-    :version: 3.0
-    
-    Attributes:
-        customerName: The name of the customer making the reservation.
-        room: The room being reserved.
-        checkInDate: The check-in date for the reservation.
-        checkOutDate: The check-out date for the reservation.
-        paymentID: The payment ID associated with the reservation.
-
-    Methods:
-        name: Retrieves or sets the customer's name.
-        hotelName: Retrieves or sets the name of the hotel.
-        room: Retrieves or sets the room number for the reservation.
-        checkInDate: Retrieves or sets the check-in date.
-        checkOutDate: Retrieves or sets the check-out date.
+    This class represents a Reservation
+    :Author: Gregory Calderon and Arameh Baghdassarian
+    :Version 1.0
     """
-
     def __init__(self, customerName=None, room=None, checkInDate=None, checkOutDate=None, paymentID=None):
         """
         Initializes a new Reservation instance.
