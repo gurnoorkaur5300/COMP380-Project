@@ -9,6 +9,7 @@ class Create(tk.Toplevel):
     """
     This class represents the window for creating a new user account.
     :author: Gregory Calderon and Martin Gallegos Cordero 
+    :version: 1.0
 
     Attributes:
         controller: The controller object responsible for managing page navigation.
