@@ -28,6 +28,7 @@ class Payment(tk.Toplevel):
         self.clientAddress = tk.Entry(self, width = 30, font = ("Arial", 20), bg="white", fg="black", insertbackground="black", insertwidth=4)
         self.cityName = tk.Entry(self, width = 30, font = ("Arial", 20), bg="white", fg="black", insertbackground="black", insertwidth =4)
         self.zipCode = tk.Entry(self,width = 30, font = ("Arial",20), bg="white", fg="black", insertbackground="black", insertwidth=4)
+        self.expirationDate = tk.Entry(self,width = 30, font = ("Arial",20), bg="white", fg="black", insertbackground="black", insertwidth=4)
         
 
         self.cardName.insert(0, "Enter full name on card")
@@ -35,6 +36,9 @@ class Payment(tk.Toplevel):
         
         self.cardNumber.insert(0, "Enter card number")
         self.cardNumber.defaultText = "Enter card number"
+
+        self.expirationDate(0, "Enter expiration date")
+        self.expirationDate.defaultText = "Enter expiration date"
         
         self.securityCode(0, "Enter security code")
         self.securityCode.defaultText = "Enter security code"
@@ -56,6 +60,7 @@ class Payment(tk.Toplevel):
         #pack entry widgets
         self.cardName.pack(pady=(20,20))
         self.cardNumber.pack(pady=(20,20))
+        self.expirationDate.pack(pady=(20,20))
         self.securityCode.pack(pady=(20,20))
         self.clientAddress.pack(pady=(20,20))
         self.cityName.pack(pady=(20,20))
@@ -70,9 +75,9 @@ class Payment(tk.Toplevel):
         cancelButton.pack(padx = 200, side = "right")
 
 
-        self.defaultMessages = ["Enter full name on card", "Enter card number","Enter security code", "Enter address", "Enter city", "Enter zip code"]
+        self.defaultMessages = ["Enter full name on card", "Enter card number","Enter security code", "Enter address", "Enter city", "Enter zip code","Enter expiration date"]
 
-        widgets = [self.cardName, self.cardNumber, self.securityCode, self.clientAddress, self.cityName, self.zipCode]
+        widgets = [self.cardName, self.cardNumber, self.securityCode, self.clientAddress, self.cityName, self.zipCode, self.expirationDate]
 
         for widget in widgets:
             widget.bind("<FocusIn>", EntryBoxUtility.clearEntries)
@@ -86,23 +91,6 @@ class Payment(tk.Toplevel):
 
         self.update_idletasks()
 
-
-    #   #Create function that veryfies if Password and Confirm Password match
-    # def passwordMatch(self):
-    #     """
-    #     Checks if the entered passwords match.
-
-    #     Returns:
-    #     bool: True if passwords match, False otherwise.
-    #     """
-    #     passWord = self.userPassword.get()
-    #     passWordConfirma = self.userPasswordConfirm.get()
-    #     if passWord != passWordConfirma:
-    #         self.showSuccessMessage("Error", "Passwords do not match, Press OK and try again")
-    #         self.resetToDefault(self.userPassword, self.defaultMessages[5])
-    #         self.resetToDefault(self.userPasswordConfirm, self.defaultMessages[6])
-    #         return False
-    #     return True
             
 
     def getData(self):
@@ -114,6 +102,7 @@ class Payment(tk.Toplevel):
         """
         cardName = self.cardName.get()
         cardNumber = self.cardNumber.get()
+        expirationDate = self.expirationDate.get()
         securityCode= self.securityCode.get() #00/00/0000
         clientAddress = self.clientAddress.get() #000-000-0000
         cityName = self.cityName.get().lower()
@@ -124,6 +113,8 @@ class Payment(tk.Toplevel):
         if not self.validateCardNumber(cardNumber):
             #self.resetToDefault(self.userEmail, self.defaultMessages[3])
             return False
+        if not self.validateExpirationDate(expirationDate):
+            return False
         if not self.validateSecurityCode(securityCode):
             return False
         if not self.validateClientAddress(clientAddress):
@@ -131,7 +122,7 @@ class Payment(tk.Toplevel):
         if not self.validateZipCode(zipCode):
             return False
         if not self.validateCityName(cityName):
-            self.resetToDefault(self.userPhone, self.defaultMessages[4])
+            self.resetToDefault(self.cityName, self.defaultMessages[4])
             return False
 
         # name = cardName
@@ -139,13 +130,6 @@ class Payment(tk.Toplevel):
 
         #newPayment = Customer(name, email, dob, phone, hashPasswrd)
 
-
-    # ##turn into If else statement to clear the email if the email already exists
-    #     if self.database.insertCustomer(newCustomer):
-    #         self.closeCreate()
-    #     else: 
-    #         self.resetToDefault(self.userEmail, self.defaultMessages[3])   
-    #     return True
         
 
     def validateName(self, name):
@@ -177,7 +161,15 @@ class Payment(tk.Toplevel):
         pattern = r'^\d{16}$'
         if not re.match(pattern, email):
             messagebox.showerror("Error", "Please enter a valid 16 digit card number")
-            self.resetToDefault(self.userEmail, self.defaultMessages[1])
+            self.resetToDefault(self.cardNumber, self.defaultMessages[1])
+            return False
+        return True
+    
+    def validateExpirationDate(self, date):
+        format = r'^\d{2}-\d{2}$'
+        if not re.match(format,date):
+            messagebox.showerror("Error", "Please enter a valid date of format MM-YY")
+            self.resetToDefault(self.expirationDate, self.defaultMessages[6])
             return False
         return True
 

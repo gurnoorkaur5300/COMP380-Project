@@ -72,9 +72,10 @@ class App(tk.Tk):
         # Instantiate pages
         self.homePage = Home(self.container, self)
         self.policiesPage = Policies(self.container, self)
-        self.accountPage = Account(self.container, self.db, self)
-        self.adminPage = Admin(self.container, self.db, self)
         self.loginPage = Login(self.container, self.db, self)
+        self.accountPage = Account(self.container, self.db,self, self.loginPage)
+        self.adminPage = Admin(self.container, self.db, self)
+        
         
         self.frames = {
             "Home": self.homePage,

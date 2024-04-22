@@ -19,7 +19,7 @@ class Account(Page):
     Methods:
         setCustomer(n_customer): Sets the customer whose account information will be displayed.
     """
-    def __init__(self,parent, database, controller, customer=None):
+    def __init__(self,parent, database, controller, loginPage = None, customer=None):
         """
         Initializes the Account object.
 
@@ -33,6 +33,7 @@ class Account(Page):
         self.controller = controller
         self.database = database 
         self.customer = customer
+        self.loginPage = loginPage
 
     def clearAccountPage(self):
         """
