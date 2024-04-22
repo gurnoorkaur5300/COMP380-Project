@@ -3,6 +3,7 @@ from tkinter import ttk, simpledialog, font
 from PIL import Image, ImageTk
 from tkcalendar import Calendar
 from page import Page
+from hotels import Hotels
 import tkmacosx
 import threading
 
@@ -75,17 +76,29 @@ class Home(Page):
             elif dateType == 'checkout':
                 self.checkoutVar.set(formattedDate)
         self.after(100, self.focus_set)
-        dialog.update()
+        dialog.update() 
 
-
-       
+    def start_search(self):
+        # Use threading to avoid freezing during  API call
+        search_thread = threading.Thread(target=self.search)
+        search_thread.start()
 
     def search(self):
         checkinDate = self.checkinVar.get()
         checkoutDate = self.checkoutVar.get()
         location = self.locationVar.get()
+        
         print(f"Searching for rooms in {location} from {checkinDate} to {checkoutDate}")
-       
+        
+        # Getting the destination ID
+        destination_id = Hotels.get_destination_id(location)
+        if not destination_id:
+            print("Destination not found.")
+            return
+        
+        # Fetch hotels data
+        hotels_data = Hotels.fetch_hotels(destination_id, checkinDate, checkoutDate)
+        print(hotels_data)  
 
     def addQuotes(self):
         quotesFrame = tk.Frame(self, bg='white', borderwidth=0)
