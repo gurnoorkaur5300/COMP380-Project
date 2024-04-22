@@ -45,7 +45,7 @@ class Login(Page):
             width=35,
             font=(
                 "Arial",
-                24),
+                28),
             bg="white",
             fg="black",
             insertbackground="black",
@@ -55,7 +55,7 @@ class Login(Page):
             width=35,
             font=(
                 "Arial",
-                24),
+                28),
             bg="white",
             fg="black",
             insertbackground="black",
@@ -107,20 +107,20 @@ class Login(Page):
         self.isUserVar = tk.IntVar(value=1)
         self.isAdminCheck = tk.Checkbutton(
             checkBoxFrame,
-            text="Admin",
+            text="Admin",font=("Ariel", 34),
             variable=self.isAdminVar,
             command=checkBox)
         self.isUserCheck = tk.Checkbutton(
             checkBoxFrame,
-            text="User",
+            text="User",font=("Ariel", 34),
             variable=self.isUserVar,
             command=checkBox)
         self.isAdminCheck.grid(row=0, column=0)
         self.isUserCheck.grid(row=0, column=1)
 
         # Pack the entry widgets inside the entryFrame
-        self.userEmail.pack(side=tk.TOP, pady=(50, 10))
-        self.userPassword.pack(side=tk.TOP, pady=(10, 50))
+        self.userEmail.pack(side=tk.TOP, pady=(100, 50))
+        self.userPassword.pack(side=tk.TOP, pady=(50, 50))
 
         def showCreate(self):
             """
@@ -188,7 +188,7 @@ class Login(Page):
             bg="white",
             activeforeground="blue",
             command=lambda: validateUserLogin(self))
-        submitButton.pack(side=tk.LEFT, padx=135)
+        submitButton.pack(side=tk.LEFT, padx=135, pady=80)
 
         createButton = tk.Button(
             buttonsFrame,
@@ -201,7 +201,7 @@ class Login(Page):
             fg="black",
             activeforeground="blue",
             command=lambda: showCreate(self))
-        createButton.pack(side=tk.RIGHT, padx=(0, 135))
+        createButton.pack(side=tk.RIGHT, padx=(0, 135), pady=80)
 
         # display frames on page
         entryFrame.pack()
