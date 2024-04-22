@@ -1,0 +1,67 @@
+Help on module reservation:
+
+NAME
+    reservation
+
+CLASSES
+    builtins.object
+        Reservation
+    
+    class Reservation(builtins.object)
+     |  Reservation(customerName=None, room=None, checkInDate=None, checkOutDate=None, paymentID=None)
+     |  
+     |  This class represents a Reservation
+     |  :Author: Gregory Calderon and Arameh Baghdassarian
+     |  :Version 1.0
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, customerName=None, room=None, checkInDate=None, checkOutDate=None, paymentID=None)
+     |      Initialize a new Reservation instance.
+     |      
+     |      :param name: The customer making the reservation
+     |      :type name: str
+     |      :param room: The room being reserved
+     |      :type room: int
+     |      :param checkInDate: The date when the customer will check in
+     |      :type checkInDate: str
+     |      :param checkOutDate: The date when the customer will check out
+     |      :type checkOutDate: str
+     |  
+     |  ----------------------------------------------------------------------
+     |  Readonly properties defined here:
+     |  
+     |  checkInDate
+     |      str: The date of the customer's check-in.
+     |  
+     |  checkOutDate
+     |      str: The date of the customer's check-out.
+     |  
+     |  name
+     |      str: The name of the customer.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+     |  
+     |  hotelName
+     |      str: The name of the Hotel where the room is being booked.
+     |  
+     |  room
+     |      int: The room number for the customer.
+     |  
+     |  setDob
+     |      str: The date of the customer's check-out.
+     |  
+     |  setName
+     |      str: The name of the customer.
+
+FILE
+    /Users/gregcalderon/Desktop/380 CompSys/COMP380-Project/reservation.py
+
+
