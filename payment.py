@@ -4,6 +4,7 @@ import hashlib
 import re
 from customer import Customer
 from entryBoxUtility import EntryBoxUtility
+from paymentClass import PaymentClass
 
 class Payment(tk.Toplevel):
     def __init__(self,controller, database, master=None):
@@ -125,10 +126,9 @@ class Payment(tk.Toplevel):
             self.resetToDefault(self.cityName, self.defaultMessages[4])
             return False
 
-        # name = cardName
-        # hashPasswrd = hashlib.sha256(securityCode.encode()).hexdigest()
+        hashCode = hashlib.sha256(securityCode.encode()).hexdigest()
 
-        #newPayment = Customer(name, email, dob, phone, hashPasswrd)
+        newPayment = PaymentClass(cardName, cardNumber, expirationDate, hashCode, clientAddress, zipCode, cityName)
 
         
 
