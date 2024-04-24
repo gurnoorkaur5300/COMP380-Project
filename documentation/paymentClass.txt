@@ -1,0 +1,104 @@
+Help on module paymentClass:
+
+NAME
+    paymentClass
+
+CLASSES
+    builtins.object
+        PaymentClass
+    
+    class PaymentClass(builtins.object)
+     |  PaymentClass(n_cardName=None, n_cardNum=None, n_securityCode=None, n_clientAddress=None, n_cityName=None, n_zipCode=None, n_expDate=None)
+     |  
+     |  Represents a payment transaction.
+     |  
+     |  Attributes:
+     |      name (str): Name on the card.
+     |      number (str): Card number.
+     |      code (str): Security code.
+     |      address (str): Client address.
+     |      city (str): City name.
+     |      zip (str): ZIP code.
+     |      date (str): Expiration date.
+     |  
+     |  Methods:
+     |      setName(name: str) -> None: Set the name on the card.
+     |      setcardNumber(number: str) -> None: Set the card number.
+     |      setcardCode(code: str) -> None: Set the security code.
+     |      setAddress(address: str) -> None: Set the client address.
+     |      setcityName(city: str) -> None: Set the city name.
+     |      setzipCode(zip: str) -> None: Set the ZIP code.
+     |      setexpDate(date: str) -> None: Set the expiration date.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, n_cardName=None, n_cardNum=None, n_securityCode=None, n_clientAddress=None, n_cityName=None, n_zipCode=None, n_expDate=None)
+     |      Initialize a PaymentClass object.
+     |      
+     |      Args:
+     |          n_cardName (str, optional): Name on the card.
+     |          n_cardNum (str, optional): Card number.
+     |          n_securityCode (str, optional): Security code.
+     |          n_clientAddress (str, optional): Client address.
+     |          n_cityName (str, optional): City name.
+     |          n_zipCode (str, optional): ZIP code.
+     |          n_expDate (str, optional): Expiration date.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Readonly properties defined here:
+     |  
+     |  address
+     |      Return the address on the card.
+     |  
+     |  city
+     |      Return the city on the card.
+     |  
+     |  code
+     |      Return the code on the card.
+     |  
+     |  date
+     |      Return the date on the card.
+     |  
+     |  name
+     |      Return the name on the card.
+     |  
+     |  number
+     |      Return the number on the card.
+     |  
+     |  zip
+     |      Return the zip code on the card.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+     |  
+     |  setAddress
+     |      Return the address on the card.
+     |  
+     |  setName
+     |      Return the name on the card.
+     |  
+     |  setcardCode
+     |      Return the code on the card.
+     |  
+     |  setcardNumber
+     |      Return the number on the card.
+     |  
+     |  setcityName
+     |      Return the city on the card.
+     |  
+     |  setexpDate
+     |      Return the date on the card.
+     |  
+     |  setzipCode
+     |      Return the zip code on the card.
+
+FILE
+    /Users/mgc/Desktop/Project_380/COMP380-Project/paymentClass.py
+
+
