@@ -1,5 +1,8 @@
 class PaymentClass:
     """
+    This class represents the account page.
+        :author: Martin Gallegos Cordero
+        :version: 2.0
     Represents a payment transaction.
 
     Attributes:

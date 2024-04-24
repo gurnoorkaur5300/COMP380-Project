@@ -3,6 +3,11 @@ from paymentClass import PaymentClass
 
 class TestPayment(unittest.TestCase):
     def test_payment_creation(self):
+        """
+        This class represents the account page.
+            :author: Martin Gallegos Cordero
+            :version: 2.0
+        """
         payment = PaymentClass(n_cardName = "Freddy Mercury", n_cardNumber= 1234567812345678, n_expirationDate = "03-24", n_hashCode = 123, n_clientAddress = "234 Bohemia Rapsody", n_zipCode=45321, n_cityName="London" )
         self.assertEqual(payment.name, "Freddy Mercury")
         self.assertEqual(payment.number, 1234567812345678)
