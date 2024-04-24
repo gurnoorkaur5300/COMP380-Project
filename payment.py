@@ -9,6 +9,9 @@ from paymentClass import PaymentClass
 class Payment(tk.Toplevel):
     def __init__(self,controller, database, master=None):
         """
+        This class represents the account page.
+        :author: Martin Gallegos Cordero
+        :version: 2.0
         Initializes the Create window.
 
         Args:
