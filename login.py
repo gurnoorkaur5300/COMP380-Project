@@ -7,6 +7,7 @@ from tkinter import messagebox
 import hashlib
 
 
+
 class Login(Page):
     """
      This class represents the login page.
@@ -45,7 +46,7 @@ class Login(Page):
             width=35,
             font=(
                 "Arial",
-                24),
+                28),
             bg="white",
             fg="black",
             insertbackground="black",
@@ -55,7 +56,7 @@ class Login(Page):
             width=35,
             font=(
                 "Arial",
-                24),
+                28),
             bg="white",
             fg="black",
             insertbackground="black",
@@ -107,20 +108,22 @@ class Login(Page):
         self.isUserVar = tk.IntVar(value=1)
         self.isAdminCheck = tk.Checkbutton(
             checkBoxFrame,
-            text="Admin",
+            text="Admin",font=("Ariel", 34),
             variable=self.isAdminVar,
+            activebackground="blue",
             command=checkBox)
         self.isUserCheck = tk.Checkbutton(
             checkBoxFrame,
-            text="User",
+            text="User",font=("Ariel", 34),
             variable=self.isUserVar,
+            activebackground="blue",
             command=checkBox)
         self.isAdminCheck.grid(row=0, column=0)
         self.isUserCheck.grid(row=0, column=1)
 
         # Pack the entry widgets inside the entryFrame
-        self.userEmail.pack(side=tk.TOP, pady=(50, 10))
-        self.userPassword.pack(side=tk.TOP, pady=(10, 50))
+        self.userEmail.pack(side=tk.TOP, pady=(100, 50))
+        self.userPassword.pack(side=tk.TOP, pady=(50, 50))
 
         def showCreate(self):
             """
@@ -173,40 +176,36 @@ class Login(Page):
                 self.controller.isLoggedIn = True
                 self.controller.isAdmin = True
                 self.controller.showFrame("Admin")
-
-        # buttons frame
-        buttonsFrame = tk.Frame(self)
-
+        
         # create buttons
         submitButton = tk.Button(
-            buttonsFrame,
+            self,
             text="SUBMIT",
-            borderwidth=10,
+            borderwidth=0,
             font=(
                 "Arial",
-                32),
-            bg="white",
+                32),fg="black",
             activeforeground="blue",
             command=lambda: validateUserLogin(self))
-        submitButton.pack(side=tk.LEFT, padx=135)
+        submitButton.place(relx=0.3, rely=.8, anchor=tk.CENTER)
+        
 
         createButton = tk.Button(
-            buttonsFrame,
+            self,
             text="CREATE",
-            borderwidth=10,
+            borderwidth=0,
             font=(
                 "Arial",
                 32),
-            bg="white",
             fg="black",
             activeforeground="blue",
             command=lambda: showCreate(self))
-        createButton.pack(side=tk.RIGHT, padx=(0, 135))
+        createButton.place(relx=0.7, rely=.8, anchor=tk.CENTER)
 
         # display frames on page
         entryFrame.pack()
         checkBoxFrame.pack()
-        buttonsFrame.pack()
+
 
         self.update_idletasks()
 

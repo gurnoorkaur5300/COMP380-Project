@@ -2,20 +2,22 @@ from customer import Customer
 from room import Room
 
 class Reservation:
+    """
+    This class represents a Reservation
+    :Author: Gregory Calderon and Arameh Baghdassarian
+    :Version 1.0
+    """
     def __init__(self, customerName=None, room=None, checkInDate=None, checkOutDate=None, paymentID=None):
         """
-        Initialize a new Reservation instance.
+        Initializes a new Reservation instance.
 
-        :param name: The customer making the reservation
-        :type name: str
-        :param room: The room being reserved
-        :type room: int
-        :param checkInDate: The date when the customer will check in
-        :type checkInDate: str
-        :param checkOutDate: The date when the customer will check out
-        :type checkOutDate: str
+        Args:
+            customerName: The name of the customer.
+            room: The room being reserved.
+            checkInDate: The date when the customer will check in.
+            checkOutDate: The date when the customer will check out.
+            paymentID: The payment ID associated with the reservation.
         """
-
         self.__name = customerName
         self.__room = room
         self.__checkInDate = checkInDate
@@ -24,72 +26,100 @@ class Reservation:
 
     @property
     def name(self):
-        """str: The name of the customer."""
+        """
+        Retrieves the name of the customer.
+        
+        Returns:
+            str: The name of the customer.
+        """
         return self.__name
 
     @name.setter
     def setName(self, name):
         """
-        Sets the customer name.
-        :param name: Customer's name.
-        :type name: str
-        """
-        self.name = name
+        Sets the customer's name.
 
-   
+        Args:
+            name: The name of the customer.
+        """
+        self.__name = name
+
     @property
     def hotelName(self):
-        """str: The name of the Hotel where the room is being booked."""
+        """
+        Retrieves the name of the hotel.
+
+        Returns:
+            str: The name of the hotel.
+        """
         return self.__hotelName
 
     @hotelName.setter
     def hotelName(self, hotelName):
-        """  
-        Sets the hotelName.
-        :param hotelName: Hotel's name.
-        :type hotelName: str
         """
-        self.hotelName = hotelName
- 
+        Sets the name of the hotel.
+
+        Args:
+            hotelName: The name of the hotel.
+        """
+        self.__hotelName = hotelName
+
     @property
     def room(self):
-        """int: The room number for the customer."""
+        """
+        Retrieves the room number for the reservation.
+
+        Returns:
+            int: The room number.
+        """
         return self.__room
-    
+
     @room.setter
     def room(self, room):
-        """  
-        Sets the room number.
-        :param room: Customer's room.
-        :type room: int
         """
-        self.room = room
+        Sets the room number for the reservation.
+
+        Args:
+            room: The room number for the reservation.
+        """
+        self.__room = room
     
     @property
     def checkInDate(self):
-        """str: The date of the customer's check-in."""
+        """
+        Retrieves the check-in date for the reservation.
+
+        Returns:
+            str: The check-in date.
+        """
         return self.__checkInDate
     
     @checkInDate.setter
-    def setDob(self, checkInDate):
+    def setCheckInDate(self, checkInDate):
         """
-        Sets the customer check-in date.
-        :param checkInDate: Customer's check in.
-        :type checkInDate: str
+        Sets the check-in date for the reservation.
+
+        Args:
+            checkInDate: The check-in date.
         """
-        self.dob = checkInDate
+        self.__checkInDate = checkInDate
 
     @property
     def checkOutDate(self):
-        """str: The date of the customer's check-out."""
+        """
+        Retrieves the check-out date for the reservation.
+
+        Returns:
+            str: The check-out date.
+        """
         return self.__checkOutDate
     
     @checkOutDate.setter
-    def setDob(self, checkOutDate):
+    def setCheckOutDate(self, checkOutDate):
         """
-        Sets the customer check-out date.
-        :param checkOutDate: Customer's check out.
-        :type checkOutDate: str
-        """
-        self.dob = checkOutDate
+        Sets the check-out date for the reservation.
 
+        Args:
+            checkOutDate: The check-out date.
+        """
+        self.__checkOutDate = checkOutDate

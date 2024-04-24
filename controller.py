@@ -49,7 +49,7 @@ class App(tk.Tk):
         
         #minimum window size when app opens
         self.minsize(width=800, height=800)
-        #self.maxsize(width=1000, height=1000)
+        self.maxsize(width=800, height=800)
 
         #set theme 
         style=ttk.Style()
@@ -150,4 +150,3 @@ if __name__ == "__main__":
     app = App()
     app.title("Titan Reservations")
     app.mainloop()
-

@@ -5,7 +5,7 @@ class Administrator:
     :version 1.0
     """
     def __init__(self, n_adminName=None, n_adminEmail=None, n_hashPass=None):
-
+ 
         """
         Constructs a administrator
 
