@@ -9,6 +9,7 @@ from account import Account
 from pageHeader import PageHeader
 from login import Login
 from admin import Admin     
+from viewReservation import ViewReservation
 
 
 #central controller class 
@@ -75,6 +76,7 @@ class App(tk.Tk):
         self.loginPage = Login(self.container, self.db, self)
         self.accountPage = Account(self.container, self.db,self, self.loginPage)
         self.adminPage = Admin(self.container, self.db, self)
+        self.viewReservation = ViewReservation(self.container, self.db, self)
         
         
         self.frames = {
@@ -82,7 +84,8 @@ class App(tk.Tk):
             "Policies": self.policiesPage,
             "Account": self.accountPage,
             "Admin": self.adminPage,
-            "Login": self.loginPage
+            "Login": self.loginPage,
+            "ViewReservation": self.viewReservation
         }
                     
         # By default, display home page
