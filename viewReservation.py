@@ -1,13 +1,14 @@
 import tkinter as tk
-import tkmacosx
+# import tkmacosx
 from page import Page
-from entryBoxUtility import EntryBoxUtility 
-from login import Login
-from room import Room
-from home import Home
+# from entryBoxUtility import EntryBoxUtility 
+# from login import Login
+# from room import Room
+# from home import Home
+from reservation import Reservation
 
 
-class viewReservation(Page):
+class ViewReservation(Page):
     """
     This class represents the viewReservation page.
     :author: Arameh Baghdasarian
@@ -22,7 +23,7 @@ class viewReservation(Page):
     Methods:
         setCustomer(n_customer): Sets the customer whose account information will be displayed.
     """
-    def __init__(self,parent, database, controller, loginPage = None, customer=None, room = None, home=None):
+    def __init__(self,parent, database, controller, customer=None, room = None, home=None):
         """
         Initializes the reservation page object.
 
@@ -36,22 +37,38 @@ class viewReservation(Page):
         self.controller = controller
         self.database = database 
         self.customer = customer
-        self.loginPage = loginPage
         self.room = room
         self.home = home
 
     def confirmReservation(self):
         """
         Confirms the customer's reservation and populates the reservation class
+
+        call the payment window and pass reservation to his page
         """
+
+        newReservation = Reservation(
+            customerName=self.customer.name,
+            room=self.room,
+            checkInDate=self.home.checkinDate,
+            checkOutDate=self.home.checkoutDate,
+            
+        )
        
 
     def cancelReservation(self):
         """
         Cancels the current reservation process (return to home page) and removes 
         reservation info from database(if the reservation has already been made)
-        """     
         
+        are you sure you want to cancel this reservation if the reservation exists
+
+        call deleteReservation
+
+        call reset function to delete summary data
+        """     
+        self.controller.showFrame("Home")
+
 
     def setSummary(self, n_customer):
         """
