@@ -76,19 +76,14 @@ class Home(Page):
         searchButton.pack(pady=30)
 
     def selectDate(self, dateType):
-        """
-        Opens a CalendarDialog to select dates.
-        """
         dialog = CalendarDialog(self)
-        dialog.wait_window()
-
         if dialog.result:
             formattedDate = dialog.result.strftime("%Y-%m-%d")
             if dateType == 'checkin':
                 self.checkinVar.set(formattedDate)
             elif dateType == 'checkout':
                 self.checkoutVar.set(formattedDate)
-
+                
     def start_search(self):
         """
         Initiates a new thread for the search to avoid freezing.
