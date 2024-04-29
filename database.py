@@ -310,7 +310,18 @@ class Database:
         except sqlite3.OperationalError as e:
             messagebox.showerror("Error", f"Database operation failed: {e}")
 
+    def fetch_hotels_by_location(self, location):
+        """Fetches hotels based on location."""
+        cursor = self.conn.cursor()
+        cursor.execute('''SELECT hotelName, location, amenities, priceRange FROM hotels WHERE location=?''', (location,))
+        return cursor.fetchall()
 
+    def fetch_rooms_by_hotel(self, hotel_name):
+        """Fetches rooms based on hotel name."""
+        cursor = self.conn.cursor()
+        cursor.execute('''SELECT roomId, roomNum, cost FROM rooms WHERE hotelName=?''', (hotel_name,))
+        return cursor.fetchall()
+    
 
 
         
