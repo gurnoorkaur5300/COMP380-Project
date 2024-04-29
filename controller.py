@@ -49,8 +49,10 @@ class App(tk.Tk):
 
         
         #minimum window size when app opens
-        self.minsize(width=800, height=800)
-        self.maxsize(width=800, height=800)
+        self.attributes('-fullscreen', True)  # Set the application to full screen
+
+        # self.minsize(width=800, height=800)
+        # self.maxsize(width=800, height=800)
 
         #set theme 
         style=ttk.Style()
