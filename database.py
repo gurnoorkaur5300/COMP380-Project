@@ -33,7 +33,7 @@ class Database:
         Args:
             dbFile (str): The name of the SQLite database file.
         """
-        self.conn =sqlite3.connect(dbFile)
+        self.conn =sqlite3.connect(dbFile, check_same_thread=False)
         self.buildTable()
 
     def buildTable(self):
