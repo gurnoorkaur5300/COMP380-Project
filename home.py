@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk, simpledialog, font, messagebox
 from PIL import Image, ImageTk
 from tkcalendar import Calendar
-import tkmacosx
 import threading
 from page import Page
 from hotels import Hotels
@@ -14,24 +13,14 @@ class CalendarDialog(simpledialog.Dialog):
     Represents a calendar dialog box used for selecting dates.
     """
     def body(self, master):
-        """
-        Builds the body of the dialog with a calendar widget.
-        """
         self.calendar = Calendar(master, selectmode='day')
         self.calendar.pack()
         return self.calendar
   
     def apply(self):
-        """
-        Applies the selected date from the calendar.
-        """
         self.result = self.calendar.selection_get()
 
-
 class Home(Page):
-    """
-    Represents the home page of the application where users can search for rooms.
-    """
     def __init__(self, parent, controller):
         super().__init__(parent, controller)
         self.controller = controller
@@ -45,9 +34,6 @@ class Home(Page):
         self.focus_set()
 
     def buildSearchForm(self):
-        """
-        Constructs the search form with fields for check-in, check-out, and location.
-        """
         searchFrame = tk.Frame(self, bg='white', borderwidth=2, relief="solid", padx=45, pady=20)
         searchFrame.pack(pady=60, padx=100)
 
@@ -72,7 +58,7 @@ class Home(Page):
         self.checkoutEntry.bind("<Button-1>", lambda event: self.selectDate('checkout'))
 
         # Search button
-        searchButton = tkmacosx.Button(searchFrame, text="Search Rooms", command=self.start_search, bg="#003366", fg="white", font=("Arial", 18))
+        searchButton = tk.Button(searchFrame, text="Search", command=self.start_search, bg="#003366", fg="white", font=("Arial", 18))
         searchButton.pack(pady=30)
 
     def selectDate(self, dateType):
@@ -83,36 +69,28 @@ class Home(Page):
                 self.checkinVar.set(formattedDate)
             elif dateType == 'checkout':
                 self.checkoutVar.set(formattedDate)
-                
+
     def start_search(self):
-        """
-        Initiates a new thread for the search to avoid freezing.
-        """
         search_thread = threading.Thread(target=self.search)
         search_thread.start()
 
     def search(self):
-        """
-        Fetches the hotel data based on selected check-in, check-out dates, and location.
-        """
         checkin_date = self.checkinVar.get()
         checkout_date = self.checkoutVar.get()
         location = self.locationVar.get()
-
-        # Fetch hotels based on location
+        print(f"Search initiated for location: {location}, Check-in: {checkin_date}, Check-out: {checkout_date}")
+    
         hotels_data = Hotels.get_hotels_by_location(location)
-
+        print(f"Hotels found: {hotels_data}")
+    
         if not hotels_data:
             tk.messagebox.showinfo("No Hotels", f"No hotels found in {location}.")
             return
-
-        # Display the hotel list in the GUI
+    
         self.display_hotels(hotels_data)
+    
 
     def display_hotels(self, hotels):
-        """
-        Displays the list of hotels in the GUI.
-        """
         hotels_frame = tk.Frame(self, bg='white')
         hotels_frame.pack(pady=20)
 
@@ -138,11 +116,9 @@ class Home(Page):
             show_rooms_button.pack(side=tk.RIGHT, padx=10)
 
     def addQuotes(self):
-        """
-        Adds inspirational quotes to the home page.
-        """
         quotes_frame = tk.Frame(self, bg='white')
         quotes_frame.pack(pady=10, fill=tk.X)
 
         quote = tk.Label(quotes_frame, text="To Travel is to Live!", bg='white', fg="#003366", font=("Georgia", 24, "italic"))
         quote.pack()
+
