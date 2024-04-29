@@ -5,6 +5,9 @@ import re
 from customer import Customer
 from entryBoxUtility import EntryBoxUtility
 from paymentClass import PaymentClass
+from viewReservation import ViewReservation
+from reservation import Reservation
+from datetime import datetime
 
 class Payment(tk.Toplevel):
     def __init__(self,controller, database, master=None):
@@ -20,6 +23,9 @@ class Payment(tk.Toplevel):
             database: The database object containing user information.
             master: The master widget under which this window is placed.
         """
+
+        currentDate = datetime.now()
+        paymentID = None
         super().__init__(master)
         self.controller= controller
         self.database = database 
@@ -42,10 +48,10 @@ class Payment(tk.Toplevel):
         self.cardNumber.insert(0, "Enter card number")
         self.cardNumber.defaultText = "Enter card number"
 
-        self.expirationDate(0, "Enter expiration date")
+        self.expirationDate.insert(0, "Enter expiration date")
         self.expirationDate.defaultText = "Enter expiration date"
         
-        self.securityCode(0, "Enter security code")
+        self.securityCode.insert(0, "Enter security code")
         self.securityCode.defaultText = "Enter security code"
         
         self.clientAddress.insert(0,"Enter address")
@@ -73,11 +79,25 @@ class Payment(tk.Toplevel):
    
 
         #create button to submit
-        payButton = tk.Button(self, text = "PAY", borderwidth=10, font=("Arial", 22), bg = "white", fg ="black",  activeforeground="blue", command= self.getData)
-        payButton.pack(padx = 200, side = "left")
+        payButton = tk.Button(
+            self, text = "PAY", 
+            borderwidth=10, 
+            font=("Arial", 22), 
+            bg = "white", fg ="black",  
+            activeforeground="blue", 
+            command= self.getData)
+        payButton.pack(relx=0.3, rely=.8, anchor=tk.CENTER)
 
-        cancelButton = tk.Button(self, text = "CANCEL", borderwidth=10, font=("Arial", 22), bg = "white", fg ="black",  activeforeground="blue", command= self.getData)
-        cancelButton.pack(padx = 200, side = "right")
+        cancelButton = tk.Button(
+            self,
+            text = "CANCEL",
+            borderwidth=10,
+            font=("Arial", 22),
+            bg = "white", 
+            fg ="black",  
+            activeforeground="blue", 
+            command= self.closePayment)
+        cancelButton.pack(relx=0.7, rely=.8, anchor=tk.CENTER)
 
 
         self.defaultMessages = ["Enter full name on card", "Enter card number","Enter security code", "Enter address", "Enter city", "Enter zip code","Enter expiration date"]
@@ -87,12 +107,6 @@ class Payment(tk.Toplevel):
         for widget in widgets:
             widget.bind("<FocusIn>", EntryBoxUtility.clearEntries)
             widget.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
-
-
-        # Special handling for password-related widgets
-        # self.userPassword.bind("<FocusIn>", EntryBoxUtility.handlePasswordFocusIn)
-        # self.userPasswordConfirm.bind("<FocusIn>", EntryBoxUtility.handlePasswordFocusIn)
-
 
         self.update_idletasks()
 
@@ -208,7 +222,7 @@ class Payment(tk.Toplevel):
         Returns:
             bool: True if the date of birth has the correct format, False otherwise.
         """
-        format = r'^[0-9]+[a-zA-Z]+[a-zA-Z]$'
+        format = r'^\d+\s+[a-zA-Z]+\s+[a-zA-Z]$'
         if not re.match(format,address):
             messagebox.showerror("Error", "Client address must contain number street name and St/BLVD/RD")
             self.resetToDefault(self.clientAddress, self.defaultMessages[3])
@@ -268,7 +282,7 @@ class Payment(tk.Toplevel):
         messagebox.showerror(title, message)    
      
 
-    def closeCreate(self):
+    def closePayment(self):
         self.destroy() 
 
 # Creates instance of App class and starts GUI   
