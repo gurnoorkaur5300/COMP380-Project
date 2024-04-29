@@ -6,6 +6,10 @@ from page import Page
 # from room import Room
 # from home import Home
 from reservation import Reservation
+from payment import Payment
+from tkinter import messagebox
+from entryBoxUtility import EntryBoxUtility 
+from cancelReservation import CancelReservation
 
 
 class ViewReservation(Page):
@@ -40,6 +44,42 @@ class ViewReservation(Page):
         self.room = room
         self.home = home
 
+        confirmButton = tk.Button(
+                self,
+                text="Confirm",
+                borderwidth=0,
+                font=(
+                    "Arial",
+                    32),fg="black",
+                activeforeground="blue",
+                command=lambda: showPayment(self))
+        confirmButton.place(relx=0.3, rely=.8, anchor=tk.CENTER)
+        
+
+        cancelButton = tk.Button(
+                self,
+                text="Cancel Booking",
+                borderwidth=0,
+                font=(
+                    "Arial",
+                    16),
+                fg="black",
+                activeforeground="blue",
+                command=lambda: cancelReservation(self))
+        cancelButton.place(relx=0.7, rely=.8, anchor=tk.CENTER)
+
+        def showPayment(self):
+            """
+            Opens the payment page.
+            """
+            Payment(self, database)      
+
+        def cancelReservation(self):
+            """
+            Opens the cancel reservation window
+            """
+            CancelReservation(self, database)         
+
     def confirmReservation(self):
         """
         Confirms the customer's reservation and populates the reservation class
@@ -47,16 +87,28 @@ class ViewReservation(Page):
         call the payment window and pass reservation to his page
         """
 
-        newReservation = Reservation(
-            customerName=self.customer.name,
-            room=self.room,
-            checkInDate=self.home.checkinDate,
-            checkOutDate=self.home.checkoutDate,
+        # def showPayment(self, database):
+        #     """
+        #     Opens the payment page.
+        #     """
+        #     if self.isUserVar.get() == 1:
+        #         Payment(self, database)
+        #     else:
+        #         messagebox.showerror("ERROR", "Unauthorized Action")
+
+
+        # newReservation = Reservation(
+        #     customerName=self.customer.name,
+        #     room=self.room,
+        #     checkInDate=self.home.checkinDate,
+        #     checkOutDate=self.home.checkoutDate,
             
-        )
+        # )
+
+    
        
 
-    def cancelReservation(self):
+    # def cancelReservation(self):
         """
         Cancels the current reservation process (return to home page) and removes 
         reservation info from database(if the reservation has already been made)
@@ -67,7 +119,7 @@ class ViewReservation(Page):
 
         call reset function to delete summary data
         """     
-        self.controller.showFrame("Home")
+        # self.controller.showFrame("Home")
 
 
     def setSummary(self, n_customer):
@@ -107,27 +159,27 @@ class ViewReservation(Page):
             self.infoLabels.append(valueLabel)
 
 
-        confirmButton = tk.Button(
-            self,
-            text="Confirm",
-            borderwidth=0,
-            font=(
-                "Arial",
-                32),fg="black",
-            activeforeground="blue",
-            command=self.confirmReservation)
-        confirmButton.place(relx=0.3, rely=.8, anchor=tk.CENTER)
+        # confirmButton = tk.Button(
+        #         self,
+        #         text="Confirm",
+        #         borderwidth=0,
+        #         font=(
+        #             "Arial",
+        #             32),fg="black",
+        #         activeforeground="blue",
+        #         command=self.confirmReservation)
+        # confirmButton.place(relx=0.3, rely=.8, anchor=tk.CENTER)
         
 
-        cancelButton = tk.Button(
-            self,
-            text="Cancel Booking",
-            borderwidth=0,
-            font=(
-                "Arial",
-                16),
-            fg="black",
-            activeforeground="blue",
-            command=self.cancelReservation)
-        cancelButton.place(relx=0.7, rely=.8, anchor=tk.CENTER)
+        # cancelButton = tk.Button(
+        #         self,
+        #         text="Cancel Booking",
+        #         borderwidth=0,
+        #         font=(
+        #             "Arial",
+        #             16),
+        #         fg="black",
+        #         activeforeground="blue",
+        #         command=self.cancelReservation)
+        # cancelButton.place(relx=0.7, rely=.8, anchor=tk.CENTER)
         
