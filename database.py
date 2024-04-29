@@ -8,8 +8,8 @@ import hashlib
 class Database:
     """
     Manages interactions with the SQLite database.
-    :author: Gregory Calderon
-    :version: 1.0
+    :author: Gregory Calderon and Gurnoor Kaur
+    :version: 2.0
 
     Attributes:
         conn (sqlite3.Connection): Connection to the SQLite database.
@@ -71,20 +71,16 @@ class Database:
                        FOREIGN KEY (paidId) REFERENCES payment(paidId)
         )''')
 
-        #check for default administrator. create if none exists.
-        cursor.execute("SELECT COUNT(*) FROM administrators")
-        count = cursor.fetchone()[0]
-
-        if count == 0:
-            defaultPassword = "default2Pass"
-            defaultHashPass = hashlib.sha256(defaultPassword.encode()).hexdigest() 
-            defaultAdmin = ("defAdmin", "defadmin@example.com", defaultHashPass)
-            cursor.execute("INSERT INTO administrators (adminName, adminEmail, hashPass) VALUES (?,?,?)", (defaultAdmin))
-        self.conn.commit()
-
+        cursor.execute('''CREATE TABLE IF NOT EXISTS hotels (
+                       hotelId INTEGER PRIMARY KEY AUTOINCREMENT,
+                       hotelName TEXT,
+                       location TEXT,
+                       amenities TEXT,
+                       priceRange TEXT
+        )''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS rooms (
-                       roomId TEXT PRIMARY KEY AUTOINCREMENT,
-                       roomNum INTEGER,
+                       roomId INTEGER PRIMARY KEY AUTOINCREMENT,
+                       roomNum TEXT,
                        hotelName TEXT,
                        location TEXT,
                        cost REAL
@@ -96,6 +92,18 @@ class Database:
                        paidDate TEXT,
                        FOREIGN KEY (customerId) REFERENCES customers(customerId)
        )''')
+        self.conn.commit()
+
+        #check for default administrator. create if none exists.
+        cursor.execute("SELECT COUNT(*) FROM administrators")
+        count = cursor.fetchone()[0]
+
+        if count == 0:
+            defaultPassword = "default2Pass"
+            defaultHashPass = hashlib.sha256(defaultPassword.encode()).hexdigest() 
+            defaultAdmin = ("defAdmin", "defadmin@example.com", defaultHashPass)
+            cursor.execute("INSERT INTO administrators (adminName, adminEmail, hashPass) VALUES (?,?,?)", (defaultAdmin))
+        self.conn.commit()
     
 
     def insertCustomer(self, customer): 
@@ -310,18 +318,24 @@ class Database:
         except sqlite3.OperationalError as e:
             messagebox.showerror("Error", f"Database operation failed: {e}")
 
-    def fetch_hotels_by_location(self, location):
-        """Fetches hotels based on location."""
-        cursor = self.conn.cursor()
-        cursor.execute('''SELECT hotelName, location, amenities, priceRange FROM hotels WHERE location=?''', (location,))
-        return cursor.fetchall()
 
-    def fetch_rooms_by_hotel(self, hotel_name):
-        """Fetches rooms based on hotel name."""
+    def fetch_hotels_by_location(self, location):
         cursor = self.conn.cursor()
-        cursor.execute('''SELECT roomId, roomNum, cost FROM rooms WHERE hotelName=?''', (hotel_name,))
-        return cursor.fetchall()
-    
+        cursor.execute("SELECT * FROM hotels WHERE location=?", (location,))
+        return [{'name': row[1], 'amenities': row[3].split(', '), 'price_range': row[4]} for row in cursor.fetchall()]
+
+    def fetch_rooms_by_hotel_and_availability(self, hotel_name, checkin_date, checkout_date):
+        cursor = self.conn.cursor()
+        query = """
+        SELECT r.roomId, r.roomNum, r.cost FROM rooms r
+        INNER JOIN hotels h ON r.hotelId = h.hotelId
+        WHERE h.name = ? AND r.roomId NOT IN (
+            SELECT roomId FROM reservations
+            WHERE NOT (checkOut <= ? OR checkIn >= ?)
+        )
+        """
+        cursor.execute(query, (hotel_name, checkin_date, checkout_date))
+        return [{'roomId': row[0], 'roomNum': row[1], 'cost': row[2]} for row in cursor.fetchall()]
 
 
         
