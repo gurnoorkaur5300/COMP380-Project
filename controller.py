@@ -49,8 +49,10 @@ class App(tk.Tk):
 
         
         #minimum window size when app opens
-        self.minsize(width=800, height=800)
-        self.maxsize(width=800, height=800)
+        self.attributes('-fullscreen', True)  # Set the application to full screen
+
+        # self.minsize(width=800, height=800)
+        # self.maxsize(width=800, height=800)
 
         #set theme 
         style=ttk.Style()
@@ -63,20 +65,35 @@ class App(tk.Tk):
         self.grid_columnconfigure(0, weight=1) 
       
         # Create a container frame for pages
-        self.container = Page(self,self)
-        self.container = tk.Frame(self)  
-        self.container.grid(row=1, column=0, sticky="nsew")
-        self.container.grid_rowconfigure(0, weight=1)
-        self.container.grid_columnconfigure(0, weight=1)
+        # self.container = Page(self,self)
+        # self.container = tk.Frame(self)  
+        # self.container.grid(row=1, column=0, sticky="nsew")
+        # self.container.grid_rowconfigure(0, weight=1)
+        # self.container.grid_columnconfigure(0, weight=1)
 
+        # Create a canvas and scrollbar for scrolling content
+        self.canvas = tk.Canvas(self)
+        self.scrollbar = ttk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
+        self.canvas.config(yscrollcommand=self.scrollbar.set)
+
+        # Grid the canvas and scrollbar
+        self.canvas.grid(row=1, column=0, sticky="nsew")
+        self.scrollbar.grid(row=1, column=1, sticky="ns")
+
+        # Create a frame on the canvas which will contain the content
+        self.scrollable_frame = ttk.Frame(self.canvas)
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor='nw')
+
+        # Adjust the scroll region on canvas configuration change
+        self.scrollable_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
       
         # Instantiate pages
-        self.homePage = Home(self.container, self)
-        self.policiesPage = Policies(self.container, self)
-        self.loginPage = Login(self.container, self.db, self)
-        self.accountPage = Account(self.container, self.db,self, self.loginPage)
-        self.adminPage = Admin(self.container, self.db, self)
-        self.viewReservation = ViewReservation(self.container, self.db, self)
+        self.homePage = Home(self.scrollable_frame, self)
+        self.policiesPage = Policies(self.scrollable_frame, self)
+        self.loginPage = Login(self.scrollable_frame, self.db, self)
+        self.accountPage = Account(self.scrollable_frame, self.db,self, self.loginPage)
+        self.adminPage = Admin(self.scrollable_frame, self.db, self)
+        self.viewReservation = ViewReservation(self.scrollable_frame, self.db, self)
         
         
         self.frames = {
