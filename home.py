@@ -5,13 +5,11 @@ from tkcalendar import Calendar
 import threading
 from page import Page
 from hotels import Hotels
+from database import Database  # Assume Database class handles all database interactions
 
 LOCATIONS = ["New York", "Los Angeles", "Chicago", "Houston", "Miami"]
 
 class CalendarDialog(simpledialog.Dialog):
-    """
-    Represents a calendar dialog box used for selecting dates.
-    """
     def body(self, master):
         self.calendar = Calendar(master, selectmode='day')
         self.calendar.pack()
@@ -23,6 +21,7 @@ class CalendarDialog(simpledialog.Dialog):
 class Home(Page):
     def __init__(self, parent, controller):
         super().__init__(parent, controller)
+        self.db = Database()  # Initialize the database
         self.scrollable_frame = controller
 
         titleFont = font.Font(family="Helvetica", size=30, weight="bold")
@@ -37,14 +36,12 @@ class Home(Page):
         searchFrame = tk.Frame(self, bg='white', borderwidth=2, relief="solid", padx=45, pady=20)
         searchFrame.pack(pady=60, padx=100)
 
-        # Destination field
         tk.Label(searchFrame, text="Destination:", bg="white", fg='black', font=("Arial", 16)).pack(pady=10)
         self.locationVar = tk.StringVar()
         locationDropdown = ttk.Combobox(searchFrame, textvariable=self.locationVar, values=LOCATIONS, state="readonly", font=("Arial", 14))
         locationDropdown.pack(pady=10)
         locationDropdown.set("Select Location")
 
-        # Check-in and check-out fields
         tk.Label(searchFrame, text="Check-in Date:", bg='white', font=("Arial", 16)).pack(pady=10)
         self.checkinVar = tk.StringVar()
         self.checkinEntry = tk.Entry(searchFrame, textvariable=self.checkinVar, width=20, fg="black", bg="white", font=("Arial", 14))
@@ -57,7 +54,6 @@ class Home(Page):
         self.checkoutEntry.pack(pady=10)
         self.checkoutEntry.bind("<Button-1>", lambda event: self.selectDate('checkout'))
 
-        # Search button
         searchButton = tk.Button(searchFrame, text="Search", command=self.start_search, bg="#003366", fg="white", font=("Arial", 18))
         searchButton.pack(pady=30)
 
@@ -75,22 +71,16 @@ class Home(Page):
         search_thread.start()
 
     def search(self):
+        location = self.locationVar.get()
         checkin_date = self.checkinVar.get()
         checkout_date = self.checkoutVar.get()
-        location = self.locationVar.get()
-        print(f"Search initiated for location: {location}, Check-in: {checkin_date}, Check-out: {checkout_date}")
-    
-        hotels_data = Hotels.get_hotels_by_location(location)
-        print(f"Hotels found: {hotels_data}")
-    
+        hotels_data = self.db.fetch_hotels_by_location(location)
         if not hotels_data:
             tk.messagebox.showinfo("No Hotels", f"No hotels found in {location}.")
             return
-    
-        self.display_hotels(hotels_data)
-    
+        self.display_hotels(hotels_data, checkin_date, checkout_date)
 
-    def display_hotels(self, hotels):
+    def display_hotels(self, hotels, checkin, checkout):
         hotels_frame = tk.Frame(self, bg='white')
         hotels_frame.pack(pady=20)
 
@@ -98,32 +88,30 @@ class Home(Page):
             hotel_frame = tk.Frame(hotels_frame, borderwidth=2, relief="solid", padx=20, pady=20)
             hotel_frame.pack(pady=10, fill=tk.X)
 
-            # Display hotel image
             image = Image.open(hotel['image_path'])
             image = image.resize((100, 100), Image.ANTIALIAS)
             img = ImageTk.PhotoImage(image)
             img_label = tk.Label(hotel_frame, image=img)
-            img_label.image = img  # Reference to prevent garbage collection
+            img_label.image = img
             img_label.pack(side=tk.LEFT, padx=10)
 
-            # Display hotel information
             hotel_info = f"{hotel['name']} - {hotel['price_range']}\nAmenities: {', '.join(hotel['amenities'])}"
             hotel_label = tk.Label(hotel_frame, text=hotel_info, justify=tk.LEFT)
             hotel_label.pack(side=tk.LEFT, padx=10)
 
-            # "Show Rooms" button
-            show_rooms_button = ttk.Button(hotel_frame, text="Show Rooms", command=lambda h=hotel: self.show_rooms(h))
+            show_rooms_button = ttk.Button(hotel_frame, text="Show Rooms", command=lambda h=hotel['name']: self.show_rooms(h, checkin, checkout))
             show_rooms_button.pack(side=tk.RIGHT, padx=10)
 
-    def show_rooms(self, hotel):
-        # Placeholder for the functionality to show rooms.
-        # You can use a messagebox or open a new window/frame with room details.
-        messagebox.showinfo("Rooms", f"Rooms for {hotel['name']} will be shown here.")
+    def show_rooms(self, hotel_name, checkin, checkout):
+        rooms = self.db.fetch_rooms_by_hotel_and_availability(hotel_name, checkin, checkout)
+        if not rooms:
+            messagebox.showinfo("Rooms", "No available rooms for the selected dates.")
+            return
+        messagebox.showinfo("Rooms", f"Available rooms for {hotel_name}:\n" + '\n'.join([f"Room {room['roomNum']} at ${room['cost']}" for room in rooms]))
 
     def addQuotes(self):
         quotes_frame = tk.Frame(self, bg='white')
         quotes_frame.pack(pady=10, fill=tk.X)
-
         quote = tk.Label(quotes_frame, text="To Travel is to Live!", bg='white', fg="#003366", font=("Georgia", 24, "italic"))
         quote.pack()
 
