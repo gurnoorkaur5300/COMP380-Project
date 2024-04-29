@@ -23,7 +23,7 @@ class CalendarDialog(simpledialog.Dialog):
 class Home(Page):
     def __init__(self, parent, controller):
         super().__init__(parent, controller)
-        self.controller = controller
+        self.scrollable_frame = controller
 
         titleFont = font.Font(family="Helvetica", size=30, weight="bold")
         title = tk.Label(self, text="Share Your Travel Dates, and We'll Handle the Rest!", font=titleFont, fg="#003366", bg="white")
@@ -112,8 +112,13 @@ class Home(Page):
             hotel_label.pack(side=tk.LEFT, padx=10)
 
             # "Show Rooms" button
-            show_rooms_button = ttk.Button(hotel_frame, text="Show Rooms")
+            show_rooms_button = ttk.Button(hotel_frame, text="Show Rooms", command=lambda h=hotel: self.show_rooms(h))
             show_rooms_button.pack(side=tk.RIGHT, padx=10)
+
+    def show_rooms(self, hotel):
+        # Placeholder for the functionality to show rooms.
+        # You can use a messagebox or open a new window/frame with room details.
+        messagebox.showinfo("Rooms", f"Rooms for {hotel['name']} will be shown here.")
 
     def addQuotes(self):
         quotes_frame = tk.Frame(self, bg='white')
