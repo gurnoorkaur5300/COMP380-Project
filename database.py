@@ -8,8 +8,8 @@ import hashlib
 class Database:
     """
     Manages interactions with the SQLite database.
-    :author: Gregory Calderon
-    :version: 1.0
+    :author: Gregory Calderon and Gurnoor Kaur
+    :version: 2.0
 
     Attributes:
         conn (sqlite3.Connection): Connection to the SQLite database.
@@ -33,8 +33,9 @@ class Database:
         Args:
             dbFile (str): The name of the SQLite database file.
         """
-        self.conn =sqlite3.connect(dbFile)
+        self.conn =sqlite3.connect(dbFile, check_same_thread=False)
         self.buildTable()
+        self.insert_sample_data()
 
     def buildTable(self):
         """
@@ -71,20 +72,16 @@ class Database:
                        FOREIGN KEY (paidId) REFERENCES payment(paidId)
         )''')
 
-        #check for default administrator. create if none exists.
-        cursor.execute("SELECT COUNT(*) FROM administrators")
-        count = cursor.fetchone()[0]
-
-        if count == 0:
-            defaultPassword = "default2Pass"
-            defaultHashPass = hashlib.sha256(defaultPassword.encode()).hexdigest() 
-            defaultAdmin = ("defAdmin", "defadmin@example.com", defaultHashPass)
-            cursor.execute("INSERT INTO administrators (adminName, adminEmail, hashPass) VALUES (?,?,?)", (defaultAdmin))
-        self.conn.commit()
-
+        cursor.execute('''CREATE TABLE IF NOT EXISTS hotels (
+                       hotelId INTEGER PRIMARY KEY AUTOINCREMENT,
+                       hotelName TEXT,
+                       location TEXT,
+                       amenities TEXT,
+                       priceRange TEXT
+        )''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS rooms (
-                       roomId TEXT PRIMARY KEY AUTOINCREMENT,
-                       roomNum INTEGER,
+                       roomId INTEGER PRIMARY KEY AUTOINCREMENT,
+                       roomNum TEXT,
                        hotelName TEXT,
                        location TEXT,
                        cost REAL
@@ -96,6 +93,18 @@ class Database:
                        paidDate TEXT,
                        FOREIGN KEY (customerId) REFERENCES customers(customerId)
        )''')
+        self.conn.commit()
+
+        #check for default administrator. create if none exists.
+        cursor.execute("SELECT COUNT(*) FROM administrators")
+        count = cursor.fetchone()[0]
+
+        if count == 0:
+            defaultPassword = "default2Pass"
+            defaultHashPass = hashlib.sha256(defaultPassword.encode()).hexdigest() 
+            defaultAdmin = ("defAdmin", "defadmin@example.com", defaultHashPass)
+            cursor.execute("INSERT INTO administrators (adminName, adminEmail, hashPass) VALUES (?,?,?)", (defaultAdmin))
+        self.conn.commit()
     
 
     def insertCustomer(self, customer): 
@@ -311,6 +320,86 @@ class Database:
             messagebox.showerror("Error", f"Database operation failed: {e}")
 
 
+    def fetch_hotels_by_location(self, location):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM hotels WHERE location=?", (location,))
+        return [{'name': row[1], 'amenities': row[3].split(', '), 'price_range': row[4]} for row in cursor.fetchall()]
 
+    def fetch_rooms_by_hotel_and_availability(self, hotel_name, checkin_date, checkout_date):
+        cursor = self.conn.cursor()
+        query = """
+        SELECT r.roomId, r.roomNum, r.cost FROM rooms r
+        INNER JOIN hotels h ON r.hotelId = h.hotelId
+        WHERE h.name = ? AND r.roomId NOT IN (
+            SELECT roomId FROM reservations
+            WHERE NOT (checkOut <= ? OR checkIn >= ?)
+        )
+        """
+        cursor.execute(query, (hotel_name, checkin_date, checkout_date))
+        return [{'roomId': row[0], 'roomNum': row[1], 'cost': row[2]} for row in cursor.fetchall()]
 
-        
+    def insert_sample_data(self):
+        """Insert sample data if the hotels table is empty."""
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM hotels")
+        if cursor.fetchone()[0] == 0:
+            # Sample hotels data for each location
+            hotels = [
+                # New York Hotels
+                ('Empire State Hotel', 'New York', 'Free WiFi, Pool', '$300-$500'),
+                ('Big Apple Hotel', 'New York', 'Gym, Free Breakfast', '$200-$400'),
+                ('Central Park Lodge', 'New York', 'Pet Friendly, Gym', '$350-$550'),
+                ('Times Square Suites', 'New York', 'Pool, Spa', '$400-$600'),
+                ('Liberty Inn', 'New York', 'Free WiFi, Free Parking', '$150-$350'),
+                ('Hudson River Hotel', 'New York', 'Restaurant, Bar', '$220-$420'),
+                ('Broadway Stay', 'New York', 'Luxury Spa, Fine Dining', '$500-$700'),
+                ('Wall Street Rooms', 'New York', 'Business Lounge, Express Check-in', '$450-$650'),
+    
+                # Los Angeles Hotels
+                ('Hollywood Lights Hotel', 'Los Angeles', 'Pool, Spa, Pet Friendly', '$320-$580'),
+                ('Beverly Hills Retreat', 'Los Angeles', 'Luxury Spa, Free WiFi', '$350-$650'),
+                ('Venice Beachfront Hotel', 'Los Angeles', 'Ocean View, Bar', '$300-$500'),
+                ('Downtown LA Apartments', 'Los Angeles', 'Gym, Urban View', '$250-$450'),
+                ('Sunset Boulevard Inn', 'Los Angeles', 'Rooftop Pool, Restaurant', '$400-$600'),
+                ('Santa Monica Pier Hotel', 'Los Angeles', 'Ocean View, Pool', '$350-$550'),
+                ('California Dreams', 'Los Angeles', 'Free Breakfast, Parking', '$200-$400'),
+                ('LA Grand Hotel', 'Los Angeles', 'Conference Rooms, Pool', '$450-$700'),
+    
+                # Chicago Hotels
+                ('Windy City Hotel', 'Chicago', 'Free WiFi, Gym', '$220-$400'),
+                ('Lake Shore Hotel', 'Chicago', 'Lake View, Restaurant', '$250-$450'),
+                ('Magnificent Mile High', 'Chicago', 'Shopping District, Spa', '$300-$500'),
+                ('Chicago River Hotel', 'Chicago', 'City View, Bar', '$350-$550'),
+                ('The Loop Loft', 'Chicago', 'Modern Gym, Business Suites', '$200-$300'),
+                ('Skyline Suites', 'Chicago', 'Skyline Views, Luxury Dining', '$400-$600'),
+                ('Grant Park Hotel', 'Chicago', 'Near Major Attractions, Pool', '$320-$520'),
+                ('Navy Pier Inn', 'Chicago', 'Near Attractions, Free WiFi', '$280-$480'),
+    
+                # Houston Hotels
+                ('Space City Inn', 'Houston', 'Free Parking, Gym', '$200-$350'),
+                ('Bayou City Hotel', 'Houston', 'River View, Spa', '$250-$400'),
+                ('Houston Heights Hotel', 'Houston', 'Urban Style, Bar', '$220-$420'),
+                ('Gulf Coast Suites', 'Houston', 'Pet Friendly, Free WiFi', '$180-$380'),
+                ('Energy Corridor Hotel', 'Houston', 'Business Facilities, Pool', '$300-$500'),
+                ('Medical Center Inn', 'Houston', 'Quiet Area, Accessible', '$250-$450'),
+                ('Star Houston Hotel', 'Houston', 'Luxury Amenities, Fine Dining', '$350-$550'),
+                ('Houston Station Stay', 'Houston', 'Historic Building, Modern Amenities', '$320-$520'),
+    
+                # Miami Hotels
+                ('Sunny Florida Resort', 'Miami', 'Ocean View, Pool, Spa', '$250-$450'),
+                ('Miami Beach Hotel', 'Miami', 'Beach Access, Pool', '$300-$500'),
+                ('Coral Gables Retreat', 'Miami', 'Luxury Spa, Fine Dining', '$350-$650'),
+                ('Downtown Miami Suites', 'Miami', 'Urban View, Free WiFi', '$200-$400'),
+                ('South Beach Inn', 'Miami', 'Nightlife Access, Bar', '$400-$600'),
+                ('Biscayne Bay Hotel', 'Miami', 'Bay View, Restaurant', '$220-$420'),
+                ('Key Biscayne Resort', 'Miami', 'Island Setting, Luxury Spa', '$450-$700'),
+                ('Ocean Drive Stay', 'Miami', 'Art Deco Style, Ocean Front', '$500-$800'),
+            ]
+            cursor.executemany('INSERT INTO hotels (hotelName, location, amenities, priceRange) VALUES (?,?,?,?)', hotels)
+    
+            # Sample rooms for each hotel
+            room_template = [(hotel[0], f'{num:03}', hotel[1], round(float(hotel[3].split('-')[0].strip('$')) + num * 10, 2)) for hotel in hotels for num in range(101, 106)]
+            cursor.executemany('INSERT INTO rooms (hotelName, roomNum, location, cost) VALUES (?,?,?,?)', room_template)
+    
+            self.conn.commit()
+    

@@ -9,6 +9,7 @@ from account import Account
 from pageHeader import PageHeader
 from login import Login
 from admin import Admin     
+from viewReservation import ViewReservation
 
 
 #central controller class 
@@ -46,8 +47,7 @@ class App(tk.Tk):
 
         self.db = Database()
 
-        
-        #minimum window size when app opens
+        # min and max size of window
         self.minsize(width=800, height=800)
         self.maxsize(width=800, height=800)
 
@@ -68,13 +68,13 @@ class App(tk.Tk):
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
 
-      
         # Instantiate pages
         self.homePage = Home(self.container, self)
         self.policiesPage = Policies(self.container, self)
         self.loginPage = Login(self.container, self.db, self)
         self.accountPage = Account(self.container, self.db,self, self.loginPage)
         self.adminPage = Admin(self.container, self.db, self)
+        self.viewReservation = ViewReservation(self.container, self.db, self)
         
         
         self.frames = {
@@ -82,11 +82,12 @@ class App(tk.Tk):
             "Policies": self.policiesPage,
             "Account": self.accountPage,
             "Admin": self.adminPage,
-            "Login": self.loginPage
+            "Login": self.loginPage,
+            "ViewReservation": self.viewReservation
         }
                     
-        # By default, display home page
-        self.showFrame("Home")
+        # By default, display Login page
+        self.showFrame("Login")
         self.showNavbar()
         self.createFooter()
         

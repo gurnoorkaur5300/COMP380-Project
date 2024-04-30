@@ -1,0 +1,171 @@
+@startuml classUML
+!define DarkBlue
+skinparam classFontName "Helvetica"
+class Controller{
+    showFrame()
+    showNavbar()
+    createFooter() 
+}
+
+class Account{
+    clearAccountPage()
+    clearLoginEntryBoxes()
+    setCustomer()
+}
+class Policies{
+    insert_policy()
+}
+class Home{
+    buildSearchForm()
+    selectDate()
+    start_search()
+    search()
+    display_hotels()
+    addQuotes()
+}
+class Database{
+    buildTable()
+    insertCustomer()
+    getById()
+    getEmail()
+    getReservations()
+    deleteReservation()
+    getAdminEmail()
+    isVerified()
+    isVerified()
+    getResInfo()
+    insertRoom()
+    insertReservation()
+}
+class Login{
+    checkBox()
+    showCreate()
+    validateUserLogin()
+    showUser()
+    reset()
+    defaultBoxes()
+}
+class Create{
+    passwordMatch()
+    getData()
+    validateName()
+    validateEmail()
+    validatePassword()
+    validateDOB()
+    resetToDefault()
+    validatePhoneNumber()
+    showSuccessMessage()
+    closeCreate()
+}
+class Customer{
+    -name
+    -email
+    -dob
+    -phoneNumber
+    -hashPass
+    -reservations 
+    name()
+    setName()
+    email()
+    setEmail()
+    phoneNuber()
+    setPhone()
+    dob()
+    setDOB()
+    reservation()
+    addReservation()
+    hashPass()
+}
+class Administrator{
+    -adminName
+    -adminEmail
+    -hashPass
+    adminName()
+    setAdminName()
+    adminEmail()
+    setAdminEmail()
+    hashPass()
+    setHashPass()
+}
+class Hotels{
+    get_hotels_by_location()
+
+}
+class Reservation{
+    -name
+    -room
+    -checkInDate
+    -checkOutDate
+    -paymentID
+    name()
+    setName()
+    hotelName()
+    setHotelName()
+    room()
+    setRoom()
+    checkInDate()
+    setCheckInDate()
+    chekOutDate()
+    setCheckOutDate()
+
+}
+class PaymentClass{
+    -name
+    -number
+    -code 
+    -address
+    -city 
+    -zip
+    -date
+    name()
+    setName()
+    number()
+    setNumber()
+    code()
+    setCardCode()
+    address()
+    setAddress()
+    city()
+    setcityName()
+    zip()
+    setZipCode()
+    date()
+    setexpDate()
+
+}
+class Room{
+    -hotelName
+    -roomNum
+    -location
+    -cost
+    hotelName()
+    setHotelName()
+    roomNum()
+    setRoomNum()
+    location()
+    setLocation()
+    cost()
+    setCost()
+    genRoomNum()
+}
+Controller "1" o-- "1" Account : creates
+Controller "1" o-- "1"  Policies : creates
+Controller "1" o-- "1" Home : creates
+Controller "1" o-- "1" Database : creates
+Account "1" o-- "1" Login : builds
+Login "1" o-- "1" Create : creates
+Create "1" o-- "1" Customer : creates
+Create "1" o-- "1" Administrator : Creates
+Login "1" <-- "1" Administrator : access
+Login "1" -- "0...*" Customer : access
+Database "1" <-- "1" Administrator : saves
+Database "1" <|-- "0...*" Customer : saves
+Customer "1" -- "1" Payment : pays
+Home "1" o-- "0...*" Reservation : allows
+Home "1" <-- "0...*" Hotels : contains
+Reservation "0...*" -- "0...*" Hotels : contains
+Hotel "0...*" <-- "0...*" Room : has
+Reservation "1" o-- "1" Payment : makes
+Database "1" <-- "0...*" Reservation : stores
+
+@enduml
