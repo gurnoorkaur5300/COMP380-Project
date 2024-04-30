@@ -86,8 +86,7 @@ class App(tk.Tk):
             "ViewReservation": self.viewReservation
         }
                     
-        # By default, display Login page
-        self.showFrame("Login")
+        self.showFrame("Home")
         self.showNavbar()
         self.createFooter()
         

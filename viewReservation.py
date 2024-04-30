@@ -6,10 +6,10 @@ from page import Page
 # from room import Room
 # from home import Home
 from reservation import Reservation
-from payment import Payment
+# from payment import Payment
 from tkinter import messagebox
 from entryBoxUtility import EntryBoxUtility 
-from cancelReservation import CancelReservation
+# from cancelReservation import CancelReservation
 
 
 class ViewReservation(Page):
