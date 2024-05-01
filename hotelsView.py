@@ -76,9 +76,6 @@ class HotelsView(Page):
 
             showRoomsButton = ttk.Button(self.hotelFrame, text="Show Rooms", command=lambda hotelName=hotel['hotelName']: self.showRooms(hotelName, self.checkIn, self.checkOut))
             showRoomsButton.pack(side=tk.RIGHT, padx=10)
-            
-        
-    
 
     def showRooms(self, hotelName, checkin, checkout):
         rooms = self.db.fetchRoomByHotelAvail(hotelName, checkin, checkout)

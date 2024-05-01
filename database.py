@@ -63,13 +63,12 @@ class Database:
                        customerName TEXT,
                        hotelName TEXT,
                        roomId TEXT, 
-                       paidId INTEGER, 
+                       roomNum INTEGER,
                        checkIn TEXT,
                        checkOut TEXT,
                        paid REAL,    
                        FOREIGN KEY (customerName) REFERENCES customers(name),
-                       FOREIGN KEY (roomId) REFERENCES rooms(roomId),
-                       FOREIGN KEY (paidId) REFERENCES payment(paidId)
+                       FOREIGN KEY (roomId) REFERENCES rooms(roomId)
         )''')
 
         cursor.execute('''CREATE TABLE IF NOT EXISTS hotels (
@@ -324,10 +323,10 @@ class Database:
         """
         cursor = self.conn.cursor()
         try:
-            cursor.execute('''INSERT INTO reservations (customerName, hotelName, roomId, paidId, checkIn, checkOut, paid, payDate)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
-                        (reservation.customerName, reservation.hotelName, reservation.roomId, reservation.paidId,
-                            reservation.checkIn, reservation.checkOut, reservation.paid, reservation.payDate))
+            cursor.execute('''INSERT INTO reservations (customerName, hotelName, roomId, roomNum, checkIn, checkOut, paid)
+                            VALUES (?, ?, ?, ?, ?, ?, ?)''',
+                        (reservation.name, reservation.hotelName, reservation.roomId, reservation.roomNum,
+                            reservation.checkIn, reservation.checkOut, reservation.cost))
             self.conn.commit()
             messagebox.showinfo("Success", "Reservation added.")
         except sqlite3.IntegrityError:
