@@ -5,8 +5,8 @@ from page import Page
 # from login import Login
 # from room import Room
 # from home import Home
-from reservation import Reservation
-# from payment import Payment
+
+from payment import Payment
 from tkinter import messagebox
 from entryBoxUtility import EntryBoxUtility 
 # from cancelReservation import CancelReservation
@@ -40,9 +40,7 @@ class ViewReservation(Page):
         super().__init__(parent,controller)
         self.controller = controller
         self.database = database 
-        # self.customer = customer
-        # self.room = room
-        # self.home = home
+    
 
         self.__name = None
         self.__roomId = None
@@ -50,47 +48,70 @@ class ViewReservation(Page):
         self.__hotelName = None
         self.__location = None
         self.__cost = None
+     
+        self.__checkIn = None
+        self.__checkOut = None
     
         # self.__reservation = n_reservation
         
-        self.reservationFrame = tk.Frame(self, bg='white')
-        self.reservationFrame.pack(fill=tk.BOTH, expand=True)
+        # self.reservationFrame = tk.Frame(self, bg='white')
+        # self.reservationFrame.pack(fill=tk.BOTH, expand=True)
+        
+        self.reservationLabel = tk.Label(self, text="", font=("Arial", 24),justify=tk.LEFT)
+        self.reservationLabel.pack(fill=tk.X, pady=15)
+        
+
         
         
-        self.reservationLabel = tk.Label(self.reservationFrame, text="", justify=tk.LEFT)
-        self.reservationLabel.pack(side=tk.LEFT, padx=10)
-        
+    @property
+    def customerName(self):
+        return self.__name  
+    
   
-    def setCustomer(self, n_customerName):
+    def setCustomerName(self, n_customerName):
         """Set the customer's name."""
         self.__name = n_customerName
-        
-    def setRoomInfo(self, n_roomId, n_roomNum, n_hotelName, n_location, n_cost):
+    
+    
+
+
+    def setRoomInfo(self, n_roomId, n_roomNum, n_hotelName, n_location, n_cost, n_checkIn, n_checkOut):
         """Set the room information."""
         self.__roomId = n_roomId
         self.__roomNum = n_roomNum
         self.__hotelName = n_hotelName
         self.__location = n_location
         self.__cost = n_cost
+        self.__checkIn = n_checkIn
+        self.__checkOut = n_checkOut
+        
         
         self.updateReservationLabel()
-        
+    
+    @property
+    def checkIn(self):
+        return self.__checkIn
+    
+    @property
+    def checkOut(self):
+        return self.__checkOut
+    
     def updateReservationLabel(self):
         """Update the reservation label with the current room information."""
-        room_text = f"Customer Name: {self.__name}\nRoom Id: {self.__roomId}\nRoom Number: {self.__roomNum}\nHotel Name: {self.__hotelName}\nLocation: {self.__location}\nCost: {self.__cost}\n"
-        self.reservationLabel.config(text=room_text)
+        roomText = f"Name: {self.__name}\nRoom Id: {self.__roomId}\nRoom Number: {self.__roomNum}\nHotel Name: {self.__hotelName}\nLocation: {self.__location}\nCheck In: {self.__checkIn}\nCheck Out: {self.__checkOut}\nCost: {self.__cost}\n"
+        self.reservationLabel.config(text=roomText)
             
             
-    # confirmButton = tk.Button(
-    #         self,
-    #         text="Confirm",
-    #         borderwidth=0,
-    #         font=(
-    #             "Arial",
-    #             32),fg="black",
-    #         activeforeground="blue",
-    #         command=lambda: showPayment(self))
-    # confirmButton.place(relx=0.3, rely=.8, anchor=tk.CENTER)
+        confirmButton = tk.Button(
+                self,
+                text="Confirm",
+                borderwidth=0,
+                font=(
+                    "Arial",
+                    32),fg="black",
+                activeforeground="blue",
+                command=lambda: self.showPayment())
+        confirmButton.place(relx=0.3, rely=.8, anchor=tk.CENTER)
         
 
 #     cancelButton = tk.Button(
@@ -105,11 +126,13 @@ class ViewReservation(Page):
 #             command=lambda: cancelReservation(self))
 #     cancelButton.place(relx=0.7, rely=.8, anchor=tk.CENTER)
 
-#     def showPayment(self):
-#         """
-#         Opens the payment page.
-#         """
-#         Payment(self, database)      
+    def showPayment(self):
+        """
+        Opens the payment page.
+        """
+        payWindow = Payment(self) 
+        payWindow.setReservationInfo(self.__name, self.__roomId, self.__roomNum, self.__hotelName, self.__location, self.__cost, self.__checkIn, self.__checkOut)
+         
 
 #     def cancelReservation(self):
 #         """
