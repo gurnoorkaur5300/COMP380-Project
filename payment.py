@@ -8,7 +8,7 @@ from paymentClass import PaymentClass
 from datetime import datetime
 from database import Database
 import tkmacosx
-import uuid
+
 
 class Payment(tk.Toplevel):
     def __init__(self,controller, master=None):
@@ -40,13 +40,6 @@ class Payment(tk.Toplevel):
         self.__checkIn = None
         self.__checkOut = None
     
-        # @property
-        # def checkIn(self):
-        #     return self.__checkIn
-    
-        # @property
-        # def checkOut(self):
-        #     return self.__checkOut
     def setReservationInfo(self, n_customerName, n_roomId, n_roomNum, n_hotelName, n_location, n_cost, n_checkIn, n_checkOut):
         self.__reserveName = n_customerName
         self.__hotelName = n_hotelName
@@ -147,44 +140,43 @@ class Payment(tk.Toplevel):
         Returns:
         bool: True if the data is successfully retrieved, False otherwise.
         """
-        self.cardName = self.cardName.get()
-        cardNumber = self.cardNumber.get()
-        expirationDate = self.expirationDate.get()
-        securityCode= self.securityCode.get() #00/00/0000
-        clientAddress = self.clientAddress.get() #000-000-0000
-        cityName = self.cityName.get().lower()
-        zipCode = self.zipCode.get()
+        cardNameValue = self.cardName.get()
+        cardNumberValue = self.cardNumber.get()
+        expirationDateValue = self.expirationDate.get()
+        securityCodeValue = self.securityCode.get() #00/00/0000
+        clientAddressValue = self.clientAddress.get() #000-000-0000
+        cityNameValue = self.cityName.get().lower()
+        zipCodeValue = self.zipCode.get()
      
         
 
-        if not self.validateName(self.cardName):
+        if not self.validateName(cardNameValue):
             return False
-        if not self.validateCardNumber(cardNumber):
+        if not self.validateCardNumber(cardNumberValue):
             #self.resetToDefault(self.userEmail, self.defaultMessages[3])
             return False
-        if not self.validateExpirationDate(expirationDate):
+        if not self.validateExpirationDate(expirationDateValue):
             return False
-        if not self.validateSecurityCode(securityCode):
+        if not self.validateSecurityCode(securityCodeValue):
             return False
         # if not self.validateClientAddress(clientAddress):
         #     return False
-        if not self.validateZipCode(zipCode):
+        if not self.validateZipCode(zipCodeValue):
             return False
         # if not self.validateCityName(cityName):
         #     self.resetToDefault(self.cityName, self.defaultMessages[4])
         #     return False
 
-        hashCode = hashlib.sha256(securityCode.encode()).hexdigest()
+        hashCode = hashlib.sha256(securityCodeValue.encode()).hexdigest()
         
        
-        newPayment = PaymentClass(self.cardName, cardNumber, expirationDate, hashCode, clientAddress, zipCode, cityName, self.currentDate, self.__cost)
-        # newReservation = Reservation(self.viewReservation.name,self.viewReservation.roomId,self.viewReservation.roomNum,self.viewReservation.hotelName,self.viewReservation.location,self.viewReservation.cost,self.checkIn, self.checkOut)
+        newPayment = PaymentClass(cardNameValue, cardNumberValue, expirationDateValue, hashCode, clientAddressValue, zipCodeValue, cityNameValue, self.currentDate, self.__cost)
         self.database.insertPayment(newPayment)
-        # self.database.insertReservation(newReservation)
         
+        newReservation = Reservation(self.__reserveName, self.__roomId, self.__roomNum, self.__hotelName, self.__location, self.__cost, self.__checkIn, self.__checkOut)
+        
+        self.database.insertReservation(newReservation)
 
-        # self.viewReservation.setPaymentId(paymentId)
-        # self.viewReservation.insertReservation()
 
 
 

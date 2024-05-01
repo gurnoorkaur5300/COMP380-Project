@@ -23,8 +23,11 @@ class Reservation:
         self.__hotelName = n_hotelName
         self.__location = n_location
         self.__cost = n_cost
-        # self.__roomInfo = n_roomInfo
-        
+        self.__checkIn=n_checkIn
+        self.__checkOut= n_checkOut
+        # self.__roomInfo = None
+    
+ 
     # @property 
     # def roomInfo(self):
     #     return self.__roomInfo
@@ -33,20 +36,21 @@ class Reservation:
     # def roomInfo(self, n_roomInfo):
     #     self.__roomInfo = n_roomInfo
         
-    def getRoomId(self):
-        return self.__roomInfo.get('roomId')
-    
-    def getRoomNum(self):
-        return self.__roomInfo.get('roomNum')
-    
-    def getHotelName(self):
-        return self.__roomInfo.get('hotelName')
-    
-    def getLocation(self):
-        return self.roomInfo.get('location')
-    
-    def getCost(self):
-        return self.roomInfo.get('Cost')
+    # @property  
+    # def roomId(self):
+    #     return self.__roomInfo.get('roomId')
+    # @property
+    # def roomNum(self):
+    #     return self.__roomInfo.get('roomNum')
+    # @property
+    # def hotelName(self):
+    #     return self.__roomInfo.get('hotelName')
+    # @property
+    # def location(self):
+    #     return self.roomInfo.get('location')
+    # @property
+    # def getCost(self):
+    #     return self.roomInfo.get('Cost')
 
     @property
     def name(self):
@@ -107,43 +111,50 @@ class Reservation:
     #         room: The room number for the reservation.
     #     """
     #     self.__roomNum = n_roomNum
+    @property
+    def roomId(self):
+        return self.__roomId
     
-    # @property
-    # def checkInDate(self):
-    #     """
-    #     Retrieves the check-in date for the reservation.
-
-    #     Returns:
-    #         str: The check-in date.
-    #     """
-    #     return self.__checkInDate
+    @property
+    def cost(self):
+        return self.__cost
     
-    # @checkInDate.setter
-    # def setCheckInDate(self, n_checkInDate):
-    #     """
-    #     Sets the check-in date for the reservation.
+    @property
+    def checkIn(self):
+        """
+        Retrieves the check-in date for the reservation.
 
-    #     Args:
-    #         checkInDate: The check-in date.
-    #     """
-    #     self.__checkInDate = n_checkInDate
-
-    # @property
-    # def checkOutDate(self):
-    #     """
-    #     Retrieves the check-out date for the reservation.
-
-    #     Returns:
-    #         str: The check-out date.
-    #     """
-    #     return self.__checkOutDate
+        Returns:
+            str: The check-in date.
+        """
+        return self.__checkIn
     
-    # @checkOutDate.setter
-    # def setCheckOutDate(self, n_checkOutDate):
-    #     """
-    #     Sets the check-out date for the reservation.
+    @checkIn.setter
+    def setCheckIn(self, n_checkIn):
+        """
+        Sets the check-in date for the reservation.
 
-    #     Args:
-    #         checkOutDate: The check-out date.
-    #     """
-    #     self.__checkOutDate = n_checkOutDate
+        Args:
+            checkIn: The check-in date.
+        """
+        self.__checkIn= n_checkIn
+
+    @property
+    def checkOut(self):
+        """
+        Retrieves the check-out date for the reservation.
+
+        Returns:
+            str: The check-out date.
+        """
+        return self.__checkOut
+    
+    @checkOut.setter
+    def setCheckOut(self, n_checkOutDate):
+        """
+        Sets the check-out date for the reservation.
+
+        Args:
+            checkOut: The check-out date.
+        """
+        self.__checkOut = n_checkOutDate
