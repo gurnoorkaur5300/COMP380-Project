@@ -7,6 +7,7 @@ from page import Page
 from hotels import Hotels
 from database import Database  # Assume Database class handles all database interactions
 
+
 LOCATIONS = ["New York", "Los Angeles", "Chicago", "Houston", "Miami"]
 
 class CalendarDialog(simpledialog.Dialog):
@@ -23,6 +24,7 @@ class Home(Page):
         super().__init__(parent, controller)
         self.db = Database()  # Initialize the database
         self.scrollable_frame = controller
+        # self.hotelsView = HotelsView(self, self.db, self.controller)
 
         titleFont = font.Font(family="Helvetica", size=30, weight="bold")
         title = tk.Label(self, text="Share Your Travel Dates, and We'll Handle the Rest!", font=titleFont, fg="#003366", bg="white")
@@ -78,36 +80,48 @@ class Home(Page):
         if not hotels_data:
             tk.messagebox.showinfo("No Hotels", f"No hotels found in {location}.")
             return
-        self.display_hotels(hotels_data, checkin_date, checkout_date)
+       
+        self.controller.hotelsView.setHotelsData(hotels_data, checkin_date, checkout_date)
+        self.controller.hotelsView.displayHotels()
+        self.controller.showFrame("HotelsView")
+       
 
-    def display_hotels(self, hotels, checkin, checkout):
-        hotels_frame = tk.Frame(self, bg='white')
-        hotels_frame.pack(pady=20)
+    # def display_hotels(self, hotels, checkin, checkout):
+    #     hotels_frame = tk.Frame(self, bg='white')
+    #     hotels_frame.pack(pady=20)
 
-        for hotel in hotels:
-            hotel_frame = tk.Frame(hotels_frame, borderwidth=2, relief="solid", padx=20, pady=20)
-            hotel_frame.pack(pady=10, fill=tk.X)
+    #     for hotel in hotels:
+    #         hotel_frame = tk.Frame(hotels_frame, borderwidth=2, relief="solid", padx=20, pady=20)
+    #         hotel_frame.pack(pady=10, fill=tk.X)
+            
+    #         # print(hotel)
+    #         photoPath = hotel['photoLink']
+    #         try:
+    #             image = Image.open(photoPath)
+    #             image = image.resize((100, 100))
+    #             img = ImageTk.PhotoImage(image)
+    #             img_label = tk.Label(hotel_frame, image=img)
+    #             img_label.image = img
+    #             img_label.pack(side=tk.LEFT, padx=10)
+    #         except Exception as e:
+    #             print("Error opening or resizing image:", e)
+            
 
-            image = Image.open(hotel['image_path'])
-            image = image.resize((100, 100), Image.ANTIALIAS)
-            img = ImageTk.PhotoImage(image)
-            img_label = tk.Label(hotel_frame, image=img)
-            img_label.image = img
-            img_label.pack(side=tk.LEFT, padx=10)
+    #         hotel_info = f"{hotel['name']} - {hotel['price_range']}\nAmenities: {', '.join(hotel['amenities'])}"
+    #         hotel_label = tk.Label(hotel_frame, text=hotel_info, justify=tk.LEFT)
+    #         hotel_label.pack(side=tk.LEFT, padx=10)
 
-            hotel_info = f"{hotel['name']} - {hotel['price_range']}\nAmenities: {', '.join(hotel['amenities'])}"
-            hotel_label = tk.Label(hotel_frame, text=hotel_info, justify=tk.LEFT)
-            hotel_label.pack(side=tk.LEFT, padx=10)
+    #         show_rooms_button = ttk.Button(hotel_frame, text="Show Rooms", command=lambda h=hotel['name']: self.show_rooms(h, checkin, checkout))
+    #         show_rooms_button.pack(side=tk.RIGHT, padx=10)
 
-            show_rooms_button = ttk.Button(hotel_frame, text="Show Rooms", command=lambda h=hotel['name']: self.show_rooms(h, checkin, checkout))
-            show_rooms_button.pack(side=tk.RIGHT, padx=10)
-
-    def show_rooms(self, hotel_name, checkin, checkout):
-        rooms = self.db.fetch_rooms_by_hotel_and_availability(hotel_name, checkin, checkout)
-        if not rooms:
-            messagebox.showinfo("Rooms", "No available rooms for the selected dates.")
-            return
-        messagebox.showinfo("Rooms", f"Available rooms for {hotel_name}:\n" + '\n'.join([f"Room {room['roomNum']} at ${room['cost']}" for room in rooms]))
+    # def show_rooms(self, hotel_name, checkin, checkout):
+    #     rooms = self.db.fetch_rooms_by_hotel_and_availability(hotel_name, checkin, checkout)
+    #     for room in rooms:
+    #         print(room)
+    #     if not rooms:
+    #         messagebox.showinfo("Rooms", "No available rooms for the selected dates.")
+    #         return
+    #     messagebox.showinfo("Rooms", f"Available rooms for {hotel_name}:\n" + '\n'.join([f"Room {room['roomNum']} at ${room['cost']}" for room in rooms]))
 
     def addQuotes(self):
         quotes_frame = tk.Frame(self, bg='white')

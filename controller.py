@@ -10,6 +10,7 @@ from pageHeader import PageHeader
 from login import Login
 from admin import Admin     
 from viewReservation import ViewReservation
+from hotelsView import HotelsView
 
 
 #central controller class 
@@ -68,6 +69,7 @@ class App(tk.Tk):
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
 
+        
         # Instantiate pages
         self.homePage = Home(self.container, self)
         self.policiesPage = Policies(self.container, self)
@@ -75,6 +77,7 @@ class App(tk.Tk):
         self.accountPage = Account(self.container, self.db,self, self.loginPage)
         self.adminPage = Admin(self.container, self.db, self)
         self.viewReservation = ViewReservation(self.container, self.db, self)
+        self.hotelsView = HotelsView(self.container, self.db, self)
         
         
         self.frames = {
@@ -83,9 +86,11 @@ class App(tk.Tk):
             "Account": self.accountPage,
             "Admin": self.adminPage,
             "Login": self.loginPage,
-            "ViewReservation": self.viewReservation
+            "ViewReservation": self.viewReservation,
+            "HotelsView": self.hotelsView
         }
-                    
+        
+             
         self.showFrame("Home")
         self.showNavbar()
         self.createFooter()
@@ -108,7 +113,7 @@ class App(tk.Tk):
             self.accountPage.clearAccountPage()
 
         # Show specific pages
-        if pageName in ["Home","Policies"]:
+        if pageName in ["Home","Policies", "HotelsView"]:
             self.showNavbar()
         elif pageName ==  "Account" and self.isLoggedIn:
             self.showNavbar()
@@ -122,6 +127,7 @@ class App(tk.Tk):
         # Set the page type for the admin page if logged in as an admin
         elif pageName == "Admin" and self.isAdmin and self.isLoggedIn:
             self.pageHeader.setPageType(pageName)
+            
 
         # Get the page from the frames dictionary
         page = self.frames.get(pageName)
