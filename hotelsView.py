@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk,  messagebox
 from PIL import Image, ImageTk
-
+from database import Database
 from page import Page
 
 
@@ -11,7 +11,7 @@ LOCATIONS = ["New York", "Los Angeles", "Chicago", "Houston", "Miami"]
 class HotelsView(Page):
     def __init__(self, parent, controller, database, n_hotelData=None, n_checkIn=None, n_checkOut=None):
         super().__init__(parent, controller)
-        self.db = database  
+        self.db = Database()  
         
         self.controller = controller
         self.hotels = n_hotelData
@@ -50,7 +50,7 @@ class HotelsView(Page):
         self.canvas.configure(yscrollcommand=scrollbar.set)
         
         self.populateHotels()
-        # self.hotelsFrame.pack()
+
     def populateHotels(self):
         for hotel in self.hotels:
             self.hotelFrame = tk.Frame(self.innerFrame, borderwidth=2, relief="solid", padx =50, pady=20)
@@ -74,26 +74,22 @@ class HotelsView(Page):
             self.hotelLabel = tk.Label(self.hotelFrame, text=self.hotelInfo, justify=tk.LEFT)
             self.hotelLabel.pack(side=tk.LEFT, padx=10)
 
-            show_rooms_button = ttk.Button(self.hotelFrame, text="Show Rooms", command=lambda h=hotel['name']: self.show_rooms(h, self.checkIn, self.checkOut))
-            show_rooms_button.pack(side=tk.RIGHT, padx=10)
+            showRoomsButton = ttk.Button(self.hotelFrame, text="Show Rooms", command=lambda hotelName=hotel['name']: self.showRooms(hotelName, self.checkIn, self.checkOut))
+            showRoomsButton.pack(side=tk.RIGHT, padx=10)
             
         
     
 
-    def show_rooms(self, hotel_name, checkin, checkout):
-        rooms = self.db.fetch_rooms_by_hotel_and_availability(hotel_name, checkin, checkout)
+    def showRooms(self, hotelName, checkin, checkout):
+        rooms = self.db.fetchRoomByHotelAvail(hotelName, checkin, checkout)
         for room in rooms:
             print(room)
         if not rooms:
             messagebox.showinfo("Rooms", "No available rooms for the selected dates.")
             return
-        messagebox.showinfo("Rooms", f"Available rooms for {hotel_name}:\n" + '\n'.join([f"Room {room['roomNum']} at ${room['cost']}" for room in rooms]))
+        messagebox.showinfo("Rooms", f"Available rooms for {hotelName}:\n" + '\n'.join([f"Room {room['roomNum']} at ${room['cost']}" for room in rooms]))
 
-    def addQuotes(self):
-        quotes_frame = tk.Frame(self, bg='white')
-        quotes_frame.pack(pady=10, fill=tk.X)
-        quote = tk.Label(quotes_frame, text="To Travel is to Live!", bg='white', fg="#003366", font=("Georgia", 24, "italic"))
-        quote.pack()
+    
 
     def onCanvasConfigure(self, event):
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
