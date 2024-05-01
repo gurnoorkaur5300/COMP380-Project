@@ -87,9 +87,8 @@ class HotelsView(Page):
         if not rooms:
             messagebox.showinfo("Rooms", "No available rooms for the selected dates.")
             return
-        # messagebox.showinfo("Rooms", f"Available rooms for {hotelName}:\n" + '\n'.join([f"Room {room['roomNum']} at ${room['cost']}" for room in rooms]))
         
-        self.controller.room.setRooms(rooms)
+        self.controller.room.setRooms(rooms, checkin, checkout)
         self.controller.room.displayRooms()
         self.controller.showFrame("Room")
 

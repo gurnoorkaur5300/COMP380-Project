@@ -116,7 +116,7 @@ class App(tk.Tk):
             self.accountPage.clearAccountPage()
 
         # Show specific pages
-        if pageName in ["Home","Policies", "HotelsView", "Room"]:
+        if pageName in ["Home","Policies", "HotelsView", "Room", "ViewReservation"]:
             self.showNavbar()
         elif pageName ==  "Account" and self.isLoggedIn:
             self.showNavbar()
