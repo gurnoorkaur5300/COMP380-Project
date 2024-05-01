@@ -99,12 +99,9 @@ class Room(Page):
         if self.controller.isLoggedIn == True:
             
             print(self.__customer)
-            # reservation = Reservation(self.__customer, roomInfo)
-            
-                
-            # self.controller.viewReservation.setReserveInfo()
-            self.controller.viewReservation.setCustomer(self.__customer)
-            self.controller.viewReservation.setRoomInfo(roomId, roomNum, hotelName, location, cost)
+          
+            self.controller.viewReservation.setCustomerName(self.__customer)
+            self.controller.viewReservation.setRoomInfo(roomId, roomNum, hotelName, location, cost, self.__checkIn, self.__checkOut)
             self.controller.showFrame("ViewReservation")
         else: 
             self.controller.showFrame("Login")

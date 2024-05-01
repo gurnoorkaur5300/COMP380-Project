@@ -89,10 +89,16 @@ class Database:
         )''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS payments (
                        paidId INTEGER PRIMARY KEY,
-                       customerId INTEGER,
+                       customerName TEXT,
+                       cardNumber INTEGER,
+                       securityHash TEXT,
+                       expireDate TEXT,
+                       address TEXT,
+                       city TEXT,
+                       zip INTEGER,
                        amount REAL, 
-                       paidDate TEXT,
-                       FOREIGN KEY (customerId) REFERENCES customers(customerId)
+                       paidDate TEXT
+                   
        )''')
         self.conn.commit()
 
@@ -107,7 +113,16 @@ class Database:
             cursor.execute("INSERT INTO administrators (adminName, adminEmail, hashPass) VALUES (?,?,?)", (defaultAdmin))
         self.conn.commit()
     
-
+    def insertPayment(self, payment):
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute('''INSERT INTO payments (customerName, cardNumber, securityHash, expireDate, address, city, zip, amount, paidDate) VALUES (?,?,?,?,?,?,?,?,?)''', (payment.name, payment.number, payment.code, payment.expireDate, payment.address, payment.city, payment.zip, payment.paidAmount, payment.currentDate))
+            self.conn.commit()
+            messagebox.showinfo("Success", "Payment Accepted")
+        except sqlite3.OperationalError as e:
+            messagebox.showerror("Error", f"Database operation failed: {e}")
+            
+            
     def insertCustomer(self, customer): 
         """
         Inserts a new customer into the 'customers' table.
