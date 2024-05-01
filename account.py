@@ -1,7 +1,6 @@
 import tkinter as tk
 from page import Page
 from entryBoxUtility import EntryBoxUtility 
-from login import Login
 
 
 class Account(Page):
