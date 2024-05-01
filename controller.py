@@ -11,6 +11,7 @@ from login import Login
 from admin import Admin     
 from viewReservation import ViewReservation
 from hotelsView import HotelsView
+from room import Room
 
 
 #central controller class 
@@ -77,7 +78,8 @@ class App(tk.Tk):
         self.accountPage = Account(self.container, self.db,self, self.loginPage)
         self.adminPage = Admin(self.container, self.db, self)
         self.viewReservation = ViewReservation(self.container, self.db, self)
-        self.hotelsView = HotelsView(self.container, self.db, self)
+        self.hotelsView = HotelsView(self.container, self)
+        self.room = Room(self.container, self)
         
         
         self.frames = {
@@ -87,7 +89,8 @@ class App(tk.Tk):
             "Admin": self.adminPage,
             "Login": self.loginPage,
             "ViewReservation": self.viewReservation,
-            "HotelsView": self.hotelsView
+            "HotelsView": self.hotelsView,
+            "Room": self.room
         }
         
              
@@ -113,7 +116,7 @@ class App(tk.Tk):
             self.accountPage.clearAccountPage()
 
         # Show specific pages
-        if pageName in ["Home","Policies", "HotelsView"]:
+        if pageName in ["Home","Policies", "HotelsView", "Room"]:
             self.showNavbar()
         elif pageName ==  "Account" and self.isLoggedIn:
             self.showNavbar()

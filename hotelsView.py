@@ -9,7 +9,7 @@ LOCATIONS = ["New York", "Los Angeles", "Chicago", "Houston", "Miami"]
 
 
 class HotelsView(Page):
-    def __init__(self, parent, controller, database, n_hotelData=None, n_checkIn=None, n_checkOut=None):
+    def __init__(self, parent, controller, n_hotelData=None, n_checkIn=None, n_checkOut=None):
         super().__init__(parent, controller)
         self.db = Database()  
         
@@ -70,11 +70,11 @@ class HotelsView(Page):
                 print("Error opening or resizing image:", e)
             
 
-            self.hotelInfo = f"{hotel['name']} - {hotel['price_range']}\nAmenities: {', '.join(hotel['amenities'])}"
+            self.hotelInfo = f"{hotel['hotelName']} - {hotel['price_range']}\nAmenities: {', '.join(hotel['amenities'])}"
             self.hotelLabel = tk.Label(self.hotelFrame, text=self.hotelInfo, justify=tk.LEFT)
             self.hotelLabel.pack(side=tk.LEFT, padx=10)
 
-            showRoomsButton = ttk.Button(self.hotelFrame, text="Show Rooms", command=lambda hotelName=hotel['name']: self.showRooms(hotelName, self.checkIn, self.checkOut))
+            showRoomsButton = ttk.Button(self.hotelFrame, text="Show Rooms", command=lambda hotelName=hotel['hotelName']: self.showRooms(hotelName, self.checkIn, self.checkOut))
             showRoomsButton.pack(side=tk.RIGHT, padx=10)
             
         
@@ -87,7 +87,11 @@ class HotelsView(Page):
         if not rooms:
             messagebox.showinfo("Rooms", "No available rooms for the selected dates.")
             return
-        messagebox.showinfo("Rooms", f"Available rooms for {hotelName}:\n" + '\n'.join([f"Room {room['roomNum']} at ${room['cost']}" for room in rooms]))
+        # messagebox.showinfo("Rooms", f"Available rooms for {hotelName}:\n" + '\n'.join([f"Room {room['roomNum']} at ${room['cost']}" for room in rooms]))
+        
+        self.controller.room.setRooms(rooms)
+        self.controller.room.displayRooms()
+        self.controller.showFrame("Room")
 
     
 
