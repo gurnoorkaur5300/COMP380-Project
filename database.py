@@ -73,7 +73,7 @@ class Database:
         )''')
 
         cursor.execute('''CREATE TABLE IF NOT EXISTS hotels (
-                       hotelId INTEGER PRIMARY KEY AUTOINCREMENT,
+                       hotelId INTEGER,
                        hotelName TEXT,
                        location TEXT,
                        amenities TEXT,
@@ -81,7 +81,7 @@ class Database:
                        photoLink TEXT
         )''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS rooms (
-                       roomId INTEGER PRIMARY KEY AUTOINCREMENT,
+                       roomId INTEGER,
                        roomNum TEXT,
                        hotelName TEXT,
                        location TEXT,
@@ -284,7 +284,7 @@ class Database:
         """
         cursor = self.conn.cursor()
         try:
-            cursor.execute('''INSERT INTO rooms (hotelName, roomNum, location, cost) VALUES (?,?,?,?)''', (room.hotelName, room.roomNum, room.location, room.cost))
+            cursor.execute('''INSERT INTO rooms (roomId, hotelName, roomNum, location, cost) VALUES (?,?,?,?,?)''', (room.roomId, room.hotelName, room.roomNum, room.location, room.cost))
             self.conn.commit()
             messagebox.showinfo("Success", "Room added.")
         except sqlite3.IntegrityError:
@@ -321,17 +321,17 @@ class Database:
             messagebox.showerror("Error", f"Database operation failed: {e}")
 
 
-    def fetch_hotels_by_location(self, location):
+    def fetchHotelsByLocation(self, location):
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM hotels WHERE location=?", (location,))
         return [{'name': row[1], 'amenities': row[3].split(', '), 'price_range': row[4], 'photoLink': row[5]} for row in cursor.fetchall()]
 
-    def fetch_rooms_by_hotel_and_availability(self, hotel_name, checkin_date, checkout_date):
+    def fetchRoomByHotelAvail(self, hotel_name, checkin_date, checkout_date):
         cursor = self.conn.cursor()
         query = """
         SELECT r.roomId, r.roomNum, r.cost FROM rooms r
-        INNER JOIN hotels h ON r.hotelId = h.hotelId
-        WHERE h.name = ? AND r.roomId NOT IN (
+        INNER JOIN hotels h ON r.hotelName = h.hotelName
+        WHERE h.hotelName = ? AND r.roomId NOT IN (
             SELECT roomId FROM reservations
             WHERE NOT (checkOut <= ? OR checkIn >= ?)
         )
@@ -355,60 +355,60 @@ class Database:
             # Sample hotels data for each location
             hotels = [
                 # New York Hotels
-                ('Empire State Hotel', 'New York', 'Free WiFi, Pool', '$300-$500','assets/noImage.png'),
-                ('Big Apple Hotel', 'New York', 'Gym, Free Breakfast', '$200-$400','assets/noImage.png'),
-                ('Central Park Lodge', 'New York', 'Pet Friendly, Gym', '$350-$550','assets/noImage.png'),
-                ('Times Square Suites', 'New York', 'Pool, Spa', '$400-$600','assets/noImage.png'),
-                ('Liberty Inn', 'New York', 'Free WiFi, Free Parking', '$150-$350','assets/noImage.png'),
-                ('Hudson River Hotel', 'New York', 'Restaurant, Bar', '$220-$420','assets/noImage.png'),
-                ('Broadway Stay', 'New York', 'Luxury Spa, Fine Dining', '$500-$700','assets/noImage.png'),
-                ('Wall Street Rooms', 'New York', 'Business Lounge, Express Check-in', '$450-$650','assets/noImage.png'),
+                ('11', 'Empire State Hotel', 'New York', 'Free WiFi, Pool', '$300-$500','assets/noImage.png'),
+                ('12', 'Big Apple Hotel', 'New York', 'Gym, Free Breakfast', '$200-$400','assets/noImage.png'),
+                ('13', 'Central Park Lodge', 'New York', 'Pet Friendly, Gym', '$350-$550','assets/noImage.png'),
+                ('14', 'Times Square Suites', 'New York', 'Pool, Spa', '$400-$600','assets/noImage.png'),
+                ('15', 'Liberty Inn', 'New York', 'Free WiFi, Free Parking', '$150-$350','assets/noImage.png'),
+                ('16', 'Hudson River Hotel', 'New York', 'Restaurant, Bar', '$220-$420','assets/noImage.png'),
+                ('17', 'Broadway Stay', 'New York', 'Luxury Spa, Fine Dining', '$500-$700','assets/noImage.png'),
+                ('18', 'Wall Street Rooms', 'New York', 'Business Lounge, Express Check-in', '$450-$650','assets/noImage.png'),
     
                 # Los Angeles Hotels
-                ('Hollywood Lights Hotel', 'Los Angeles', 'Pool, Spa, Pet Friendly', '$320-$580','assets/holiday.png'),
-                ('Beverly Hills Retreat', 'Los Angeles', 'Luxury Spa, Free WiFi', '$350-$650','assets/noImage.png'),
-                ('Venice Beachfront Hotel', 'Los Angeles', 'Ocean View, Bar', '$300-$500','assets/noImage.png'),
-                ('Downtown LA Apartments', 'Los Angeles', 'Gym, Urban View', '$250-$450','assets/noImage.png'),
-                ('Sunset Boulevard Inn', 'Los Angeles', 'Rooftop Pool, Restaurant', '$400-$600','assets/noImage.png'),
-                ('Santa Monica Pier Hotel', 'Los Angeles', 'Ocean View, Pool', '$350-$550','assets/noImage.png'),
-                ('California Dreams', 'Los Angeles', 'Free Breakfast, Parking', '$200-$400','assets/noImage.png'),
-                ('LA Grand Hotel', 'Los Angeles', 'Conference Rooms, Pool', '$450-$700','assets/noImage.png'),
+                ('21', 'Hollywood Lights Hotel', 'Los Angeles', 'Pool, Spa, Pet Friendly', '$320-$580','assets/holiday.png'),
+                ('22','Beverly Hills Retreat', 'Los Angeles', 'Luxury Spa, Free WiFi', '$350-$650','assets/noImage.png'),
+                ('23','Venice Beachfront Hotel', 'Los Angeles', 'Ocean View, Bar', '$300-$500','assets/noImage.png'),
+                ('24','Downtown LA Apartments', 'Los Angeles', 'Gym, Urban View', '$250-$450','assets/noImage.png'),
+                ('25','Sunset Boulevard Inn', 'Los Angeles', 'Rooftop Pool, Restaurant', '$400-$600','assets/noImage.png'),
+                ('26','Santa Monica Pier Hotel', 'Los Angeles', 'Ocean View, Pool', '$350-$550','assets/noImage.png'),
+                ('27','California Dreams', 'Los Angeles', 'Free Breakfast, Parking', '$200-$400','assets/noImage.png'),
+                ('28','LA Grand Hotel', 'Los Angeles', 'Conference Rooms, Pool', '$450-$700','assets/noImage.png'),
     
                 # Chicago Hotels
-                ('Windy City Hotel', 'Chicago', 'Free WiFi, Gym', '$220-$400','assets/noImage.png'),
-                ('Lake Shore Hotel', 'Chicago', 'Lake View, Restaurant', '$250-$450','assets/noImage.png'),
-                ('Magnificent Mile High', 'Chicago', 'Shopping District, Spa', '$300-$500','assets/noImage.png'),
-                ('Chicago River Hotel', 'Chicago', 'City View, Bar', '$350-$550','assets/noImage.png'),
-                ('The Loop Loft', 'Chicago', 'Modern Gym, Business Suites', '$200-$300','assets/noImage.png'),
-                ('Skyline Suites', 'Chicago', 'Skyline Views, Luxury Dining', '$400-$600','assets/noImage.png'),
-                ('Grant Park Hotel', 'Chicago', 'Near Major Attractions, Pool', '$320-$520','assets/noImage.png'),
-                ('Navy Pier Inn', 'Chicago', 'Near Attractions, Free WiFi', '$280-$480','assets/noImage.png'),
+                ('31', 'Windy City Hotel', 'Chicago', 'Free WiFi, Gym', '$220-$400','assets/noImage.png'),
+                ('32', 'Lake Shore Hotel', 'Chicago', 'Lake View, Restaurant', '$250-$450','assets/noImage.png'),
+                ('33','Magnificent Mile High', 'Chicago', 'Shopping District, Spa', '$300-$500','assets/noImage.png'),
+                ('34','Chicago River Hotel', 'Chicago', 'City View, Bar', '$350-$550','assets/noImage.png'),
+                ('35','The Loop Loft', 'Chicago', 'Modern Gym, Business Suites', '$200-$300','assets/noImage.png'),
+                ('36','Skyline Suites', 'Chicago', 'Skyline Views, Luxury Dining', '$400-$600','assets/noImage.png'),
+                ('37','Grant Park Hotel', 'Chicago', 'Near Major Attractions, Pool', '$320-$520','assets/noImage.png'),
+                ('38','Navy Pier Inn', 'Chicago', 'Near Attractions, Free WiFi', '$280-$480','assets/noImage.png'),
     
                 # Houston Hotels
-                ('Space City Inn', 'Houston', 'Free Parking, Gym', '$200-$350','assets/noImage.png'),
-                ('Bayou City Hotel', 'Houston', 'River View, Spa', '$250-$400','assets/noImage.png'),
-                ('Houston Heights Hotel', 'Houston', 'Urban Style, Bar', '$220-$420','assets/noImage.png'),
-                ('Gulf Coast Suites', 'Houston', 'Pet Friendly, Free WiFi', '$180-$380','assets/noImage.png'),
-                ('Energy Corridor Hotel', 'Houston', 'Business Facilities, Pool', '$300-$500','assets/noImage.png'),
-                ('Medical Center Inn', 'Houston', 'Quiet Area, Accessible', '$250-$450','assets/noImage.png'),
-                ('Star Houston Hotel', 'Houston', 'Luxury Amenities, Fine Dining', '$350-$550','assets/noImage.png'),
-                ('Houston Station Stay', 'Houston', 'Historic Building, Modern Amenities', '$320-$520','assets/noImage.png'),
+                ('41', 'Space City Inn', 'Houston', 'Free Parking, Gym', '$200-$350','assets/noImage.png'),
+                ('42', 'Bayou City Hotel', 'Houston', 'River View, Spa', '$250-$400','assets/noImage.png'),
+                ('43', 'Houston Heights Hotel', 'Houston', 'Urban Style, Bar', '$220-$420','assets/noImage.png'),
+                ('44', 'Gulf Coast Suites', 'Houston', 'Pet Friendly, Free WiFi', '$180-$380','assets/noImage.png'),
+                ('45', 'Energy Corridor Hotel', 'Houston', 'Business Facilities, Pool', '$300-$500','assets/noImage.png'),
+                ('46', 'Medical Center Inn', 'Houston', 'Quiet Area, Accessible', '$250-$450','assets/noImage.png'),
+                ('47', 'Star Houston Hotel', 'Houston', 'Luxury Amenities, Fine Dining', '$350-$550','assets/noImage.png'),
+                ('48', 'Houston Station Stay', 'Houston', 'Historic Building, Modern Amenities', '$320-$520','assets/noImage.png'),
     
                 # Miami Hotels
-                ('Sunny Florida Resort', 'Miami', 'Ocean View, Pool, Spa', '$250-$450','assets/noImage.png'),
-                ('Miami Beach Hotel', 'Miami', 'Beach Access, Pool', '$300-$500','assets/noImage.png'),
-                ('Coral Gables Retreat', 'Miami', 'Luxury Spa, Fine Dining', '$350-$650','assets/noImage.png'),
-                ('Downtown Miami Suites', 'Miami', 'Urban View, Free WiFi', '$200-$400','assets/noImage.png'),
-                ('South Beach Inn', 'Miami', 'Nightlife Access, Bar', '$400-$600','assets/noImage.png'),
-                ('Biscayne Bay Hotel', 'Miami', 'Bay View, Restaurant', '$220-$420','assets/noImage.png'),
-                ('Key Biscayne Resort', 'Miami', 'Island Setting, Luxury Spa', '$450-$700','assets/noImage.png'),
-                ('Ocean Drive Stay', 'Miami', 'Art Deco Style, Ocean Front', '$500-$800','assets/noImage.png'),
+                ('51', 'Sunny Florida Resort', 'Miami', 'Ocean View, Pool, Spa', '$250-$450','assets/noImage.png'),
+                ('52', 'Miami Beach Hotel', 'Miami', 'Beach Access, Pool', '$300-$500','assets/noImage.png'),
+                ('53', 'Coral Gables Retreat', 'Miami', 'Luxury Spa, Fine Dining', '$350-$650','assets/noImage.png'),
+                ('54', 'Downtown Miami Suites', 'Miami', 'Urban View, Free WiFi', '$200-$400','assets/noImage.png'),
+                ('55', 'South Beach Inn', 'Miami', 'Nightlife Access, Bar', '$400-$600','assets/noImage.png'),
+                ('56', 'Biscayne Bay Hotel', 'Miami', 'Bay View, Restaurant', '$220-$420','assets/noImage.png'),
+                ('57', 'Key Biscayne Resort', 'Miami', 'Island Setting, Luxury Spa', '$450-$700','assets/noImage.png'),
+                ('58', 'Ocean Drive Stay', 'Miami', 'Art Deco Style, Ocean Front', '$500-$800','assets/noImage.png'),
             ]
-            cursor.executemany('INSERT INTO hotels (hotelName, location, amenities, priceRange, photoLink) VALUES (?,?,?,?,?)', hotels)
+            cursor.executemany('INSERT INTO hotels (hotelId, hotelName, location, amenities, priceRange, photoLink) VALUES (?,?,?,?,?,?)', hotels)
     
             # Sample rooms for each hotel
-            roomTemplate = [(hotel[0], f'{num:03}', hotel[1], round(float(hotel[3].split('-')[0].strip('$')) + num * 10, 2)) for hotel in hotels for num in range(101, 106)]
-            cursor.executemany('INSERT INTO rooms (hotelName, roomNum, location, cost) VALUES (?,?,?,?)', roomTemplate)
+            roomTemplate = [(hotel[0], hotel[1], f'{num:03}', hotel[1], round(float(hotel[4].split('-')[0].strip('$')) + num * 10, 2)) for hotel in hotels for num in range(101, 106)]
+            cursor.executemany('INSERT INTO rooms (roomId, hotelName, roomNum, location, cost) VALUES (?,?,?,?,?)', roomTemplate)
             # self.insertRoom(roomTemplate)
     
             self.conn.commit()

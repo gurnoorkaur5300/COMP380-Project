@@ -28,7 +28,7 @@ class Home(Page):
 
         titleFont = font.Font(family="Helvetica", size=30, weight="bold")
         title = tk.Label(self, text="Share Your Travel Dates, and We'll Handle the Rest!", font=titleFont, fg="#003366", bg="white")
-        title.pack(pady=30)
+        title.pack(pady=30, padx=20, fill=tk.X)
 
         self.buildSearchForm()
         self.addQuotes()
@@ -76,7 +76,7 @@ class Home(Page):
         location = self.locationVar.get()
         checkin_date = self.checkinVar.get()
         checkout_date = self.checkoutVar.get()
-        hotels_data = self.db.fetch_hotels_by_location(location)
+        hotels_data = self.db.fetchHotelsByLocation(location)
         if not hotels_data:
             tk.messagebox.showinfo("No Hotels", f"No hotels found in {location}.")
             return
@@ -84,6 +84,12 @@ class Home(Page):
         self.controller.hotelsView.setHotelsData(hotels_data, checkin_date, checkout_date)
         self.controller.hotelsView.displayHotels()
         self.controller.showFrame("HotelsView")
+        
+    def addQuotes(self):
+        quotesFrame = tk.Frame(self, bg='white')
+        quotesFrame.pack(pady=(10,0), fill=tk.X)
+        quote = tk.Label(quotesFrame, text="To Travel is to Live!", bg='white', fg="#003366", font=("Georgia", 24, "italic"))
+        quote.pack(padx=10, pady=5)
        
 
     # def display_hotels(self, hotels, checkin, checkout):
@@ -123,9 +129,5 @@ class Home(Page):
     #         return
     #     messagebox.showinfo("Rooms", f"Available rooms for {hotel_name}:\n" + '\n'.join([f"Room {room['roomNum']} at ${room['cost']}" for room in rooms]))
 
-    def addQuotes(self):
-        quotes_frame = tk.Frame(self, bg='white')
-        quotes_frame.pack(pady=10, fill=tk.X)
-        quote = tk.Label(quotes_frame, text="To Travel is to Live!", bg='white', fg="#003366", font=("Georgia", 24, "italic"))
-        quote.pack()
+  
 
