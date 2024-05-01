@@ -1,5 +1,4 @@
-from customer import Customer
-from room import Room
+
 
 class Reservation:
     """

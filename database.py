@@ -324,12 +324,12 @@ class Database:
     def fetchHotelsByLocation(self, location):
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM hotels WHERE location=?", (location,))
-        return [{'name': row[1], 'amenities': row[3].split(', '), 'price_range': row[4], 'photoLink': row[5]} for row in cursor.fetchall()]
+        return [{'hotelName': row[1], 'amenities': row[3].split(', '), 'price_range': row[4], 'photoLink': row[5]} for row in cursor.fetchall()]
 
     def fetchRoomByHotelAvail(self, hotel_name, checkin_date, checkout_date):
         cursor = self.conn.cursor()
         query = """
-        SELECT r.roomId, r.roomNum, r.cost FROM rooms r
+        SELECT r.roomId, r.roomNum, r.hotelName, r.location, r.cost FROM rooms r
         INNER JOIN hotels h ON r.hotelName = h.hotelName
         WHERE h.hotelName = ? AND r.roomId NOT IN (
             SELECT roomId FROM reservations
@@ -337,7 +337,7 @@ class Database:
         )
         """
         cursor.execute(query, (hotel_name, checkin_date, checkout_date))
-        return [{'roomId': row[0], 'roomNum': row[1], 'cost': row[2]} for row in cursor.fetchall()]
+        return [{'roomId': row[0], 'roomNum': row[1], 'hotelName': row[2], 'location': row[3], 'cost': row[4]} for row in cursor.fetchall()]
 
     def returnImgPath(self):
         cursor = self.conn.cursor()
