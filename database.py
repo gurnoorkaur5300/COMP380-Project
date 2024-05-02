@@ -288,6 +288,7 @@ class Database:
     #     reservations = cursor.fetchall()
     #     return reservations
     
+    
     # Formatting of Database spreadsheet fixed - Gurnoor (JOIN on Customer and ResInfo to put data together)
     def getResInfo(self):
         """
