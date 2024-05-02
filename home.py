@@ -90,7 +90,11 @@ class Home(Page):
         quotesFrame.pack(pady=(10,0), fill=tk.X)
         quote = tk.Label(quotesFrame, text="To Travel is to Live!", bg='white', fg="#003366", font=("Georgia", 24, "italic"))
         quote.pack(padx=10, pady=5)
-       
+
+    def resetFields(self):
+        self.locationVar.set("Select Location")
+        self.checkinVar.set("")
+        self.checkoutVar.set("")  
 
     # def display_hotels(self, hotels, checkin, checkout):
     #     hotels_frame = tk.Frame(self, bg='white')

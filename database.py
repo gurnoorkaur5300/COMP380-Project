@@ -276,18 +276,38 @@ class Database:
         customers = cursor.fetchall()
         return customers
     
+    # def getResInfo(self):
+    #     """
+    #     Retrieves reservation information from the 'reservations' table.
+
+    #     Returns:
+    #         list: A list of tuples containing reservation IDs, check-in/out dates, and payment status.
+    #     """
+    #     cursor=self.conn.cursor()
+    #     cursor.execute("SELECT reserveId, checkIn, checkOut, paid FROM reservations")
+    #     reservations = cursor.fetchall()
+    #     return reservations
+    
+    
+    # Formatting of Database spreadsheet fixed - Gurnoor (JOIN on Customer and ResInfo to put data together)
     def getResInfo(self):
         """
-        Retrieves reservation information from the 'reservations' table.
+        Retrieves reservation information from the 'reservations' table, joined with the 'customers' table
+        to include customer IDs.
 
         Returns:
-            list: A list of tuples containing reservation IDs, check-in/out dates, and payment status.
+            list: A list of tuples containing customer IDs, customer names, reservation IDs, check-in/out dates, and payment status.
         """
-        cursor=self.conn.cursor()
-        cursor.execute("SELECT reserveId, checkIn, checkOut, paid FROM reservations")
-        reservations = cursor.fetchall()
-        return reservations
-    
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            SELECT c.customerId, c.name, r.reserveId, r.checkIn, r.checkOut, r.paid 
+            FROM reservations r
+            INNER JOIN customers c ON c.name = r.customerName
+        """)
+        reservations_info = cursor.fetchall()
+        return reservations_info
+
+
     
     def insertRoom(self, room):
         """Inserts a new room into the 'room' table.

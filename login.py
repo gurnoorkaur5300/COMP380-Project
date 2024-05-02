@@ -171,7 +171,8 @@ class Login(Page):
                 self.controller.isAdmin = False
                 self.controller.room.setCustomer(user.name)
                 self.controller.accountPage.setCustomer(user)
-                self.controller.showFrame("Account")
+                # self.controller.showFrame("Account")
+                self.controller.showFrame("Home")
             elif not self.isUser:
                 self.controller.isLoggedIn = True
                 self.controller.isAdmin = True
