@@ -93,3 +93,13 @@ class Account(Page):
             reservationLabel = tk.Label(infoBox, text=reservation, anchor="w", bg="white", fg="black",font=(34), width=50)
             reservationLabel.grid(row=i + len(labelsInfo) + 1, column=1, pady=10, sticky="w")
             self.infoLabels.append(reservationLabel)  
+
+        # Back button added
+        backButton = tk.Button(infoBox, text="Back", font=("Arial", 16), bg="blue", fg="white", command=self.on_back)
+        backButton.grid(row=len(labelsInfo) + len(self.customer.reservations) + 2, column=0, columnspan=2, pady=20)
+
+    def on_back(self):
+        """
+        Handle the back button click event.
+        """
+        self.controller.show_frame("Home")  
