@@ -53,6 +53,9 @@ class App(tk.Tk):
         self.minsize(width=800, height=800)
         self.maxsize(width=800, height=800)
 
+        # Initialize currentFrame to keep track of the displayed page (For reseting home page fields bug) - Gurnoor Kaur
+        self.currentFrame = "Home"
+
         #set theme 
         style=ttk.Style()
         style.theme_use("clam")
@@ -92,8 +95,7 @@ class App(tk.Tk):
             "HotelsView": self.hotelsView,
             "Room": self.room
         }
-        
-             
+
         self.showFrame("Home")
         self.showNavbar()
         self.createFooter()
@@ -121,6 +123,18 @@ class App(tk.Tk):
         elif pageName ==  "Account" and self.isLoggedIn:
             self.showNavbar()
 
+        # If we're navigating away from the Home page, reset its fields - Gurnoor Kaur
+        if self.currentFrame == "Home" and pageName != "Home":
+            self.homePage.resetFields()
+        
+        # Get the page from the frames dictionary 
+        page = self.frames.get(pageName)
+        if page:
+            # Raise the selected frame
+            page.tkraise()
+            # Update the current frame being shown
+            self.currentFrame = pageName
+
         # Set the page header for the account page if not logged in
         if pageName == "Account" and not self.isLoggedIn:
             self.pageHeader = PageHeader(self, self)
@@ -138,6 +152,10 @@ class App(tk.Tk):
             page.grid(row=0, column=0, sticky="nsew")
             page.tkraise()
         self.update_idletasks()
+
+        # Keep track of the current frame being shown - Gurnoor Kaur
+        self.currentFrame = pageName
+
 
             
     #display main navbar
