@@ -2,15 +2,16 @@ import tkinter as tk
 from tkinter import messagebox
 import hashlib
 import re
-from customer import Customer
+from reservation import Reservation
 from entryBoxUtility import EntryBoxUtility
 from paymentClass import PaymentClass
-from viewReservation import ViewReservation
-from reservation import Reservation
 from datetime import datetime
+from database import Database
+import tkmacosx
+
 
 class Payment(tk.Toplevel):
-    def __init__(self,controller, database, master=None):
+    def __init__(self,controller, master=None):
         """
         This class represents the account page.
         :author: Martin Gallegos Cordero
@@ -24,13 +25,31 @@ class Payment(tk.Toplevel):
             master: The master widget under which this window is placed.
         """
 
-        currentDate = datetime.now()
-        paymentID = None
+        self.currentDate = datetime.now()
         super().__init__(master)
         self.controller= controller
-        self.database = database 
+        self.database = Database()
         self.title("Payment")
         self.geometry("600x600")
+        self.__reserveName = None
+        self.__cost = None
+        self.__roomId = None
+        self.__roomNum = None
+        self.__hotelName = None
+        self.__location = None
+        self.__checkIn = None
+        self.__checkOut = None
+    
+    def setReservationInfo(self, n_customerName, n_roomId, n_roomNum, n_hotelName, n_location, n_cost, n_checkIn, n_checkOut):
+        self.__reserveName = n_customerName
+        self.__hotelName = n_hotelName
+        self.__location = n_location
+        self.__roomId = n_roomId
+        self.__roomNum = n_roomNum
+        self.__cost = n_cost
+        self.__checkIn = n_checkIn
+        self.__checkOut = n_checkOut
+        
 
         #create fields
         self.cardName = tk.Entry(self,width =30, font=("Arial", 20), bg="white", fg="black", insertbackground="black", insertwidth=4 )
@@ -69,26 +88,26 @@ class Payment(tk.Toplevel):
         entryFrame.pack()
         
         #pack entry widgets
-        self.cardName.pack(pady=(20,20))
-        self.cardNumber.pack(pady=(20,20))
-        self.expirationDate.pack(pady=(20,20))
-        self.securityCode.pack(pady=(20,20))
-        self.clientAddress.pack(pady=(20,20))
-        self.cityName.pack(pady=(20,20))
-        self.zipCode.pack(pady=(20,20))
+        self.cardName.pack(pady=(20,10))
+        self.cardNumber.pack(pady=(20,10))
+        self.expirationDate.pack(pady=(20,10))
+        self.securityCode.pack(pady=(20,10))
+        self.clientAddress.pack(pady=(20,10))
+        self.cityName.pack(pady=(20,10))
+        self.zipCode.pack(pady=20)
    
-
+        
         #create button to submit
-        payButton = tk.Button(
+        payButton = tkmacosx.Button(
             self, text = "PAY", 
             borderwidth=10, 
             font=("Arial", 22), 
             bg = "white", fg ="black",  
             activeforeground="blue", 
             command= self.getData)
-        payButton.pack(relx=0.3, rely=.8, anchor=tk.CENTER)
+        payButton.pack(side=tk.LEFT, padx=70)
 
-        cancelButton = tk.Button(
+        cancelButton = tkmacosx.Button(
             self,
             text = "CANCEL",
             borderwidth=10,
@@ -97,12 +116,14 @@ class Payment(tk.Toplevel):
             fg ="black",  
             activeforeground="blue", 
             command= self.closePayment)
-        cancelButton.pack(relx=0.7, rely=.8, anchor=tk.CENTER)
+        cancelButton.pack(side=tk.RIGHT, padx=70)
 
 
         self.defaultMessages = ["Enter full name on card", "Enter card number","Enter security code", "Enter address", "Enter city", "Enter zip code","Enter expiration date"]
 
         widgets = [self.cardName, self.cardNumber, self.securityCode, self.clientAddress, self.cityName, self.zipCode, self.expirationDate]
+
+        
 
         for widget in widgets:
             widget.bind("<FocusIn>", EntryBoxUtility.clearEntries)
@@ -119,36 +140,45 @@ class Payment(tk.Toplevel):
         Returns:
         bool: True if the data is successfully retrieved, False otherwise.
         """
-        cardName = self.cardName.get()
-        cardNumber = self.cardNumber.get()
-        expirationDate = self.expirationDate.get()
-        securityCode= self.securityCode.get() #00/00/0000
-        clientAddress = self.clientAddress.get() #000-000-0000
-        cityName = self.cityName.get().lower()
-        zipCode = self.zipCode.get()
+        cardNameValue = self.cardName.get()
+        cardNumberValue = self.cardNumber.get()
+        expirationDateValue = self.expirationDate.get()
+        securityCodeValue = self.securityCode.get() #00/00/0000
+        clientAddressValue = self.clientAddress.get() #000-000-0000
+        cityNameValue = self.cityName.get().lower()
+        zipCodeValue = self.zipCode.get()
+     
+        
 
-        if not self.validateName(cardName):
+        if not self.validateName(cardNameValue):
             return False
-        if not self.validateCardNumber(cardNumber):
+        if not self.validateCardNumber(cardNumberValue):
             #self.resetToDefault(self.userEmail, self.defaultMessages[3])
             return False
-        if not self.validateExpirationDate(expirationDate):
+        if not self.validateExpirationDate(expirationDateValue):
             return False
-        if not self.validateSecurityCode(securityCode):
+        if not self.validateSecurityCode(securityCodeValue):
             return False
-        if not self.validateClientAddress(clientAddress):
+        # if not self.validateClientAddress(clientAddress):
+        #     return False
+        if not self.validateZipCode(zipCodeValue):
             return False
-        if not self.validateZipCode(zipCode):
-            return False
-        if not self.validateCityName(cityName):
-            self.resetToDefault(self.cityName, self.defaultMessages[4])
-            return False
+        # if not self.validateCityName(cityName):
+        #     self.resetToDefault(self.cityName, self.defaultMessages[4])
+        #     return False
 
-        hashCode = hashlib.sha256(securityCode.encode()).hexdigest()
-
-        newPayment = PaymentClass(cardName, cardNumber, expirationDate, hashCode, clientAddress, zipCode, cityName)
-
+        hashCode = hashlib.sha256(securityCodeValue.encode()).hexdigest()
         
+       
+        newPayment = PaymentClass(cardNameValue, cardNumberValue, expirationDateValue, hashCode, clientAddressValue, zipCodeValue, cityNameValue, self.currentDate, self.__cost)
+        self.database.insertPayment(newPayment)
+        
+        newReservation = Reservation(self.__reserveName, self.__roomId, self.__roomNum, self.__hotelName, self.__location, self.__cost, self.__checkIn, self.__checkOut)
+        
+        self.database.insertReservation(newReservation)
+
+
+
 
     def validateName(self, name):
         """
@@ -222,7 +252,8 @@ class Payment(tk.Toplevel):
         Returns:
             bool: True if the date of birth has the correct format, False otherwise.
         """
-        format = r'^\d+\s+[a-zA-Z]+\s+[a-zA-Z]$'
+        # format = r'^\d+\s+[a-zA-Z]+\s+[a-zA-Z]$'
+        format = r'^[a-zA-Z]$'
         if not re.match(format,address):
             messagebox.showerror("Error", "Client address must contain number street name and St/BLVD/RD")
             self.resetToDefault(self.clientAddress, self.defaultMessages[3])
@@ -267,7 +298,7 @@ class Payment(tk.Toplevel):
     
     def validateZipCode(self, zipCode):
         if len(zipCode) < 5:
-            messagebox.showerror("Error", "Code must be 3 digits long")
+            messagebox.showerror("Error", "Code must be 5 digits long")
             self.resetToDefault(self.securityCode, self.defaultMessages[5])
             return False
 

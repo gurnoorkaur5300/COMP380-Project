@@ -23,7 +23,7 @@ class PaymentClass:
         setzipCode(zip: str) -> None: Set the ZIP code.
         setexpDate(date: str) -> None: Set the expiration date.
     """
-    def __init__(self, n_cardName=None, n_cardNum=None, n_securityCode=None, n_clientAddress=None, n_cityName=None, n_zipCode=None, n_expDate=None):
+    def __init__(self, n_cardName=None, n_cardNum=None, n_securityCode=None, n_clientAddress=None, n_cityName=None, n_zipCode=None, n_expDate=None, n_currentDate=None, n_paidAmount=None):
         """
         Initialize a PaymentClass object.
 
@@ -43,8 +43,30 @@ class PaymentClass:
         self.__address = n_clientAddress
         self.__city = n_cityName
         self.__zip = n_zipCode
-        self.__date = n_expDate
+        self.__expireDate = n_expDate
+        self.__currentDate = n_currentDate
+        self.__paidAmount = n_paidAmount
 
+    @property
+    def paidAmount(self):
+        return self.__paidAmount
+
+    @property
+    def currentDate(self):
+        return self.__currentDate
+    
+    @currentDate.setter
+    def setcurrentDate(self, n_currentDate):
+        self.__currentDate = n_currentDate
+    
+    @property
+    def paymentId(self):
+        return self.__paymentId
+    
+    @paymentId.setter
+    def setPaymentId(self, n_paymentId):
+        self.__paymentId = n_paymentId
+        
     #getters and setters for the class PaymentClass
     @property
     def name(self):
@@ -53,7 +75,7 @@ class PaymentClass:
         """
         return self.__name
 
-    @name.setter
+    
     def setName(self, n_name):
         """
         Set the name on the card.
@@ -70,7 +92,7 @@ class PaymentClass:
         """
         return self.__number
 
-    @number.setter
+   
     def setcardNumber(self, n_cardNumber):
         """
         Set the card number.
@@ -154,14 +176,14 @@ class PaymentClass:
         self.zip = n_zipCode             
 
     @property
-    def date(self):
+    def expireDate(self):
         """
         Return the date on the card.
         """
-        return self.__date
+        return self.__expireDate
 
-    @date.setter
-    def setexpDate(self, n_expDate):
+    @expireDate.setter
+    def setExpireDate(self, n_expDate):
         """
         Set the expiration date.
 
@@ -169,6 +191,6 @@ class PaymentClass:
             date (str): Expiration date.
         """
        
-        self.date = n_expDate
+        self.expireDate = n_expDate
 
 

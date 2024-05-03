@@ -42,12 +42,13 @@ class Admin(Page):
         #create spreadsheet object
         self.spreadsheet = ttk.Treeview(self.spreadsheetFrame, columns=("ID", "Name", "ResID", "CheckIn", "CheckOut", "Cost"), show="headings")
 
+        # widths slightly change to fix the formatting - Gurnoor Kaur
         self.spreadsheet.column("#1", width=50)  
-        self.spreadsheet.column("#2", width=100)
-        self.spreadsheet.column("#3", width=70)
-        self.spreadsheet.column("#4", width=75)
-        self.spreadsheet.column("#5", width=75)
-        self.spreadsheet.column("#6", width=60)
+        self.spreadsheet.column("#2", width=50)
+        self.spreadsheet.column("#3", width=50)
+        self.spreadsheet.column("#4", width=50)
+        self.spreadsheet.column("#5", width=50)
+        self.spreadsheet.column("#6", width=50)
     
 
         

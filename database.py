@@ -63,13 +63,12 @@ class Database:
                        customerName TEXT,
                        hotelName TEXT,
                        roomId TEXT, 
-                       paidId INTEGER, 
+                       roomNum INTEGER,
                        checkIn TEXT,
                        checkOut TEXT,
                        paid REAL,    
                        FOREIGN KEY (customerName) REFERENCES customers(name),
-                       FOREIGN KEY (roomId) REFERENCES rooms(roomId),
-                       FOREIGN KEY (paidId) REFERENCES payment(paidId)
+                       FOREIGN KEY (roomId) REFERENCES rooms(roomId)
         )''')
 
         cursor.execute('''CREATE TABLE IF NOT EXISTS hotels (
@@ -89,10 +88,16 @@ class Database:
         )''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS payments (
                        paidId INTEGER PRIMARY KEY,
-                       customerId INTEGER,
+                       customerName TEXT,
+                       cardNumber INTEGER,
+                       securityHash TEXT,
+                       expireDate TEXT,
+                       address TEXT,
+                       city TEXT,
+                       zip INTEGER,
                        amount REAL, 
-                       paidDate TEXT,
-                       FOREIGN KEY (customerId) REFERENCES customers(customerId)
+                       paidDate TEXT
+                   
        )''')
         self.conn.commit()
 
@@ -107,7 +112,16 @@ class Database:
             cursor.execute("INSERT INTO administrators (adminName, adminEmail, hashPass) VALUES (?,?,?)", (defaultAdmin))
         self.conn.commit()
     
-
+    def insertPayment(self, payment):
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute('''INSERT INTO payments (customerName, cardNumber, securityHash, expireDate, address, city, zip, amount, paidDate) VALUES (?,?,?,?,?,?,?,?,?)''', (payment.name, payment.number, payment.code, payment.expireDate, payment.address, payment.city, payment.zip, payment.paidAmount, payment.currentDate))
+            self.conn.commit()
+            messagebox.showinfo("Success", "Payment Accepted")
+        except sqlite3.OperationalError as e:
+            messagebox.showerror("Error", f"Database operation failed: {e}")
+            
+            
     def insertCustomer(self, customer): 
         """
         Inserts a new customer into the 'customers' table.
@@ -262,18 +276,38 @@ class Database:
         customers = cursor.fetchall()
         return customers
     
+    # def getResInfo(self):
+    #     """
+    #     Retrieves reservation information from the 'reservations' table.
+
+    #     Returns:
+    #         list: A list of tuples containing reservation IDs, check-in/out dates, and payment status.
+    #     """
+    #     cursor=self.conn.cursor()
+    #     cursor.execute("SELECT reserveId, checkIn, checkOut, paid FROM reservations")
+    #     reservations = cursor.fetchall()
+    #     return reservations
+    
+    
+    # Formatting of Database spreadsheet fixed - Gurnoor (JOIN on Customer and ResInfo to put data together)
     def getResInfo(self):
         """
-        Retrieves reservation information from the 'reservations' table.
+        Retrieves reservation information from the 'reservations' table, joined with the 'customers' table
+        to include customer IDs.
 
         Returns:
-            list: A list of tuples containing reservation IDs, check-in/out dates, and payment status.
+            list: A list of tuples containing customer IDs, customer names, reservation IDs, check-in/out dates, and payment status.
         """
-        cursor=self.conn.cursor()
-        cursor.execute("SELECT reserveId, checkIn, checkOut, paid FROM reservations")
-        reservations = cursor.fetchall()
-        return reservations
-    
+        cursor = self.conn.cursor()
+        cursor.execute("""
+            SELECT c.customerId, c.name, r.reserveId, r.checkIn, r.checkOut, r.paid 
+            FROM reservations r
+            INNER JOIN customers c ON c.name = r.customerName
+        """)
+        reservations_info = cursor.fetchall()
+        return reservations_info
+
+
     
     def insertRoom(self, room):
         """Inserts a new room into the 'room' table.
@@ -309,10 +343,10 @@ class Database:
         """
         cursor = self.conn.cursor()
         try:
-            cursor.execute('''INSERT INTO reservations (customerName, hotelName, roomId, paidId, checkIn, checkOut, paid, payDate)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
-                        (reservation.customerName, reservation.hotelName, reservation.roomId, reservation.paidId,
-                            reservation.checkIn, reservation.checkOut, reservation.paid, reservation.payDate))
+            cursor.execute('''INSERT INTO reservations (customerName, hotelName, roomId, roomNum, checkIn, checkOut, paid)
+                            VALUES (?, ?, ?, ?, ?, ?, ?)''',
+                        (reservation.name, reservation.hotelName, reservation.roomId, reservation.roomNum,
+                            reservation.checkIn, reservation.checkOut, reservation.cost))
             self.conn.commit()
             messagebox.showinfo("Success", "Reservation added.")
         except sqlite3.IntegrityError:

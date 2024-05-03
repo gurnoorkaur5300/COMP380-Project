@@ -2,13 +2,15 @@
 import tkinter as tk
 from tkinter import ttk
 from page import Page
+
+
 class Room(Page):
     """
     This class represents a customer
     :Gregory Calderon
     :version 1.0
     """
-    def __init__(self, parent, controller, n_rooms=None):
+    def __init__(self, parent, controller, n_rooms=None, n_checkIn=None, n_checkOut=None, n_customer=None):
         super().__init__(parent, controller)
         self.controller = controller
         """
@@ -21,11 +23,17 @@ class Room(Page):
             n_cost (float, optional): The cost of the room. Defaults to None.
         """  
         self.__rooms = n_rooms
+        self.__checkIn = n_checkIn
+        self.__checkOut = n_checkOut
         
-        
-    def setRooms(self, n_rooms):
+    def setRooms(self, n_rooms, n_checkIn, n_checkOut):
         self.__rooms = n_rooms
+        self.__checkIn = n_checkIn
+        self.__checkOut = n_checkOut
+      
         
+    def setCustomer(self, n_customer):
+        self.__customer = n_customer
         
     def displayRooms(self):
         self.roomsFrame = tk.Frame(self, bg='white')
@@ -66,15 +74,39 @@ class Room(Page):
             # except Exception as e:
             #     print("Error opening or resizing image:", e)
             
+            # self.roomInfo = {
+            #     'roomId': room['roomId'],
+            #     'roomNum': room['roomNum'],
+            #     'hotelName': room['hotelName'],
+            #     'location': room['location'],
+            #     'cost': room['cost']
+            # }
+            
+            roomId = room['roomId']
+            roomNum = room['roomNum']
+            hotelName = room['hotelName']
+            location = room['location']
+            cost = room['cost']
 
-            self.roomInfo = f"Room Id: {room['roomId']}\nRoom Number: {room['roomNum']}\nHotelName: {room['hotelName']}\nLocation: {room['location']}\nCost: {room['cost']}"
-            self.roomLabel = tk.Label(self.roomFrame, text=self.roomInfo, justify=tk.LEFT)
+            # self.roomInfo = f"Room Id: {room['roomId']}\nRoom Number: {room['roomNum']}\nHotelName: {room['hotelName']}\nLocation: {room['location']}\nCost: {room['cost']}"
+            self.roomLabel = tk.Label(self.roomFrame, text=f"Room Id: {roomId}\nRoom Number: {roomNum}\nHotelName: {hotelName}\nLocation: {location}\nCost: {cost}", justify=tk.LEFT)
             self.roomLabel.pack(side=tk.LEFT, padx=10)
 
-            bookRoomsButton = ttk.Button(self.roomFrame, text="Book Now")
+            bookRoomsButton = ttk.Button(self.roomFrame, text="Book Now",command=lambda: self.bookRoom(roomId, roomNum, hotelName, location, cost))
             bookRoomsButton.pack(side=tk.RIGHT, padx=10)
         
-        
+    def bookRoom(self, roomId, roomNum, hotelName, location, cost):
+        if self.controller.isLoggedIn == True:
+            
+            print(self.__customer)
+          
+            self.controller.viewReservation.setCustomerName(self.__customer)
+            self.controller.viewReservation.setRoomInfo(roomId, roomNum, hotelName, location, cost, self.__checkIn, self.__checkOut)
+            self.controller.showFrame("ViewReservation")
+        else: 
+            self.controller.showFrame("Login")
+            
+            # ViewReservation()
     def onCanvasConfigure(self, event):
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
         
