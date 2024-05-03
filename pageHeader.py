@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkmacosx
 
 class PageHeader:
     """
@@ -55,8 +56,8 @@ class PageHeader:
         self.pageLabel.grid(row=0, column=1, sticky="e") 
 
         #close button on header. should close page and return to home while also clearing all page values and resettig fields to defualt values
-        self.closeBtn = tk.Button(self.mainFrame, text="❌", bg=self.color["nero"], activebackground=self.color["nero"], bd=0, command=lambda: self.resetPages(controller), height=3,padx=20, pady=10)
-        self.closeBtn.grid(row=0, column=0, padx=10, pady=(10,10),sticky="nw")
+        self.closeBtn = tkmacosx.Button(self.mainFrame, text="❌", activebackground=self.color["nero"], bd=0, command=lambda: self.resetPages(controller), height=80,padx=5, pady=5)
+        self.closeBtn.grid(row=0, column=0, padx=0, pady=(10,10),sticky="nw")
         
         # get all the reset functions
         for page in pages:

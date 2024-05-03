@@ -25,17 +25,8 @@ class Room(Page):
         self.__rooms = n_rooms
         self.__checkIn = n_checkIn
         self.__checkOut = n_checkOut
-        
-    def setRooms(self, n_rooms, n_checkIn, n_checkOut):
-        self.__rooms = n_rooms
-        self.__checkIn = n_checkIn
-        self.__checkOut = n_checkOut
-      
-        
-    def setCustomer(self, n_customer):
         self.__customer = n_customer
-        
-    def displayRooms(self):
+
         self.roomsFrame = tk.Frame(self, bg='white')
         self.roomsFrame.pack(fill=tk.BOTH, expand=True)
         
@@ -54,7 +45,23 @@ class Room(Page):
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.canvas.configure(yscrollcommand=scrollbar.set)
         
-        self.populateRooms()
+        if self.__rooms:
+            self.displayRooms()
+        
+    def setRooms(self, n_rooms, n_checkIn, n_checkOut):
+        self.__rooms = n_rooms
+        self.__checkIn = n_checkIn
+        self.__checkOut = n_checkOut
+        self.displayRooms()
+        
+    def setCustomer(self, n_customer):
+        self.__customer = n_customer
+        
+    def displayRooms(self):
+        self.clearInnerFrame()
+        if self.__rooms:
+            self.populateRooms()
+
     
     def populateRooms(self):  
         for room in self.__rooms:
@@ -109,6 +116,10 @@ class Room(Page):
             # ViewReservation()
     def onCanvasConfigure(self, event):
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+        
+    def clearInnerFrame(self):
+        for widget in self.innerFrame.winfo_children():
+            widget.destroy()
         
         
     # @property

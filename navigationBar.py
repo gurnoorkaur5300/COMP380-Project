@@ -78,7 +78,7 @@ class NavigationBar(tk.Frame):
                 
         # Navbar close button
         self.closeBtn = tkmacosx.Button(self.navRoot, text="✖", bd=0, command=self.switch, fg=self.color["nero"],font=("Helvetica", 14), padx=-20)
-        self.closeBtn.place(x=230, y=10)
+        self.closeBtn.place(x=210, y=10)
         
 
         if initialState:

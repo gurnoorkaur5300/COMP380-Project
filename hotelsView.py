@@ -5,8 +5,6 @@ from database import Database
 from page import Page
 
 
-LOCATIONS = ["New York", "Los Angeles", "Chicago", "Houston", "Miami"]
-
 
 class HotelsView(Page):
     def __init__(self, parent, controller, n_hotelData=None, n_checkIn=None, n_checkOut=None):
@@ -17,20 +15,7 @@ class HotelsView(Page):
         self.hotels = n_hotelData
         self.checkIn = n_checkIn
         self.checkOut = n_checkOut
-        
-        if self.hotels is not None:
-            self.displayHotels()
-            
 
-        
-    def setHotelsData(self, n_hotelData, n_checkIn, n_checkOut):
-        self.hotels = n_hotelData
-        self.checkIn = n_checkIn
-        self.checkOut = n_checkOut
-        
-        
-    def displayHotels(self):
-        
         self.hotelsFrame = tk.Frame(self, bg='white')
         self.hotelsFrame.pack(fill=tk.BOTH, expand=True)
         
@@ -44,31 +29,41 @@ class HotelsView(Page):
         self.innerFrame = tk.Frame(self.canvas, bg='white')
         self.canvas.create_window((0, 0), window=self.innerFrame, anchor="nw")
 
-
         scrollbar = ttk.Scrollbar(self.hotelsFrame, orient=tk.VERTICAL, command=self.canvas.yview)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.canvas.configure(yscrollcommand=scrollbar.set)
-        
-        self.populateHotels()
 
-    def populateHotels(self):
+        if self.hotels:
+            self.displayHotels()
+        
+            
+        
+    def setHotelsData(self, n_hotelData, n_checkIn, n_checkOut):
+        self.hotels = n_hotelData
+        self.checkIn = n_checkIn
+        self.checkOut = n_checkOut
+        self.displayHotels()
+        
+        
+    def displayHotels(self):
+
+        self.clearInnerFrame()
+
         for hotel in self.hotels:
             self.hotelFrame = tk.Frame(self.innerFrame, borderwidth=2, relief="solid", padx =50, pady=20)
             self.hotelFrame.pack(pady=10, fill=tk.X)
-            
-            
+
             # print(hotel)
             photoPath = hotel['photoLink']
             try:
                 image = Image.open(photoPath)
-                image = image.resize((100, 100))
+                image = image.resize((100, 100), Image.ANTIALIAS)
                 img = ImageTk.PhotoImage(image)
                 img_label = tk.Label(self.hotelFrame, image=img)
                 img_label.image = img
                 img_label.pack(side=tk.LEFT, padx=10)
             except Exception as e:
                 print("Error opening or resizing image:", e)
-            
 
             self.hotelInfo = f"{hotel['hotelName']} - {hotel['price_range']}\nAmenities: {', '.join(hotel['amenities'])}"
             self.hotelLabel = tk.Label(self.hotelFrame, text=self.hotelInfo, justify=tk.LEFT)
@@ -76,6 +71,7 @@ class HotelsView(Page):
 
             showRoomsButton = ttk.Button(self.hotelFrame, text="Show Rooms", command=lambda hotelName=hotel['hotelName']: self.showRooms(hotelName, self.checkIn, self.checkOut))
             showRoomsButton.pack(side=tk.RIGHT, padx=10)
+        
 
     def showRooms(self, hotelName, checkin, checkout):
         rooms = self.db.fetchRoomByHotelAvail(hotelName, checkin, checkout)
@@ -89,6 +85,10 @@ class HotelsView(Page):
         self.controller.room.displayRooms()
         self.controller.showFrame("Room")
 
+
+    def clearInnerFrame(self):
+        for widget in self.innerFrame.winfo_children():
+            widget.destroy()
     
 
     def onCanvasConfigure(self, event):

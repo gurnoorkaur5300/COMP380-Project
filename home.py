@@ -26,9 +26,9 @@ class Home(Page):
         self.scrollable_frame = controller
         # self.hotelsView = HotelsView(self, self.db, self.controller)
 
-        titleFont = font.Font(family="Helvetica", size=30, weight="bold")
+        titleFont = font.Font(family="Helvetica", size=23, weight="bold")
         title = tk.Label(self, text="Share Your Travel Dates, and We'll Handle the Rest!", font=titleFont, fg="#003366", bg="white")
-        title.pack(pady=30, padx=20, fill=tk.X)
+        title.pack(pady=10, padx=0, fill=tk.X)
 
         self.buildSearchForm()
         self.addQuotes()
@@ -87,7 +87,7 @@ class Home(Page):
         
     def addQuotes(self):
         quotesFrame = tk.Frame(self, bg='white')
-        quotesFrame.pack(pady=(10,0), fill=tk.X)
+        quotesFrame.pack(pady=(20,0), fill=tk.X)
         quote = tk.Label(quotesFrame, text="To Travel is to Live!", bg='white', fg="#003366", font=("Georgia", 24, "italic"))
         quote.pack(padx=10, pady=5)
 
