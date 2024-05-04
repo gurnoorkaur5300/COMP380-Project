@@ -1,7 +1,8 @@
 import tkinter as tk
 import tkmacosx
 from page import Page
-from entryBoxUtility import EntryBoxUtility 
+
+
 
 
 class Account(Page):
@@ -95,14 +96,20 @@ class Account(Page):
         reservationsLabel.grid(row=0, column=0, sticky="e", padx=15)
 
         for i, reservation in enumerate(self.customer.reservations):
+            reserveId = reservation.split(":")[0].strip()
+            
             reservationButton = tk.Button(reservationFrame, text=reservation, command=lambda: self.showReservation(reserveId), anchor="center", bg="white", fg="black", font=(18), width=10)
             reservationButton.grid(row= 0, column=i+1, sticky='w')
-            reserveId = reservation.split(":")[0].strip()
+            
         
     def showReservation(self, reserveId):
-        reservationInfoString = self.database.getResInfo(reserveId)
-        
-        # self.controller.showFrame("viewReservation")
+        resInfoTuple = self.database.getResInfo(reserveId)
+        print("tuple is: ", resInfoTuple)
+        self.controller.viewReservation.setCustomerName(self.customer.name)
+        self.controller.viewReservation.setCustomerId(self.customer.id)
+        self.controller.viewReservation.setRoomInfo(*resInfoTuple[0])
+    
+        self.controller.showFrame("ViewReservation")
         
     def reset(self):
         """
