@@ -152,7 +152,11 @@ class Admin(Page):
         customer = self.database.getById(customerId)
         if customer:
             self.controller.accountPage.setCustomer(customer)
+            self.controller.isLoggedIn = True
+            self.controller.isAdmin = True
             self.controller.showFrame("Account")
+            self.reset()
+            
         else:
             messagebox.showerror("Error", "Customer not found.")
 
@@ -166,9 +170,10 @@ class Admin(Page):
         for item in self.spreadsheet.get_children():
             self.spreadsheet.delete(item)
         #reset global variables
-        global isLoggedIn, isAdmi
-        self.controller.isLoggedIn = False
-        self.controller.isAdmin = False
+        # global isLoggedIn, isAdmi
+        # self.controller.isLoggedIn = False
+        # self.controller.isAdmin = False
+        # self.controller.showFrame("Home")
      
         
         
