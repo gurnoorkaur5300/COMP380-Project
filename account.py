@@ -1,7 +1,7 @@
 import tkinter as tk
 import tkmacosx
 from page import Page
-
+from viewReservation import ViewReservation
 
 
 
@@ -104,11 +104,11 @@ class Account(Page):
         
     def showReservation(self, reserveId):
         resInfoTuple = self.database.getResInfo(reserveId)
-        print("tuple is: ", resInfoTuple)
+        
         self.controller.viewReservation.setCustomerName(self.customer.name)
         self.controller.viewReservation.setCustomerId(self.customer.id)
         self.controller.viewReservation.setRoomInfo(*resInfoTuple[0])
-    
+        self.controller.viewReservation.isNew = False
         self.controller.showFrame("ViewReservation")
         
     def reset(self):
