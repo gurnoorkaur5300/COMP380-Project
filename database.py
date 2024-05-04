@@ -285,25 +285,22 @@ class Database:
             return False
         
 
-    def getCustomerInfo(self):
-        """
-        Retrieves customer IDs and names from the 'customers' table.
+    # def getCustomerInfo(self):
+    #     """
+    #     Retrieves customer IDs and names from the 'customers' table.
 
-        Returns:
-            list: A list of tuples containing customer IDs and names.
-        """
-        cursor=self.conn.cursor()
-        cursor.execute("SELECT customerId, name FROM customers")
-        customers = cursor.fetchall()
-        return customers
+    #     Returns:
+    #         list: A list of tuples containing customer IDs and names.
+    #     """
+    #     cursor=self.conn.cursor()
+    #     cursor.execute("SELECT customerId, name FROM customers")
+    #     customers = cursor.fetchall()
+    #     return customers
 
     
-    
-    # Formatting of Database spreadsheet fixed - Gurnoor (JOIN on Customer and ResInfo to put data together)
     def getResInfo(self, reserveId):
         """
-        Retrieves reservation information from the 'reservations' table, joined with the 'customers' table
-        to include customer IDs.
+        Retrieves reservation information from the 'reservations' table, 
 
         Returns:
             list: A list of tuples containing customer IDs, customer names, reservation IDs, check-in/out dates, and payment status.
@@ -317,22 +314,22 @@ class Database:
 
 
     
-    def insertRoom(self, room):
-        """Inserts a new room into the 'room' table.
+    # def insertRoom(self, room):
+    #     """Inserts a new room into the 'room' table.
 
 
-        Args:
-            room (Room): The Room object to be inserted into the database.
-        """
-        cursor = self.conn.cursor()
-        try:
-            cursor.execute('''INSERT INTO rooms (roomId, hotelName, roomNum, location, cost) VALUES (?,?,?,?,?)''', (room.roomId, room.hotelName, room.roomNum, room.location, room.cost))
-            self.conn.commit()
-            messagebox.showinfo("Success", "Room added.")
-        except sqlite3.IntegrityError:
-            messagebox.showerror("Error", "Duplicate entry or integrity constraint violation.")
-        except sqlite3.OperationalError as e:
-            messagebox.showerror("Error", f"Database operation failed: {e}") 
+    #     Args:
+    #         room (Room): The Room object to be inserted into the database.
+    #     """
+    #     cursor = self.conn.cursor()
+    #     try:
+    #         cursor.execute('''INSERT INTO rooms (roomId, hotelName, roomNum, location, cost) VALUES (?,?,?,?,?)''', (room.roomId, room.hotelName, room.roomNum, room.location, room.cost))
+    #         self.conn.commit()
+    #         messagebox.showinfo("Success", "Room added.")
+    #     except sqlite3.IntegrityError:
+    #         messagebox.showerror("Error", "Duplicate entry or integrity constraint violation.")
+    #     except sqlite3.OperationalError as e:
+    #         messagebox.showerror("Error", f"Database operation failed: {e}") 
             
             
     def insertReservation(self, reservation):

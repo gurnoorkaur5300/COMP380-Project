@@ -48,7 +48,7 @@ class ViewReservation(Page):
         self.__hotelName = None
         self.__location = None
         self.__cost = None
-        
+        self.__reserveId = None
         self.__checkIn = None
         self.__checkOut = None
         
@@ -74,6 +74,9 @@ class ViewReservation(Page):
         
     def setCustomerId(self, n_customerId):
         self.__id = n_customerId
+        
+    def setReserveId(self, n_reserveId):
+        self.__reserveId = n_reserveId
     
 
     def setRoomInfo(self, n_roomId, n_roomNum, n_hotelName, n_location, n_cost, n_checkIn, n_checkOut):
@@ -123,7 +126,7 @@ class ViewReservation(Page):
                     35),
                 fg="black",
                 activeforeground="blue",
-                command=self.cancelReservation)
+                command=lambda: self.cancelReservation(self.__reserveId))
         self.cancelButton.place(relx=0.7, rely=.8, anchor=tk.CENTER)
 
         self.updateBtn()
@@ -144,11 +147,11 @@ class ViewReservation(Page):
         payWindow.setReservationInfo(self.__id, self.__name, self.__roomId, self.__roomNum, self.__hotelName, self.__cost, self.__location, self.__checkIn, self.__checkOut)
          
 
-    def cancelReservation(self):
+    def cancelReservation(self, reserveId):
         """
         Opens the cancel reservation window
         """
-        # CancelReservation(self, database)     
+        self.database.deleteReservation(reserveId)     
     
 
     
