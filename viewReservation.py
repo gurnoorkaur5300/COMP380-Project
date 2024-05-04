@@ -41,7 +41,7 @@ class ViewReservation(Page):
         self.controller = controller
         self.database = database 
     
-
+        self.__id = None
         self.__name = None
         self.__roomId = None
         self.__roomNum = None
@@ -71,6 +71,9 @@ class ViewReservation(Page):
     def setCustomerName(self, n_customerName):
         """Set the customer's name."""
         self.__name = n_customerName
+        
+    def setCustomerId(self, n_customerId):
+        self.__id = n_customerId
     
     
 
@@ -131,7 +134,7 @@ class ViewReservation(Page):
         Opens the payment page.
         """
         payWindow = Payment(self) 
-        payWindow.setReservationInfo(self.__name, self.__roomId, self.__roomNum, self.__hotelName, self.__location, self.__cost, self.__checkIn, self.__checkOut)
+        payWindow.setReservationInfo(self.__id, self.__name, self.__roomId, self.__roomNum, self.__hotelName, self.__location, self.__cost, self.__checkIn, self.__checkOut)
          
 
 #     def cancelReservation(self):

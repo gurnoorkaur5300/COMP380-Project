@@ -60,13 +60,15 @@ class Database:
         )''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS reservations (
                        reserveId INTEGER PRIMARY KEY AUTOINCREMENT,
+                       customerId,
                        customerName TEXT,
                        hotelName TEXT,
                        roomId TEXT, 
                        roomNum INTEGER,
                        checkIn TEXT,
                        checkOut TEXT,
-                       paid REAL,    
+                       paid REAL, 
+                       FOREIGN KEY (customerId) REFERENCES customers,
                        FOREIGN KEY (customerName) REFERENCES customers(name),
                        FOREIGN KEY (roomId) REFERENCES rooms(roomId)
         )''')
@@ -156,9 +158,13 @@ class Database:
         customer = cursor.fetchone()
 
         if customer is not None:
-            foundCustomer = Customer(customer[1],customer[2],customer[3],customer[4], customer[5])
+            foundCustomer = Customer(customer[0],customer[1],customer[2],customer[3],customer[4], customer[5])
+            # cursor.execute('''SELECT checkIn FROM reservations WHERE customerId=?''', (id,))
+            # reservations = cursor.fetchall()
+            # foundCustomer.addReservations(reservations)
             return foundCustomer
         else:
+            print("not found")
             return None 
         
 
@@ -177,7 +183,8 @@ class Database:
         customer = cursor.fetchone()
 
         if customer is not None:
-            foundCustomer = Customer(customer[1],customer[2],customer[3],customer[4], customer[5])
+            foundCustomer = Customer(customer[0],customer[1],customer[2],customer[3],customer[4], customer[5])
+            
             return foundCustomer
         else:
             return None 
@@ -343,9 +350,9 @@ class Database:
         """
         cursor = self.conn.cursor()
         try:
-            cursor.execute('''INSERT INTO reservations (customerName, hotelName, roomId, roomNum, checkIn, checkOut, paid)
-                            VALUES (?, ?, ?, ?, ?, ?, ?)''',
-                        (reservation.name, reservation.hotelName, reservation.roomId, reservation.roomNum,
+            cursor.execute('''INSERT INTO reservations (customerId,customerName, hotelName, roomId, roomNum, checkIn, checkOut, paid)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
+                        (reservation.customerId, reservation.name, reservation.hotelName, reservation.roomId, reservation.roomNum,
                             reservation.checkIn, reservation.checkOut, reservation.cost))
             self.conn.commit()
             messagebox.showinfo("Success", "Reservation added.")

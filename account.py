@@ -68,6 +68,7 @@ class Account(Page):
 
 
         labelsInfo = [
+        ("Id:", self.customer.id),
         ("Name:", self.customer.name),
         ("Email:", self.customer.email),
         ("Phone:", self.customer.phoneNumber),
@@ -90,7 +91,7 @@ class Account(Page):
 
         
         for i, reservation in enumerate(self.customer.reservations):
-            reservationLabel = tk.Label(infoBox, text=reservation, anchor="w", bg="white", fg="black",font=(34), width=50)
+            reservationLabel = tk.Label(infoBox, text=reservation.checkIn, anchor="w", bg="white", fg="black",font=(34), width=50)
             reservationLabel.grid(row=i + len(labelsInfo) + 1, column=1, pady=10, sticky="w")
             self.infoLabels.append(reservationLabel)  
 
