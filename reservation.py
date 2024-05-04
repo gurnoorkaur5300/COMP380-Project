@@ -6,7 +6,7 @@ class Reservation:
     :Author: Gregory Calderon and Arameh Baghdassarian
     :Version 1.0
     """
-    def __init__(self, n_customerName=None, n_roomId=None, n_roomNum=None, n_hotelName=None, n_location=None, n_cost=None, n_checkIn=None, n_checkOut=None):
+    def __init__(self, n_customerId=None, n_customerName=None, n_roomId=None, n_roomNum=None, n_hotelName=None, n_location=None, n_cost=None, n_checkIn=None, n_checkOut=None):
         """
         Initializes a new Reservation instance.
 
@@ -17,6 +17,7 @@ class Reservation:
             checkOutDate: The date when the customer will check out.
             paymentID: The payment ID associated with the reservation.
         """
+        self.__customerId = n_customerId
         self.__name = n_customerName
         self.__roomId = n_roomId
         self.__roomNum = n_roomNum
@@ -51,6 +52,16 @@ class Reservation:
     # @property
     # def getCost(self):
     #     return self.roomInfo.get('Cost')
+
+    @property
+    def customerId(self):
+        """
+        Retrieves the id of the customer.
+        
+        Returns:
+            str: The id of the customer.
+        """
+        return self.__customerId
 
     @property
     def name(self):

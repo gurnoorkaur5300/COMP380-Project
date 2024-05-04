@@ -31,6 +31,7 @@ class Payment(tk.Toplevel):
         self.database = Database()
         self.title("Payment")
         self.geometry("600x600")
+        self.__customerId = None
         self.__reserveName = None
         self.__cost = None
         self.__roomId = None
