@@ -35,7 +35,7 @@ class PageHeader:
         self.color = {"nero": "#252726", "beige": "#F5F5DC", "orange": "#FF8700"}
         
         #pages this header will go on 
-        pages = [controller.loginPage, controller.adminPage]
+        pages = [controller.loginPage, controller.adminPage, controller.accountPage]
         #array of reset fuctions for all pages 
         self.resetFunctions=[]
 
@@ -71,9 +71,24 @@ class PageHeader:
         Args:
             controller: The controller object responsible for managing page navigation.
         """ 
-        for resetFunction in self.resetFunctions:
+        currPage = self.pageIs
+        print("currPage is ", currPage)
+        resetFunction = getattr(controller, f"{currPage.lower()}Page_", None)
+        if resetFunction and callable(resetFunction):
+        # for resetFunction in self.resetFunctions:
             resetFunction()
-        controller.showFrame("Home")
+        # self.mainFrame.destroy()
+        if currPage == "Login" :
+            controller.loginPage.reset()
+            controller.showFrame("Home")
+        elif currPage == "Account" and self.controller.isAdmin:
+            controller.showFrame("Admin")
+            controller.accountPage.reset()
+        elif currPage == "Admin":
+            controller.isLoggedIn = False
+            controller.isAdmin = False
+            controller.adminPage.reset()
+            controller.showFrame("Home")
     
     # set the label for the page header
     def setPageType(self, pageName):

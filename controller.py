@@ -120,8 +120,9 @@ class App(tk.Tk):
         # Show specific pages
         if pageName in ["Home","Policies", "HotelsView", "Room", "ViewReservation"]:
             self.showNavbar()
-        elif pageName ==  "Account" and self.isLoggedIn:
+        elif pageName ==  "Account" and self.isLoggedIn and not self.isAdmin:
             self.showNavbar()
+        
 
         # If we're navigating away from the Home page, reset its fields - Gurnoor Kaur
         if self.currentFrame == "Home" and pageName != "Home":
@@ -140,9 +141,12 @@ class App(tk.Tk):
             self.pageHeader = PageHeader(self, self)
             pageName = "Login"
             self.pageHeader.setPageType(pageName)
+        elif pageName == "Account" and self.isLoggedIn and self.isAdmin:
+            self.pageHeader.setPageType(pageName)
 
         # Set the page type for the admin page if logged in as an admin
         elif pageName == "Admin" and self.isAdmin and self.isLoggedIn:
+            self.pageHeader = PageHeader(self, self)
             self.pageHeader.setPageType(pageName)
             
 

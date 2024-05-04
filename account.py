@@ -94,12 +94,28 @@ class Account(Page):
             reservationLabel.grid(row=i + len(labelsInfo) + 1, column=1, pady=10, sticky="w")
             self.infoLabels.append(reservationLabel)  
 
-        # Back button added
-        backButton = tk.Button(infoBox, text="Back", font=("Arial", 16), bg="blue", fg="white", command=self.onBack)
-        backButton.grid(row=len(labelsInfo) + len(self.customer.reservations) + 2, column=0, columnspan=2, pady=20)
+        # # Back button added
+        # backButton = tk.Button(infoBox, text="Back", font=("Arial", 16), bg="blue", fg="white", command=self.onBack)
+        # backButton.grid(row=len(labelsInfo) + len(self.customer.reservations) + 2, column=0, columnspan=2, pady=20)
 
-    def onBack(self):
+    # def onBack(self):
+    #     """
+    #     Handle the back button click.
+    #     """
+    #     self.controller.showFrame("Admin")  
+        
+    def reset(self):
         """
-        Handle the back button click.
+        Resets the administrative page.
         """
-        self.controller.showFrame("Home")  
+        #clear spreadsheet
+        self.clearAccountPage()
+        #reset global variables
+        # global isLoggedIn, isAdmi
+        
+        if self.controller.isAdmin:
+            self.controller.showFrame("Admin")
+        elif not self.controller.isAdmin:
+            self.controller.showFrame("Home")
+        #     self.controller.isLoggedIn = False
+        # self.controller.isAdmin = False

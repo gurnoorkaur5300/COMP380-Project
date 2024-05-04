@@ -172,11 +172,15 @@ class Login(Page):
                 self.controller.room.setCustomer(user.name)
                 self.controller.accountPage.setCustomer(user)
                 # self.controller.showFrame("Account")
+                self.reset()
                 self.controller.showFrame("Home")
+                
             elif not self.isUser:
                 self.controller.isLoggedIn = True
                 self.controller.isAdmin = True
+                self.reset()
                 self.controller.showFrame("Admin")
+                
         
         # create buttons
         submitButton = tk.Button(
@@ -216,9 +220,9 @@ class Login(Page):
       """
       Resets the login form fields and state.
       """
-      global isLoggedIn, isAdmin
-      self.controller.isLoggedIn = False
-      self.controller.isAdmin = False
+    #   global isLoggedIn, isAdmin
+    #   self.controller.isLoggedIn = False
+    #   self.controller.isAdmin = False
       self.isUser = False
       self.isAdmin = False
       self.isUserVar.set(1)
@@ -237,6 +241,8 @@ class Login(Page):
       self.userPassword.bind("<FocusOut>",EntryBoxUtility.handleEntryFocusOut)
       self.userEmail.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
       self.focus_set()
+      print("came back")
+      self.controller.showFrame("Home")
 
 
     def defaultBoxes(self, widget, defaultmsg):
