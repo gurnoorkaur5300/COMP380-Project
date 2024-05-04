@@ -32,8 +32,11 @@ class Room(Page):
         self.__checkOut = n_checkOut
       
         
-    def setCustomer(self, n_customer):
-        self.__customer = n_customer
+    def setCustomerName(self, n_customerName):
+        self.__customerName = n_customerName
+           
+    def setCustomerId(self, n_customerId):
+        self.__customerId = n_customerId
         
     def displayRooms(self):
         self.roomsFrame = tk.Frame(self, bg='white')
@@ -98,10 +101,10 @@ class Room(Page):
     def bookRoom(self, roomId, roomNum, hotelName, location, cost):
         if self.controller.isLoggedIn == True:
             
-            print(self.__customer)
+            # print(self.__customer)
           
-            self.controller.viewReservation.setCustomerName(self.__customer)
-            self.controller.viewReservation.setCustomerId(self.__customer)
+            self.controller.viewReservation.setCustomerName(self.__customerName)
+            self.controller.viewReservation.setCustomerId(self.__customerId)
             self.controller.viewReservation.setRoomInfo(roomId, roomNum, hotelName, location, cost, self.__checkIn, self.__checkOut)
             self.controller.showFrame("ViewReservation")
         else: 

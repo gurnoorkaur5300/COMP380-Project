@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkmacosx
 from page import Page
 from entryBoxUtility import EntryBoxUtility 
 
@@ -85,15 +86,14 @@ class Account(Page):
             valueLabel.grid(row=i, column=1, pady=15, sticky="w")
             self.infoLabels.append(valueLabel)
 
-        
         reservationsLabel = tk.Label(infoBox, text="Reservations:", font=("Arial", 24, "bold"), bg="white", fg="black")
         reservationsLabel.grid(row=len(labelsInfo), column=0, padx=15, sticky="e")
 
-        
         for i, reservation in enumerate(self.customer.reservations):
-            reservationLabel = tk.Label(infoBox, text=reservation.checkIn, anchor="w", bg="white", fg="black",font=(34), width=50)
-            reservationLabel.grid(row=i + len(labelsInfo) + 1, column=1, pady=10, sticky="w")
-            self.infoLabels.append(reservationLabel)  
+            reservationButton = tk.Button(infoBox, text=reservation, command=lambda res=reservation: self.showReservation(res), anchor="center", bg="white", fg="black", font=(18), width=6)
+            reservationButton.grid(row=i + len(labelsInfo), column=1, sticky="w")
+        
+    
 
         # # Back button added
         # backButton = tk.Button(infoBox, text="Back", font=("Arial", 16), bg="blue", fg="white", command=self.onBack)
