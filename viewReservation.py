@@ -134,8 +134,8 @@ class ViewReservation(Page):
         Opens the payment page.
         """
         payWindow = Payment(self) 
-        print("the id is: ", self.__id)
-        payWindow.setReservationInfo(self.__id, self.__name, self.__roomId, self.__roomNum, self.__hotelName, self.__location, self.__cost, self.__checkIn, self.__checkOut)
+        # print("the id is: ", self.__id)
+        payWindow.setReservationInfo(self.__id, self.__name, self.__roomId, self.__roomNum, self.__hotelName, self.__cost, self.__location, self.__checkIn, self.__checkOut)
          
 
 #     def cancelReservation(self):

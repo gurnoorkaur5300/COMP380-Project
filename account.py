@@ -95,24 +95,13 @@ class Account(Page):
         reservationsLabel.grid(row=0, column=0, sticky="e", padx=15)
 
         for i, reservation in enumerate(self.customer.reservations):
-            print("iteration: ", i)
-            print("look here: ", reservation)
-            reservationButton = tk.Button(reservationFrame, text=reservation, command=lambda res=reservation: self.showReservation(res), anchor="center", bg="white", fg="black", font=(18), width=6)
+            reservationButton = tk.Button(reservationFrame, text=reservation, command=lambda: self.showReservation(reserveId), anchor="center", bg="white", fg="black", font=(18), width=10)
             reservationButton.grid(row= 0, column=i+1, sticky='w')
+            reserveId = reservation.split(":")[0].strip()
         
-    def showReservation(self, res):
-        self.database.getResInfo()
+    def showReservation(self, reserveId):
+        self.database.getResInfo(reserveId)
         # self.controller.showFrame("viewReservation")
-
-        # # Back button added
-        # backButton = tk.Button(infoBox, text="Back", font=("Arial", 16), bg="blue", fg="white", command=self.onBack)
-        # backButton.grid(row=len(labelsInfo) + len(self.customer.reservations) + 2, column=0, columnspan=2, pady=20)
-
-    # def onBack(self):
-    #     """
-    #     Handle the back button click.
-    #     """
-    #     self.controller.showFrame("Admin")  
         
     def reset(self):
         """

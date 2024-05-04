@@ -41,7 +41,7 @@ class Payment(tk.Toplevel):
         self.__checkIn = None
         self.__checkOut = None
     
-    def setReservationInfo(self, n_customerId, n_customerName, n_roomId, n_roomNum, n_hotelName, n_location, n_cost, n_checkIn, n_checkOut):
+    def setReservationInfo(self, n_customerId, n_customerName, n_roomId, n_roomNum, n_hotelName, n_cost, n_location, n_checkIn, n_checkOut):
         self.__customerId = n_customerId
         self.__reserveName = n_customerName
         self.__hotelName = n_hotelName
@@ -176,7 +176,7 @@ class Payment(tk.Toplevel):
         self.database.insertPayment(newPayment)
         self.closePayment()
         
-        newReservation = Reservation(self.__customerId, self.__reserveName, self.__roomId, self.__roomNum, self.__hotelName, self.__location, self.__cost, self.__checkIn, self.__checkOut)
+        newReservation = Reservation(self.__customerId, self.__reserveName, self.__roomId, self.__roomNum, self.__hotelName, self.__cost, self.__location, self.__checkIn, self.__checkOut)
         
         self.database.insertReservation(newReservation)
 
