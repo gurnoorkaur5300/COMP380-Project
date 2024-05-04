@@ -112,7 +112,7 @@ class Customer:
         :param n_reservation: Customer's new reservation.
         :type n_reservation: str
         """  
-        self.__reservations.append(n_reservation)
+        self.__reservations.extend(n_reservation)
    
 
     @property
