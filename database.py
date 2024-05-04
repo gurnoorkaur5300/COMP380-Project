@@ -133,7 +133,7 @@ class Database:
         """
         cursor = self.conn.cursor()
         try:
-            cursor.execute('''INSERT INTO customers (customerId, name, email, dob, phoneNumber, hashPass) VALUES (?,?,?,?,?,?)''', (customer.id,customer.name, customer.email, customer.dob, customer.phoneNumber, customer.hashPass))
+            cursor.execute('''INSERT INTO customers (name, email, dob, phoneNumber, hashPass) VALUES (?,?,?,?,?)''', (customer.name, customer.email, customer.dob, customer.phoneNumber, customer.hashPass))
             self.conn.commit()
             messagebox.showinfo("Success", "Account Created")
         except sqlite3.IntegrityError:
