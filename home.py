@@ -5,6 +5,7 @@ from tkcalendar import Calendar
 import threading
 from page import Page
 from hotels import Hotels
+from hotelsView import HotelsView
 from database import Database  # Assume Database class handles all database interactions
 
 
@@ -80,7 +81,8 @@ class Home(Page):
         if not hotels_data:
             tk.messagebox.showinfo("No Hotels", f"No hotels found in {location}.")
             return
-       
+        #line added to clear the hotels page every time there is a new search
+        self.controller.hotelsView.clearHotels()
         self.controller.hotelsView.setHotelsData(hotels_data, checkin_date, checkout_date)
         self.controller.hotelsView.displayHotels()
         self.controller.showFrame("HotelsView")

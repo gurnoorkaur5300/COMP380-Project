@@ -3,6 +3,7 @@ from tkinter import ttk,  messagebox
 from PIL import Image, ImageTk
 from database import Database
 from page import Page
+from room import Room
 
 
 LOCATIONS = ["New York", "Los Angeles", "Chicago", "Houston", "Miami"]
@@ -84,10 +85,18 @@ class HotelsView(Page):
         if not rooms:
             messagebox.showinfo("Rooms", "No available rooms for the selected dates.")
             return
-        
+        #line added to clear the rooms page every time there is a new search
+        self.controller.room.clearRooms()
         self.controller.room.setRooms(rooms, checkin, checkout)
         self.controller.room.displayRooms()
         self.controller.showFrame("Room")
+
+    def clearHotels(self):
+        """
+        Clear all the widgets related to displaying hotels.
+        """
+        if hasattr(self, 'hotelsFrame'):
+            self.hotelsFrame.destroy()    
 
     
 
