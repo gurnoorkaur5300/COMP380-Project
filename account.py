@@ -100,7 +100,8 @@ class Account(Page):
             reserveId = reservation.split(":")[0].strip()
         
     def showReservation(self, reserveId):
-        self.database.getResInfo(reserveId)
+        reservationInfoString = self.database.getResInfo(reserveId)
+        
         # self.controller.showFrame("viewReservation")
         
     def reset(self):

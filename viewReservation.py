@@ -52,17 +52,10 @@ class ViewReservation(Page):
         self.__checkIn = None
         self.__checkOut = None
     
-        # self.__reservation = n_reservation
-        
-        # self.reservationFrame = tk.Frame(self, bg='white')
-        # self.reservationFrame.pack(fill=tk.BOTH, expand=True)
         
         self.reservationLabel = tk.Label(self, text="", font=("Arial", 24),justify=tk.LEFT)
         self.reservationLabel.pack(fill=tk.X, pady=15)
-        
 
-        
-        
     @property
     def customerName(self):
         return self.__name  
@@ -75,8 +68,6 @@ class ViewReservation(Page):
     def setCustomerId(self, n_customerId):
         self.__id = n_customerId
     
-    
-
 
     def setRoomInfo(self, n_roomId, n_roomNum, n_hotelName, n_location, n_cost, n_checkIn, n_checkOut):
         """Set the room information."""
