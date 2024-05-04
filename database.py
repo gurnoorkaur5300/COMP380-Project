@@ -449,7 +449,7 @@ class Database:
             cursor.executemany('INSERT INTO hotels (hotelId, hotelName, location, amenities, priceRange, photoLink) VALUES (?,?,?,?,?,?)', hotels)
     
             # Sample rooms for each hotel
-            roomTemplate = [(hotel[0], hotel[1], f'{num:03}', hotel[1], round(float(hotel[4].split('-')[0].strip('$')) + num * 10, 2)) for hotel in hotels for num in range(101, 106)]
+            roomTemplate = [(hotel[0], hotel[1], f'{num:03}', hotel[2], round(float(hotel[4].split('-')[0].strip('$')) + num * 10, 2)) for hotel in hotels for num in range(101, 106)]
             cursor.executemany('INSERT INTO rooms (roomId, hotelName, roomNum, location, cost) VALUES (?,?,?,?,?)', roomTemplate)
             # self.insertRoom(roomTemplate)
     
