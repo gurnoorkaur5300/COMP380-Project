@@ -54,7 +54,7 @@ class ViewReservation(Page):
         
    
         
-        self.isNew =True
+       
         
         self.reservationLabel = tk.Label(self, text="", font=("Arial", 24),justify=tk.LEFT)
         self.reservationLabel.pack(fill=tk.X, pady=15)
@@ -102,10 +102,7 @@ class ViewReservation(Page):
         roomText = f"Name: {self.__name}\nRoom Id: {self.__roomId}\nRoom Number: {self.__roomNum}\nHotel Name: {self.__hotelName}\nLocation: {self.__location}\nCheck In: {self.__checkIn}\nCheck Out: {self.__checkOut}\nCost: {self.__cost}\n"
         self.reservationLabel.config(text=roomText)
             
-        confirmBtnState = "active" if self.isNew else "disabled"
-        cancelBtnState = "disabled" if self.isNew else "active"
-            
-        confirmButton = tk.Button(
+        self.confirmButton = tk.Button(
                 self,
                 text="Confirm",
                 borderwidth=0,
@@ -113,11 +110,11 @@ class ViewReservation(Page):
                     "Arial",
                     35),fg="black",
                 activeforeground="blue",
-                command=lambda: self.showPayment(),state=cancelBtnState)
-        confirmButton.place(relx=0.3, rely=.8, anchor=tk.CENTER)
+                command=self.showPayment)
+        self.confirmButton.place(relx=0.3, rely=.8, anchor=tk.CENTER)
         
 
-        cancelButton = tk.Button(
+        self.cancelButton = tk.Button(
                 self,
                 text="Cancel",
                 borderwidth=0,
@@ -126,8 +123,17 @@ class ViewReservation(Page):
                     35),
                 fg="black",
                 activeforeground="blue",
-                command=lambda: self.cancelReservation(),state= confirmBtnState)
-        cancelButton.place(relx=0.7, rely=.8, anchor=tk.CENTER)
+                command=self.cancelReservation)
+        self.cancelButton.place(relx=0.7, rely=.8, anchor=tk.CENTER)
+
+        self.updateBtn()
+
+    def updateBtn(self):
+        confirmBtnState = "active" if self.controller.isNew else "disabled"
+        cancelBtnState = "disabled" if self.controller.isNew else "active"
+
+        self.confirmButton.config(state=confirmBtnState)
+        self.cancelButton.config(state=cancelBtnState)
 
     def showPayment(self):
         """

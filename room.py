@@ -106,6 +106,8 @@ class Room(Page):
             self.controller.viewReservation.setCustomerName(self.__customerName)
             self.controller.viewReservation.setCustomerId(self.__customerId)
             self.controller.viewReservation.setRoomInfo(roomId, roomNum, hotelName, location, cost, self.__checkIn, self.__checkOut)
+            self.controller.isNew=True
+            self.controller.viewReservation.updateBtn()
             self.controller.showFrame("ViewReservation")
         else: 
             self.controller.showFrame("Login")

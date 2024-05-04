@@ -108,7 +108,8 @@ class Account(Page):
         self.controller.viewReservation.setCustomerName(self.customer.name)
         self.controller.viewReservation.setCustomerId(self.customer.id)
         self.controller.viewReservation.setRoomInfo(*resInfoTuple[0])
-        self.controller.viewReservation.isNew = False
+        self.controller.isNew = False
+        self.controller.viewReservation.updateBtn()
         self.controller.showFrame("ViewReservation")
         
     def reset(self):
