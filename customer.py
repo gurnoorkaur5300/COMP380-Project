@@ -5,7 +5,7 @@ class Customer:
     :version 1.1
     """
 
-    def __init__(self, n_name=None, n_email=None, n_dob=None,n_phone= None, n_hashPass=None, n_reservations=None):
+    def __init__(self, n_id=None, n_name=None, n_email=None, n_dob=None,n_phone= None, n_hashPass=None, n_reservations=None):
 
         """
         Constructs a customer
@@ -21,7 +21,7 @@ class Customer:
         :param n_reservations: (Optional) List of reservations made by the customer. 
         :type n_reservations: list, optional
         """
-        self.__id = None
+        self.__id = n_id
         self.__name= n_name
         self.__email= n_email
         self.__dob= n_dob

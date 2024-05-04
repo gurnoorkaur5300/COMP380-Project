@@ -42,6 +42,7 @@ class Create(tk.Toplevel):
         self.passwordMatch = passwordMatch or self.passwordMatch
         self.title("Create Account")
         self.geometry("600x600")
+        
 
         #create fields
         self.userName = tk.Entry(self,width =30, font=("Arial", 20), bg="white", fg="black", insertbackground="black", insertwidth=4 )
@@ -158,7 +159,7 @@ class Create(tk.Toplevel):
         name = firstName + " " + lastName
         hashPasswrd = hashlib.sha256(passwrd.encode()).hexdigest()
 
-        newCustomer = Customer(name, email, dob, phone, hashPasswrd)
+        newCustomer = Customer(None, name, email, dob, phone, hashPasswrd)
 
 
     ##turn into If else statement to clear the email if the email already exists
