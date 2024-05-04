@@ -140,8 +140,8 @@ class Login(Page):
             """
             Validates the user's login credentials.
             """
-            email = self.userEmail.get().lower()
-            passWord = self.userPassword.get()
+            email = self.userEmail.get().lower().strip()
+            passWord = self.userPassword.get().strip()
             hashPasswrd = hashlib.sha256(passWord.encode()).hexdigest()
 
             if database.isVerified(email, hashPasswrd, self.isUserVar.get()):

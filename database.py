@@ -133,7 +133,7 @@ class Database:
         """
         cursor = self.conn.cursor()
         try:
-            cursor.execute('''INSERT INTO customers (name, email, dob, phoneNumber, hashPass) VALUES (?,?,?,?,?)''', (customer.name, customer.email, customer.dob, customer.phoneNumber, customer.hashPass))
+            cursor.execute('''INSERT INTO customers (customerId, name, email, dob, phoneNumber, hashPass) VALUES (?,?,?,?,?,?)''', (customer.id,customer.name, customer.email, customer.dob, customer.phoneNumber, customer.hashPass))
             self.conn.commit()
             messagebox.showinfo("Success", "Account Created")
         except sqlite3.IntegrityError:
@@ -183,7 +183,7 @@ class Database:
         customer = cursor.fetchone()
 
         if customer is not None:
-            foundCustomer = Customer(customer[0],customer[1],customer[2],customer[3],customer[4], customer[5])
+            foundCustomer = Customer(customer[0],customer[1],customer[2],customer[3],customer[4],customer[5])
             
             return foundCustomer
         else:
@@ -260,14 +260,15 @@ class Database:
             user = self.getAdminEmail(checkForEmail)
 
         if user is None:
-            #print("not email match")
+            print("not email match")
             return False
         
         if str(user.hashPass) == str(checkForHashPasswrd):
-            #print("hash match")
+            # print("hash match")
             return True 
         else:
-            #print("not hash match" + "" + str(customer.hashPass)+ "" + str(checkForHashPasswrd))
+            print("not hash match" + str(checkForHashPasswrd))
+            print("user hash", str(user.hashPass))
             return False
         
 
