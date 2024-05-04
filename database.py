@@ -67,6 +67,7 @@ class Database:
                        roomNum INTEGER,
                        checkIn TEXT,
                        checkOut TEXT,
+                       location TEXT,
                        paid REAL, 
                        FOREIGN KEY (customerId) REFERENCES customers,
                        FOREIGN KEY (customerName) REFERENCES customers(name),
@@ -181,25 +182,20 @@ class Database:
         cursor = self.conn.cursor()
         cursor.execute('''SELECT * FROM customers WHERE email=?''', (email,))
         customer = cursor.fetchone()
-        
 
-        
         if customer is not None:
-            print("customer id is: ", customer[0])
-            customerId = customer[0]
+            # print("customer id is: ", customer[0])
+            # customerId = customer[0]
             foundCustomer = Customer(customer[0],customer[1],customer[2],customer[3],customer[4],customer[5])
             
-            cursor.execute('''SELECT checkIn FROM reservations WHERE customerId=?''', (customerId,))
-            reservations = cursor.fetchall()
-            print(reservations)
-            # for reservation in reservations:
-            #     foundCustomer.addReservations(reservation)
-            
+            # cursor.execute('''SELECT checkIn FROM reservations WHERE customerId=?''', (customerId,))
+            # reservations = cursor.fetchall()
+            # print(reservations)     
             return foundCustomer
         else:
             return None 
         
-    
+
 
     def getReservations(self, customerId):
         """
@@ -212,12 +208,16 @@ class Database:
             list: A list of check-in dates for the customer's reservations.
         """
         cursor = self.conn.cursor()
-        cursor.execute('''SELECT checkIn FROM reservations WHERE customerId=?''', (customerId,))
-        checkInDates = []
+        cursor.execute('''SELECT reserveId, checkIn FROM reservations WHERE customerId=?''', (customerId,))
+        reservations = []
         for row in cursor.fetchall():
-            checkInDates.append(row[0])
-        print("check in dates are: ", checkInDates)
-        return checkInDates
+            reservationId = row[0]  # Assuming reserveId is the reservation date
+            check_in_date = row[1]
+            reservation_string = f"{reservationId}: {check_in_date}"
+            reservations.append(reservation_string)
+        
+        print("reservations are: ", reservations)
+        return reservations
     
     def deleteReservation(self, reserveId):
         """
@@ -296,22 +296,11 @@ class Database:
         cursor.execute("SELECT customerId, name FROM customers")
         customers = cursor.fetchall()
         return customers
-    
-    # def getResInfo(self):
-    #     """
-    #     Retrieves reservation information from the 'reservations' table.
 
-    #     Returns:
-    #         list: A list of tuples containing reservation IDs, check-in/out dates, and payment status.
-    #     """
-    #     cursor=self.conn.cursor()
-    #     cursor.execute("SELECT reserveId, checkIn, checkOut, paid FROM reservations")
-    #     reservations = cursor.fetchall()
-    #     return reservations
     
     
     # Formatting of Database spreadsheet fixed - Gurnoor (JOIN on Customer and ResInfo to put data together)
-    def getResInfo(self):
+    def getResInfo(self, reserveId):
         """
         Retrieves reservation information from the 'reservations' table, joined with the 'customers' table
         to include customer IDs.
@@ -319,12 +308,9 @@ class Database:
         Returns:
             list: A list of tuples containing customer IDs, customer names, reservation IDs, check-in/out dates, and payment status.
         """
+        print("reserve id is: ")
         cursor = self.conn.cursor()
-        cursor.execute("""
-            SELECT c.customerId, c.name, r.reserveId, r.checkIn, r.checkOut, r.paid 
-            FROM reservations r
-            INNER JOIN customers c ON c.name = r.customerName
-        """)
+        cursor.execute('''SELECT roomId, roomNum, hotelName,location, paid, checkIn, checkOut FROM reservations WHERE reserveId=?''', (reserveId,))
         reservationsInfo = cursor.fetchall()
         print("reservation info: ", reservationsInfo)
         return reservationsInfo
@@ -365,10 +351,10 @@ class Database:
         """
         cursor = self.conn.cursor()
         try:
-            cursor.execute('''INSERT INTO reservations (customerId,customerName, hotelName, roomId, roomNum, checkIn, checkOut, paid)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
+            cursor.execute('''INSERT INTO reservations (customerId,customerName, hotelName, roomId, roomNum, checkIn, checkOut, location, paid)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)''',
                         (reservation.customerId, reservation.name, reservation.hotelName, reservation.roomId, reservation.roomNum,
-                            reservation.checkIn, reservation.checkOut, reservation.cost))
+                            reservation.checkIn, reservation.checkOut,  reservation.location,reservation.cost))
             self.conn.commit()
             messagebox.showinfo("Success", "Reservation added.")
         except sqlite3.IntegrityError:
