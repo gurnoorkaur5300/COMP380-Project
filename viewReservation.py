@@ -48,13 +48,20 @@ class ViewReservation(Page):
         self.__hotelName = None
         self.__location = None
         self.__cost = None
-     
+        
         self.__checkIn = None
         self.__checkOut = None
-    
+        
+   
+        
+        self.isNew =True
         
         self.reservationLabel = tk.Label(self, text="", font=("Arial", 24),justify=tk.LEFT)
         self.reservationLabel.pack(fill=tk.X, pady=15)
+        
+    # @property
+    # def isNew(self):
+    #     return self.isNew
 
     @property
     def customerName(self):
@@ -95,6 +102,8 @@ class ViewReservation(Page):
         roomText = f"Name: {self.__name}\nRoom Id: {self.__roomId}\nRoom Number: {self.__roomNum}\nHotel Name: {self.__hotelName}\nLocation: {self.__location}\nCheck In: {self.__checkIn}\nCheck Out: {self.__checkOut}\nCost: {self.__cost}\n"
         self.reservationLabel.config(text=roomText)
             
+        confirmBtnState = "active" if self.isNew else "disabled"
+        cancelBtnState = "disabled" if self.isNew else "active"
             
         confirmButton = tk.Button(
                 self,
@@ -102,23 +111,23 @@ class ViewReservation(Page):
                 borderwidth=0,
                 font=(
                     "Arial",
-                    32),fg="black",
+                    35),fg="black",
                 activeforeground="blue",
-                command=lambda: self.showPayment())
+                command=lambda: self.showPayment(),state=cancelBtnState)
         confirmButton.place(relx=0.3, rely=.8, anchor=tk.CENTER)
         
 
-#     cancelButton = tk.Button(
-#             self,
-#             text="Cancel Booking",
-#             borderwidth=0,
-#             font=(
-#                 "Arial",
-#                 16),
-#             fg="black",
-#             activeforeground="blue",
-#             command=lambda: cancelReservation(self))
-#     cancelButton.place(relx=0.7, rely=.8, anchor=tk.CENTER)
+        cancelButton = tk.Button(
+                self,
+                text="Cancel",
+                borderwidth=0,
+                font=(
+                    "Arial",
+                    35),
+                fg="black",
+                activeforeground="blue",
+                command=lambda: self.cancelReservation(),state= confirmBtnState)
+        cancelButton.place(relx=0.7, rely=.8, anchor=tk.CENTER)
 
     def showPayment(self):
         """
@@ -129,11 +138,11 @@ class ViewReservation(Page):
         payWindow.setReservationInfo(self.__id, self.__name, self.__roomId, self.__roomNum, self.__hotelName, self.__cost, self.__location, self.__checkIn, self.__checkOut)
          
 
-#     def cancelReservation(self):
-#         """
-#         Opens the cancel reservation window
-#         """
-#         CancelReservation(self, database)     
+    def cancelReservation(self):
+        """
+        Opens the cancel reservation window
+        """
+        # CancelReservation(self, database)     
     
 
     
