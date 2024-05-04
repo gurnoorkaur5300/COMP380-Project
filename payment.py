@@ -159,19 +159,20 @@ class Payment(tk.Toplevel):
             return False
         if not self.validateSecurityCode(securityCodeValue):
             return False
-        # if not self.validateClientAddress(clientAddress):
-        #     return False
+        if not self.validateClientAddress(clientAddressValue):
+            return False
         if not self.validateZipCode(zipCodeValue):
             return False
-        # if not self.validateCityName(cityName):
+        if not self.validateCityName(cityNameValue):
         #     self.resetToDefault(self.cityName, self.defaultMessages[4])
-        #     return False
+             return False
 
         hashCode = hashlib.sha256(securityCodeValue.encode()).hexdigest()
         
        
         newPayment = PaymentClass(cardNameValue, cardNumberValue, expirationDateValue, hashCode, clientAddressValue, zipCodeValue, cityNameValue, self.currentDate, self.__cost)
         self.database.insertPayment(newPayment)
+        self.closePayment()
         
         newReservation = Reservation(self.__reserveName, self.__roomId, self.__roomNum, self.__hotelName, self.__location, self.__cost, self.__checkIn, self.__checkOut)
         
@@ -214,7 +215,7 @@ class Payment(tk.Toplevel):
         return True
     
     def validateExpirationDate(self, date):
-        format = r'^\d{2}-\d{2}$'
+        format = r'^(0[1-9]|[12][0-9]|3[01])-(24|25|26|27|28|29|30)$'
         if not re.match(format,date):
             messagebox.showerror("Error", "Please enter a valid date of format MM-YY")
             self.resetToDefault(self.expirationDate, self.defaultMessages[6])
@@ -235,6 +236,10 @@ class Payment(tk.Toplevel):
             messagebox.showerror("Error", "Code must be 3 digits long")
             self.resetToDefault(self.securityCode, self.defaultMessages[2])
             return False
+        if len(code) > 3:
+            messagebox.showerror("Error", "Code must be 3 digits long")
+            self.resetToDefault(self.securityCode, self.defaultMessages[2])
+            return False
 
         if not re.search(r'[0-9]', code) or not re.search(r'\d',code):
             messagebox.showerror("Error", "Code must be only integers")
@@ -252,8 +257,7 @@ class Payment(tk.Toplevel):
         Returns:
             bool: True if the date of birth has the correct format, False otherwise.
         """
-        # format = r'^\d+\s+[a-zA-Z]+\s+[a-zA-Z]$'
-        format = r'^[a-zA-Z]$'
+        format = r'^\d+\s[a-zA-Z]+\s[a-zA-Z]+$'
         if not re.match(format,address):
             messagebox.showerror("Error", "Client address must contain number street name and St/BLVD/RD")
             self.resetToDefault(self.clientAddress, self.defaultMessages[3])
@@ -290,27 +294,33 @@ class Payment(tk.Toplevel):
         Returns:
             bool: True if the phone number has the correct format, False otherwise.
         """
-        format = r'^[a-zA-Z]$'
+        format = r'^[a-zA-Z\s]+$'
         if not re.match(format, city):
-            messagebox.showerror("Error", "Phone number should have the format ###-###-####")  
+            messagebox.showerror("Error", "City name should only contain letters")
+            self.resetToDefault(self.cityName, self.defaultMessages[4])  
             return False
         return True
     
     def validateZipCode(self, zipCode):
         if len(zipCode) < 5:
             messagebox.showerror("Error", "Code must be 5 digits long")
-            self.resetToDefault(self.securityCode, self.defaultMessages[5])
+            self.resetToDefault(self.zipCode, self.defaultMessages[5])
+            return False
+        if len(zipCode) > 5:
+            messagebox.showerror("Error", "Code must be 5 digits long")
+            self.resetToDefault(self.zipCode, self.defaultMessages[5])
             return False
 
         if not re.search(r'[0-9]', zipCode) or not re.search(r'\d',zipCode):
             messagebox.showerror("Error", "Code must be 5 integers")
-            self.resetToDefault(self.securityCode, self.defaultMessages[5])
+            self.resetToDefault(self.zipCode, self.defaultMessages[5])
             return False
         return True
 
     #function that displays success message
     def showSuccessMessage(self, title, message):
         messagebox.showerror(title, message)    
+    
      
 
     def closePayment(self):
