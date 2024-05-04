@@ -102,7 +102,7 @@ class App(tk.Tk):
         
         self.isLoggedIn = False
         self.isAdmin = False
-
+        self.isNew=True
     #change pages
     def showFrame(self, pageName):
         """
