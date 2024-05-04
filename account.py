@@ -86,14 +86,23 @@ class Account(Page):
             valueLabel.grid(row=i, column=1, pady=15, sticky="w")
             self.infoLabels.append(valueLabel)
 
-        reservationsLabel = tk.Label(infoBox, text="Reservations:", font=("Arial", 24, "bold"), bg="white", fg="black")
-        reservationsLabel.grid(row=len(labelsInfo), column=0, padx=15, sticky="e")
+       
+
+        reservationFrame = tk.Frame(self)
+        reservationFrame.grid(row=1, column=0, padx=(35,35), sticky="ew")
+        
+        reservationsLabel = tk.Label(reservationFrame, text="Reservations:", font=("Arial", 24, "bold"), bg="white", fg="black")
+        reservationsLabel.grid(row=0, column=0, sticky="e", padx=15)
 
         for i, reservation in enumerate(self.customer.reservations):
-            reservationButton = tk.Button(infoBox, text=reservation, command=lambda res=reservation: self.showReservation(res), anchor="center", bg="white", fg="black", font=(18), width=6)
-            reservationButton.grid(row=i + len(labelsInfo), column=1, sticky="w")
+            print("iteration: ", i)
+            print("look here: ", reservation)
+            reservationButton = tk.Button(reservationFrame, text=reservation, command=lambda res=reservation: self.showReservation(res), anchor="center", bg="white", fg="black", font=(18), width=6)
+            reservationButton.grid(row= 0, column=i+1, sticky='w')
         
-    
+    def showReservation(self, res):
+        self.database.getResInfo()
+        # self.controller.showFrame("viewReservation")
 
         # # Back button added
         # backButton = tk.Button(infoBox, text="Back", font=("Arial", 16), bg="blue", fg="white", command=self.onBack)

@@ -213,8 +213,11 @@ class Database:
         """
         cursor = self.conn.cursor()
         cursor.execute('''SELECT checkIn FROM reservations WHERE customerId=?''', (customerId,))
-        reservations = cursor.fetchall()
-        return [res[0] for res in reservations] # return first checkIn date 
+        checkInDates = []
+        for row in cursor.fetchall():
+            checkInDates.append(row[0])
+        print("check in dates are: ", checkInDates)
+        return checkInDates
     
     def deleteReservation(self, reserveId):
         """
@@ -322,8 +325,9 @@ class Database:
             FROM reservations r
             INNER JOIN customers c ON c.name = r.customerName
         """)
-        reservations_info = cursor.fetchall()
-        return reservations_info
+        reservationsInfo = cursor.fetchall()
+        print("reservation info: ", reservationsInfo)
+        return reservationsInfo
 
 
     
