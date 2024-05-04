@@ -60,7 +60,7 @@ class Database:
         )''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS reservations (
                        reserveId INTEGER PRIMARY KEY AUTOINCREMENT,
-                       customerId,
+                       customerId INTEGER,
                        customerName TEXT,
                        hotelName TEXT,
                        roomId TEXT, 
@@ -181,9 +181,19 @@ class Database:
         cursor = self.conn.cursor()
         cursor.execute('''SELECT * FROM customers WHERE email=?''', (email,))
         customer = cursor.fetchone()
+        
 
+        
         if customer is not None:
+            print("customer id is: ", customer[0])
+            customerId = customer[0]
             foundCustomer = Customer(customer[0],customer[1],customer[2],customer[3],customer[4],customer[5])
+            
+            cursor.execute('''SELECT checkIn FROM reservations WHERE customerId=?''', (customerId,))
+            reservations = cursor.fetchall()
+            print(reservations)
+            # for reservation in reservations:
+            #     foundCustomer.addReservations(reservation)
             
             return foundCustomer
         else:
