@@ -241,7 +241,6 @@ class Login(Page):
       self.userPassword.bind("<FocusOut>",EntryBoxUtility.handleEntryFocusOut)
       self.userEmail.bind("<FocusOut>", EntryBoxUtility.handleEntryFocusOut)
       self.focus_set()
-      print("came back")
       self.controller.showFrame("Home")
 
 

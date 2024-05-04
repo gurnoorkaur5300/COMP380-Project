@@ -101,6 +101,7 @@ class Room(Page):
             print(self.__customer)
           
             self.controller.viewReservation.setCustomerName(self.__customer)
+            self.controller.viewReservation.setCustomerId(self.__customer)
             self.controller.viewReservation.setRoomInfo(roomId, roomNum, hotelName, location, cost, self.__checkIn, self.__checkOut)
             self.controller.showFrame("ViewReservation")
         else: 
