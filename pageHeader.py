@@ -4,7 +4,7 @@ class PageHeader:
     """
     This class represents the header component for pages.
     :author: Gregory Calderon
-    :version: 1.0
+    :version: 3.0
 
     Attributes:
         parent: The parent widget to which the header belongs.

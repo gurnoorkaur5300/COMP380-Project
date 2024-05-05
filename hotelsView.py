@@ -10,6 +10,30 @@ LOCATIONS = ["New York", "Los Angeles", "Chicago", "Houston", "Miami"]
 
 
 class HotelsView(Page):
+    """
+    This class represents the page displaying available hotels.
+    
+    Author: Gregory Calderon and Gurnoor Kaur
+    
+    Attributes:
+        parent: The parent widget to which the hotels view page belongs.
+        controller: The controller object responsible for managing page navigation.
+        db: The database object for accessing hotel and room information.
+        hotels: A list of dictionaries containing hotel information.
+        checkIn: The check-in date.
+        checkOut: The check-out date.
+        hotelsFrame: The frame containing the hotels view.
+        contentFrame: The frame containing hotel information.
+        canvas: The canvas widget for scrolling hotel information.
+        innerFrame: The frame inside the canvas for displaying hotel information.
+
+    Methods:
+        setHotelsData(n_hotelData, n_checkIn, n_checkOut): Sets the hotel data and check-in/check-out dates.
+        displayHotels(): Displays the available hotels.
+        populateHotels(): Populates the hotels view with hotel information.
+        showRooms(hotelName, checkin, checkout): Displays available rooms for a selected hotel.
+        onCanvasConfigure(event): Configures the canvas widget for scrolling.
+    """
     def __init__(self, parent, controller, n_hotelData=None, n_checkIn=None, n_checkOut=None):
         super().__init__(parent, controller)
         self.db = Database()  
@@ -22,13 +46,10 @@ class HotelsView(Page):
         if self.hotels is not None:
             self.displayHotels()
             
-
-        
     def setHotelsData(self, n_hotelData, n_checkIn, n_checkOut):
         self.hotels = n_hotelData
         self.checkIn = n_checkIn
         self.checkOut = n_checkOut
-        
         
     def displayHotels(self):
         
@@ -56,8 +77,7 @@ class HotelsView(Page):
         for hotel in self.hotels:
             self.hotelFrame = tk.Frame(self.innerFrame, borderwidth=2, relief="solid", padx =50, pady=20)
             self.hotelFrame.pack(pady=10, fill=tk.X)
-            
-            
+                 
             # print(hotel)
             photoPath = hotel['photoLink']
             try:
@@ -91,6 +111,7 @@ class HotelsView(Page):
         self.controller.room.displayRooms()
         self.controller.showFrame("Room")
 
+
     def clearHotels(self):
         """
         Clear all the widgets related to displaying hotels.
@@ -98,7 +119,6 @@ class HotelsView(Page):
         if hasattr(self, 'hotelsFrame'):
             self.hotelsFrame.destroy()    
 
-    
 
     def onCanvasConfigure(self, event):
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))

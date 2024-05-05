@@ -7,7 +7,7 @@ class Admin(Page):
     """
     This class represents the administrative page.
     :author: Gregory Calderon
-    :version: 1.0
+    :version: 3.0
 
     Attributes:
         parent: The parent widget to which the administrative page belongs.
@@ -137,7 +137,6 @@ class Admin(Page):
             # Clear the highlight effect of the previously hovered item
                 self.clearHover()
 
-        # Highlight the current hovered row
             self.spreadsheet.item(item, tags=('hover',))
             self.spreadsheet.tag_configure('hover', background='lightblue')
 
@@ -146,10 +145,22 @@ class Admin(Page):
         else:
         # Clear the highlight if the mouse is not over any item
             self.clearHover()
-
-
     
     def showAccountPage(self, customerId):
+        """
+        Displays the account page for a given customer.
+
+        This method retrieves the customer information from the database based on the provided customer ID.
+        If the customer is found, it sets the customer data in the AccountPage controller, marks the user as logged in and admin, shows the Account frame, and resets the current frame.
+        If the customer is not found, it displays an error message.
+
+        Args:
+            self: The object instance.
+            customerId (int): The ID of the customer whose account page is to be displayed.
+
+        Returns:
+            None
+        """
         customer = self.database.getById(customerId)
         if customer:
             self.controller.accountPage.setCustomer(customer)

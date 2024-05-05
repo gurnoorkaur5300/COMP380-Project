@@ -3,13 +3,14 @@ from tkinter import messagebox
 import sqlite3
 from customer import Customer
 from administrator import Administrator
+
 import hashlib
 
 class Database:
     """
     Manages interactions with the SQLite database.
-    :author: Gregory Calderon and Gurnoor Kaur
-    :version: 2.0
+    :author: Gregory Calderon with sample data provide by Gurnoor Kaur
+    :version: 3.0
 
     Attributes:
         conn (sqlite3.Connection): Connection to the SQLite database.
@@ -25,6 +26,22 @@ class Database:
         isVerified: Verifies the login credentials of a customer or administrator.
         getCustomerInfo: Retrieves customer IDs and names from the 'customers' table.
         getResInfo: Retrieves reservation IDs, check-in/out dates, and payment status from the 'reservations' table.
+        
+        _init__(dbFile="defaultDatabase.db"): Initializes the Database object.
+        buildTable(): Creates necessary tables in the database if they don't exist.
+        insertPayment(payment): Inserts payment information into the 'payments' table.
+        insertCustomer(customer): Inserts a new customer into the 'customers' table.
+        getById(id): Retrieves customer information based on their customerId.
+        getEmail(email): Retrieves customer information based on their email address.
+        getReservations(customerId): Retrieves reservations for a specific customer.
+        deleteReservation(reserveId, email): Deletes a reservation from the 'reservations' table.
+        getAdminEmail(adminEmail): Retrieves administrator information based on their email address.
+        isVerified(checkForEmail, checkForHashPasswrd, isCustomer): Verifies login credentials of a customer or administrator.
+        getResInfo(reserveId): Retrieves reservation information from the 'reservations' table.
+        fetchHotelsByLocation(location): Fetches hotels based on a specific location.
+        fetchRoomByHotelAvail(hotel_name, checkin_date, checkout_date): Fetches available rooms for a specific hotel.
+        returnImgPath(): Returns the image paths for hotel photos.
+        insert_sample_data(): Inserts sample data into the database if the hotels table is empty.
     """
     def __init__(self, dbFile="defaultDatabase.db"):
         """
@@ -67,6 +84,7 @@ class Database:
                        roomNum INTEGER,
                        checkIn TEXT,
                        checkOut TEXT,
+                       location TEXT,
                        paid REAL, 
                        FOREIGN KEY (customerId) REFERENCES customers,
                        FOREIGN KEY (customerName) REFERENCES customers(name),
@@ -115,6 +133,12 @@ class Database:
         self.conn.commit()
     
     def insertPayment(self, payment):
+        """
+        Inserts payment information into the 'payments' table.
+
+        Args:
+            payment (Payment): The Payment object containing payment information.
+        """
         cursor = self.conn.cursor()
         try:
             cursor.execute('''INSERT INTO payments (customerName, cardNumber, securityHash, expireDate, address, city, zip, amount, paidDate) VALUES (?,?,?,?,?,?,?,?,?)''', (payment.name, payment.number, payment.code, payment.expireDate, payment.address, payment.city, payment.zip, payment.paidAmount, payment.currentDate))
@@ -181,25 +205,17 @@ class Database:
         cursor = self.conn.cursor()
         cursor.execute('''SELECT * FROM customers WHERE email=?''', (email,))
         customer = cursor.fetchone()
-        
 
-        
         if customer is not None:
-            print("customer id is: ", customer[0])
-            customerId = customer[0]
+            # print("customer id is: ", customer[0])
+            # customerId = customer[0]
             foundCustomer = Customer(customer[0],customer[1],customer[2],customer[3],customer[4],customer[5])
-            
-            cursor.execute('''SELECT checkIn FROM reservations WHERE customerId=?''', (customerId,))
-            reservations = cursor.fetchall()
-            print(reservations)
-            # for reservation in reservations:
-            #     foundCustomer.addReservations(reservation)
-            
+               
             return foundCustomer
         else:
             return None 
         
-    
+
 
     def getReservations(self, customerId):
         """
@@ -212,24 +228,41 @@ class Database:
             list: A list of check-in dates for the customer's reservations.
         """
         cursor = self.conn.cursor()
-        cursor.execute('''SELECT checkIn FROM reservations WHERE customerId=?''', (customerId,))
-        checkInDates = []
+        cursor.execute('''SELECT reserveId, checkIn FROM reservations WHERE customerId=?''', (customerId,))
+        reservations = []
         for row in cursor.fetchall():
-            checkInDates.append(row[0])
-        print("check in dates are: ", checkInDates)
-        return checkInDates
+            reservationId = row[0]  # Assuming reserveId is the reservation date
+            check_in_date = row[1]
+            reservation_string = f"{reservationId}: {check_in_date}"
+            reservations.append(reservation_string)
+        
+        print("reservations are: ", reservations)
+        return reservations
     
-    def deleteReservation(self, reserveId):
+    
+    def deleteReservation(self, reserveId, email):
         """
         Deletes a reservation from the 'reservations' table.
 
         Args:
             reserveId (int): The ID of the reservation to be deleted.
+            email (str): The email address of the customer.
         """
         cursor = self.conn.cursor()
+        
+        print("email is: ", email)
+        customer = self.getEmail(email)
+        
+        
         try:
             cursor.execute('''DELETE FROM reservations WHERE reserveId=?''', (reserveId,))
             self.conn.commit()
+            if customer is not None:
+                customer.addReservations(self.getReservations(customer.id))
+            else:
+                messagebox.showerror("Error", "Customer not found")
+                return
+            
             messagebox.showinfo("Success", "Reservation cancelled successfully")
         except sqlite3.Error as e:
             messagebox.showerror("Error", f"Failed to cancel reservation: {e}")
@@ -284,72 +317,44 @@ class Database:
             print("user hash", str(user.hashPass))
             return False
         
-
-    def getCustomerInfo(self):
+    def getResInfo(self, reserveId):
         """
-        Retrieves customer IDs and names from the 'customers' table.
+        Retrieves reservation information from the 'reservations' table.
 
-        Returns:
-            list: A list of tuples containing customer IDs and names.
-        """
-        cursor=self.conn.cursor()
-        cursor.execute("SELECT customerId, name FROM customers")
-        customers = cursor.fetchall()
-        return customers
-    
-    # def getResInfo(self):
-    #     """
-    #     Retrieves reservation information from the 'reservations' table.
-
-    #     Returns:
-    #         list: A list of tuples containing reservation IDs, check-in/out dates, and payment status.
-    #     """
-    #     cursor=self.conn.cursor()
-    #     cursor.execute("SELECT reserveId, checkIn, checkOut, paid FROM reservations")
-    #     reservations = cursor.fetchall()
-    #     return reservations
-    
-    
-    # Formatting of Database spreadsheet fixed - Gurnoor (JOIN on Customer and ResInfo to put data together)
-    def getResInfo(self):
-        """
-        Retrieves reservation information from the 'reservations' table, joined with the 'customers' table
-        to include customer IDs.
+        Args:
+            reserveId (int): The ID of the reservation.
 
         Returns:
             list: A list of tuples containing customer IDs, customer names, reservation IDs, check-in/out dates, and payment status.
         """
+        print("reserve id is: ")
         cursor = self.conn.cursor()
-        cursor.execute("""
-            SELECT c.customerId, c.name, r.reserveId, r.checkIn, r.checkOut, r.paid 
-            FROM reservations r
-            INNER JOIN customers c ON c.name = r.customerName
-        """)
+        cursor.execute('''SELECT roomId, roomNum, hotelName,location, paid, checkIn, checkOut FROM reservations WHERE reserveId=?''', (reserveId,))
         reservationsInfo = cursor.fetchall()
         print("reservation info: ", reservationsInfo)
         return reservationsInfo
 
 
     
-    def insertRoom(self, room):
-        """Inserts a new room into the 'room' table.
+    # def insertRoom(self, room):
+    #     """Inserts a new room into the 'room' table.
 
 
-        Args:
-            room (Room): The Room object to be inserted into the database.
-        """
-        cursor = self.conn.cursor()
-        try:
-            cursor.execute('''INSERT INTO rooms (roomId, hotelName, roomNum, location, cost) VALUES (?,?,?,?,?)''', (room.roomId, room.hotelName, room.roomNum, room.location, room.cost))
-            self.conn.commit()
-            messagebox.showinfo("Success", "Room added.")
-        except sqlite3.IntegrityError:
-            messagebox.showerror("Error", "Duplicate entry or integrity constraint violation.")
-        except sqlite3.OperationalError as e:
-            messagebox.showerror("Error", f"Database operation failed: {e}") 
+    #     Args:
+    #         room (Room): The Room object to be inserted into the database.
+    #     """
+    #     cursor = self.conn.cursor()
+    #     try:
+    #         cursor.execute('''INSERT INTO rooms (roomId, hotelName, roomNum, location, cost) VALUES (?,?,?,?,?)''', (room.roomId, room.hotelName, room.roomNum, room.location, room.cost))
+    #         self.conn.commit()
+    #         messagebox.showinfo("Success", "Room added.")
+    #     except sqlite3.IntegrityError:
+    #         messagebox.showerror("Error", "Duplicate entry or integrity constraint violation.")
+    #     except sqlite3.OperationalError as e:
+    #         messagebox.showerror("Error", f"Database operation failed: {e}") 
             
-            
-    def insertReservation(self, reservation):
+      
+    def insertReservation(self, reservation, email):
         """
         Inserts a new reservation into the 'reservations' table.
 
@@ -363,14 +368,21 @@ class Database:
             paid (float): The amount paid for the reservation.
             payDate (str): The date when the payment was made.
         """
+        
         cursor = self.conn.cursor()
+        customer = self.getEmail(email)
+       
+        
         try:
-            cursor.execute('''INSERT INTO reservations (customerId,customerName, hotelName, roomId, roomNum, checkIn, checkOut, paid)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
+            cursor.execute('''INSERT INTO reservations (customerId,customerName, hotelName, roomId, roomNum, checkIn, checkOut, location, paid)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)''',
                         (reservation.customerId, reservation.name, reservation.hotelName, reservation.roomId, reservation.roomNum,
-                            reservation.checkIn, reservation.checkOut, reservation.cost))
+                            reservation.checkIn, reservation.checkOut,  reservation.location,reservation.cost))
             self.conn.commit()
+            customer.reservations.clear()
+            customer.addReservations(self.getReservations(reservation.customerId))
             messagebox.showinfo("Success", "Reservation added.")
+          
         except sqlite3.IntegrityError:
             messagebox.showerror("Error", "Integrity constraint violation: Duplicate reservation ID.")
         except sqlite3.OperationalError as e:
@@ -378,11 +390,31 @@ class Database:
 
 
     def fetchHotelsByLocation(self, location):
+        """
+        Fetches hotels based on a specific location.
+
+        Args:
+            location (str): The location of the hotels to fetch.
+
+        Returns:
+            list: A list of dictionaries containing hotel information.
+        """
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM hotels WHERE location=?", (location,))
         return [{'hotelName': row[1], 'amenities': row[3].split(', '), 'price_range': row[4], 'photoLink': row[5]} for row in cursor.fetchall()]
 
     def fetchRoomByHotelAvail(self, hotel_name, checkin_date, checkout_date):
+        """
+        Fetches available rooms for a specific hotel.
+
+        Args:
+            hotel_name (str): The name of the hotel.
+            checkin_date (str): The check-in date.
+            checkout_date (str): The check-out date.
+
+        Returns:
+            list: A list of dictionaries containing room information.
+        """
         cursor = self.conn.cursor()
         query = """
         SELECT r.roomId, r.roomNum, r.hotelName, r.location, r.cost FROM rooms r
@@ -396,6 +428,12 @@ class Database:
         return [{'roomId': row[0], 'roomNum': row[1], 'hotelName': row[2], 'location': row[3], 'cost': row[4]} for row in cursor.fetchall()]
 
     def returnImgPath(self):
+        """
+        Returns the image paths for hotel photos.
+
+        Returns:
+            list: A list of image paths.
+        """
         cursor = self.conn.cursor()
         cursor.execute("SELECT photoLink FROM hotels")
         
@@ -463,7 +501,7 @@ class Database:
             cursor.executemany('INSERT INTO hotels (hotelId, hotelName, location, amenities, priceRange, photoLink) VALUES (?,?,?,?,?,?)', hotels)
     
             # Sample rooms for each hotel
-            roomTemplate = [(hotel[0], hotel[1], f'{num:03}', hotel[1], round(float(hotel[4].split('-')[0].strip('$')) + num * 10, 2)) for hotel in hotels for num in range(101, 106)]
+            roomTemplate = [(hotel[0], hotel[1], f'{num:03}', hotel[2], round(float(hotel[4].split('-')[0].strip('$')) + num * 10, 2)) for hotel in hotels for num in range(101, 106)]
             cursor.executemany('INSERT INTO rooms (roomId, hotelName, roomNum, location, cost) VALUES (?,?,?,?,?)', roomTemplate)
             # self.insertRoom(roomTemplate)
     

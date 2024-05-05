@@ -19,7 +19,7 @@ class App(tk.Tk):
     """
     This class represents the central controller of the application.
     :Gregory Calderon
-    :version 1.0
+    :version 3.0
 
     Attributes:
         db (Database): An instance of the Database class.
@@ -102,7 +102,7 @@ class App(tk.Tk):
         
         self.isLoggedIn = False
         self.isAdmin = False
-
+        self.isNew=True
     #change pages
     def showFrame(self, pageName):
         """

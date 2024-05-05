@@ -6,7 +6,7 @@ class Reservation:
     :Author: Gregory Calderon and Arameh Baghdassarian
     :Version 1.0
     """
-    def __init__(self, n_customerId=None, n_customerName=None, n_roomId=None, n_roomNum=None, n_hotelName=None, n_location=None, n_cost=None, n_checkIn=None, n_checkOut=None):
+    def __init__(self, n_customerId=None, n_customerName=None, n_roomId=None, n_roomNum=None, n_hotelName=None, n_cost=None, n_location=None, n_checkIn=None, n_checkOut=None):
         """
         Initializes a new Reservation instance.
 
@@ -26,32 +26,11 @@ class Reservation:
         self.__cost = n_cost
         self.__checkIn=n_checkIn
         self.__checkOut= n_checkOut
-        # self.__roomInfo = None
-    
- 
-    # @property 
-    # def roomInfo(self):
-    #     return self.__roomInfo
-        
-    # @roomInfo.setter
-    # def roomInfo(self, n_roomInfo):
-    #     self.__roomInfo = n_roomInfo
-        
-    # @property  
-    # def roomId(self):
-    #     return self.__roomInfo.get('roomId')
-    # @property
-    # def roomNum(self):
-    #     return self.__roomInfo.get('roomNum')
-    # @property
-    # def hotelName(self):
-    #     return self.__roomInfo.get('hotelName')
-    # @property
-    # def location(self):
-    #     return self.roomInfo.get('location')
-    # @property
-    # def getCost(self):
-    #     return self.roomInfo.get('Cost')
+
+    @property
+    def location(self):
+        return self.__location
+   
 
     @property
     def customerId(self):
@@ -73,15 +52,6 @@ class Reservation:
         """
         return self.__name
 
-    # @name.setter
-    # def setName(self, name):
-    #     """
-    #     Sets the customer's name.
-
-    #     Args:
-    #         name: The name of the customer.
-    #     """
-    #     self.__name = name
 
     @property
     def hotelName(self):
@@ -93,16 +63,6 @@ class Reservation:
         """
         return self.__hotelName
 
-    # @hotelName.setter
-    # def hotelName(self, hotelName):
-    #     """
-    #     Sets the name of the hotel.
-
-    #     Args:
-    #         hotelName: The name of the hotel.
-    #     """
-    #     self.__hotelName = hotelName
-
     @property
     def roomNum(self):
         """
@@ -113,15 +73,6 @@ class Reservation:
         """
         return self.__roomNum
 
-    # @roomNum.setter
-    # def roomNum(self, n_roomNum):
-    #     """
-    #     Sets the room number for the reservation.
-
-    #     Args:
-    #         room: The room number for the reservation.
-    #     """
-    #     self.__roomNum = n_roomNum
     @property
     def roomId(self):
         return self.__roomId
