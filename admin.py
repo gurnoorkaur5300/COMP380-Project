@@ -73,7 +73,7 @@ class Admin(Page):
                 return
             
             customers = self.database.getCustomerInfo()
-            reservations = self.database.getResInfo()
+            reservations = self.database.getAllResInfo()
             
             for customer in customers:
                 self.spreadsheet.insert("", "end", values=customer)
