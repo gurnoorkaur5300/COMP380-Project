@@ -31,7 +31,9 @@ class Room(Page):
         self.__checkIn = n_checkIn
         self.__checkOut = n_checkOut
       
-        
+    def setCustomerEmail(self, n_email):
+        self.__email = n_email
+    
     def setCustomerName(self, n_customerName):
         self.__customerName = n_customerName
            
@@ -105,6 +107,7 @@ class Room(Page):
           
             self.controller.viewReservation.setCustomerName(self.__customerName)
             self.controller.viewReservation.setCustomerId(self.__customerId)
+            self.controller.viewReservation.setCustomerEmail(self.__email)
             self.controller.viewReservation.setRoomInfo(roomId, roomNum, hotelName, location, cost, self.__checkIn, self.__checkOut)
             self.controller.isNew=True
             self.controller.viewReservation.updateBtn()
@@ -117,67 +120,3 @@ class Room(Page):
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
         
         
-    # @property
-    # def hotelName(self):
-    #     """str: The name of the hotel the room is in."""
-    #     return self.__hotelName
-
-    # @hotelName.setter
-    # def hotelName(self, n_hotelName):
-    #     """
-    #     Sets the hotel name that the room is in.
-    #     :param n_name: hotel's name.
-    #     :type n_name: str
-    #     """
-    #     self.__hotelName = n_hotelName
-
-    # @property
-    # def roomNum(self):
-    #     """str: The room number."""
-    #     return self.__roomNum
-
-    # @roomNum.setter
-    # def roomNum(self, n_roomNum):
-    #     """
-    #     Sets the room number.
-    #     :param n_name: room number.
-    #     :type n_name: int
-    #     """
-    #     self.__roomNum = n_roomNum
-
-
-    # @property
-    # def location(self):
-    #     """str: The number of people that the room is rated to sleep."""
-    #     return self.__location
-
-    # @location.setter
-    # def location(self, n_location):
-    #     """
-    #     Sets the number of people that the room is rated to sleep.
-    #     :param n_location: number of people that the room is rated to sleep.
-    #     :type n_location: str
-    #     """
-    #     self.__location = n_location
-
-    # @property
-    # def cost(self):
-    #     """str: The cost of the room."""
-    #     return self.__cost
-
-    # @cost.setter
-    # def cost(self, n_cost):
-    #     """
-    #     Sets the cost of the room.
-    #     :param n_name: cost of the room.
-    #     :type n_name: float
-    #     """
-    #     self.__cost = n_cost
-
-    # @staticmethod
-    # def genRoomNum(n_roomNum):
-    #     if n_roomNum is None:
-    #         """Generate a rooom number."""
-    #         return random.randint(100,999)
-
-    

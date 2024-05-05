@@ -89,22 +89,33 @@ class Account(Page):
 
        
 
-        reservationFrame = tk.Frame(self)
-        reservationFrame.grid(row=1, column=0, padx=(35,35), sticky="ew")
+        self.reservationFrame = tk.Frame(self)
+        self.reservationFrame.grid(row=1, column=0, padx=(35,35), sticky="ew")
         
-        reservationsLabel = tk.Label(reservationFrame, text="Reservations:", font=("Arial", 24, "bold"), bg="white", fg="black")
+       
+        
+        self.loadReservation()
+    
+    def clearReserveFrame(self):
+        for widget in self.reservationFrame.winfo_children():
+            widget.destroy()
+       
+    def loadReservation(self):
+        print("loading")
+        reservationsLabel = tk.Label(self.reservationFrame, text="Reservations:", font=("Arial", 24, "bold"), bg="white", fg="black")
         reservationsLabel.grid(row=0, column=0, sticky="e", padx=15)
-
+        self.customer.reservations.clear()
+        self.customer.addReservations(self.database.getReservations(self.customer.id))
         for i, reservation in enumerate(self.customer.reservations):
             reserveId = reservation.split(":")[0].strip()
             
-            reservationButton = tk.Button(reservationFrame, text=reservation, command=lambda: self.showReservation(reserveId), anchor="center", bg="white", fg="black", font=(18), width=10)
+            reservationButton = tk.Button(self.reservationFrame, text=reservation, command=lambda: self.showReservation(reserveId), anchor="center", bg="white", fg="black", font=(18), width=10)
             reservationButton.grid(row= 0, column=i+1, sticky='w')
             
         
     def showReservation(self, reserveId):
         resInfoTuple = self.database.getResInfo(reserveId)
-        
+        self.controller.viewReservation.setCustomerEmail(self.customer.email)
         self.controller.viewReservation.setCustomerName(self.customer.name)
         self.controller.viewReservation.setCustomerId(self.customer.id)
         self.controller.viewReservation.setRoomInfo(*resInfoTuple[0])

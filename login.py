@@ -171,6 +171,7 @@ class Login(Page):
                 self.controller.isAdmin = False
                 self.controller.room.setCustomerName(user.name)
                 self.controller.room.setCustomerId(user.id)
+                self.controller.room.setCustomerEmail(self.userEmail.get().lower().strip())
                 user.addReservations(self.database.getReservations(user.id))
                 self.controller.accountPage.setCustomer(user)
                 # self.controller.showFrame("Account")
