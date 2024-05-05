@@ -223,9 +223,6 @@ class Login(Page):
       """
       Resets the login form fields and state.
       """
-    #   global isLoggedIn, isAdmin
-    #   self.controller.isLoggedIn = False
-    #   self.controller.isAdmin = False
       self.isUser = False
       self.isAdmin = False
       self.isUserVar.set(1)

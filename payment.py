@@ -14,8 +14,8 @@ class Payment(tk.Toplevel):
     def __init__(self,controller, n_accountPage = None, master=None):
         """
         This class represents the account page.
-        :author: Martin Gallegos Cordero
-        :version: 2.0
+        :author: Martin Gallegos Cordero and Gregory Calderon
+        :version: 3.0
         Initializes the Create window.
         :author: Martin Cordero
         :version: 2.0
@@ -317,7 +317,7 @@ class Payment(tk.Toplevel):
             return False
         return True
 
-    #function that displays success message
+   
     def showSuccessMessage(self, title, message):
         messagebox.showerror(title, message)    
      

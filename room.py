@@ -8,7 +8,7 @@ class Room(Page):
     """
     This class represents a customer
     :Gregory Calderon
-    :version 1.0
+    :version 3.0
     """
     def __init__(self, parent, controller, n_rooms=None, n_checkIn=None, n_checkOut=None, n_customer=None):
         super().__init__(parent, controller)
@@ -27,20 +27,47 @@ class Room(Page):
         self.__checkOut = n_checkOut
         
     def setRooms(self, n_rooms, n_checkIn, n_checkOut):
+        """
+        Sets the rooms available for reservation.
+
+        Args:
+            n_rooms (list): List of rooms available for reservation.
+            n_checkIn (str): Check-in date for the reservation.
+            n_checkOut (str): Check-out date for the reservation.
+        """
         self.__rooms = n_rooms
         self.__checkIn = n_checkIn
         self.__checkOut = n_checkOut
       
     def setCustomerEmail(self, n_email):
+        """
+        Sets the email address of the customer.
+
+        Args:
+            n_email (str): The email address of the customer.
+        """
         self.__email = n_email
     
     def setCustomerName(self, n_customerName):
+        """
+        Sets the name of the customer.
+
+        Args:
+            n_customerName (str): The name of the customer.
+        """
         self.__customerName = n_customerName
            
     def setCustomerId(self, n_customerId):
+        """
+        Sets the ID of the customer.
+
+        Args:
+            n_customerId (str): The ID of the customer.
+        """
         self.__customerId = n_customerId
         
     def displayRooms(self):
+        """Displays the available rooms for reservation."""
         self.roomsFrame = tk.Frame(self, bg='white')
         self.roomsFrame.pack(fill=tk.BOTH, expand=True)
         
@@ -62,30 +89,10 @@ class Room(Page):
         self.populateRooms()
     
     def populateRooms(self):  
+        """Populates the room reservation interface with room information."""
         for room in self.__rooms:
             self.roomFrame = tk.Frame(self.innerFrame, borderwidth=2, relief="solid", padx =50, pady=20)
             self.roomFrame.pack(pady=10, fill=tk.X)
-            
-            
-            # print(room)
-            # photoPath = room['photoLink']
-            # try:
-            #     image = Image.open(photoPath)
-            #     image = image.resize((100, 100))
-            #     img = ImageTk.PhotoImage(image)
-            #     img_label = tk.Label(self.roomFrame, image=img)
-            #     img_label.image = img
-            #     img_label.pack(side=tk.LEFT, padx=10)
-            # except Exception as e:
-            #     print("Error opening or resizing image:", e)
-            
-            # self.roomInfo = {
-            #     'roomId': room['roomId'],
-            #     'roomNum': room['roomNum'],
-            #     'hotelName': room['hotelName'],
-            #     'location': room['location'],
-            #     'cost': room['cost']
-            # }
             
             roomId = room['roomId']
             roomNum = room['roomNum']
@@ -93,7 +100,6 @@ class Room(Page):
             location = room['location']
             cost = room['cost']
 
-            # self.roomInfo = f"Room Id: {room['roomId']}\nRoom Number: {room['roomNum']}\nHotelName: {room['hotelName']}\nLocation: {room['location']}\nCost: {room['cost']}"
             self.roomLabel = tk.Label(self.roomFrame, text=f"Room Id: {roomId}\nRoom Number: {roomNum}\nHotelName: {hotelName}\nLocation: {location}\nCost: {cost}", justify=tk.LEFT)
             self.roomLabel.pack(side=tk.LEFT, padx=10)
 
@@ -101,10 +107,17 @@ class Room(Page):
             bookRoomsButton.pack(side=tk.RIGHT, padx=10)
         
     def bookRoom(self, roomId, roomNum, hotelName, location, cost):
+        """
+        Books a room for the customer.
+
+        Args:
+            roomId (str): The ID of the room.
+            roomNum (str): The room number.
+            hotelName (str): The name of the hotel.
+            location (str): The location of the hotel.
+            cost (float): The cost of the room.
+        """
         if self.controller.isLoggedIn == True:
-            
-            # print(self.__customer)
-          
             self.controller.viewReservation.setCustomerName(self.__customerName)
             self.controller.viewReservation.setCustomerId(self.__customerId)
             self.controller.viewReservation.setCustomerEmail(self.__email)
@@ -115,8 +128,13 @@ class Room(Page):
         else: 
             self.controller.showFrame("Login")
             
-            # ViewReservation()
     def onCanvasConfigure(self, event):
+        """
+        Configures the canvas for room display.
+
+        Args:
+            event: The event object.
+        """
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
         
         

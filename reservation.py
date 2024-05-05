@@ -63,7 +63,6 @@ class Reservation:
         """
         return self.__hotelName
 
-
     @property
     def roomNum(self):
         """

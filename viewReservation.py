@@ -15,8 +15,8 @@ from entryBoxUtility import EntryBoxUtility
 class ViewReservation(Page):
     """
     This class represents the viewReservation page.
-    :author: Arameh Baghdasarian
-    :version: 1.0
+    :author: Arameh Baghdasarian and Gregory Calderon
+    :version: 3.0 
 
     Attributes:
         parent: The parent widget to which the page belongs.

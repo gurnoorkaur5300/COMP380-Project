@@ -2,7 +2,7 @@ class Customer:
     """
     This class represents a customer
     :Gregory Calderon
-    :version 1.1
+    :version 3.0
     """
 
     def __init__(self, n_id=None, n_name=None, n_email=None, n_dob=None,n_phone= None, n_hashPass=None, n_reservations=None):

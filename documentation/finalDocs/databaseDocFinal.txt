@@ -1,0 +1,188 @@
+Help on module database:
+
+NAME
+    database
+
+CLASSES
+    builtins.object
+        Database
+    
+    class Database(builtins.object)
+     |  Database(dbFile='defaultDatabase.db')
+     |  
+     |  Manages interactions with the SQLite database.
+     |  :author: Gregory Calderon with sample data provide by Gurnoor Kaur
+     |  :version: 3.0
+     |  
+     |  Attributes:
+     |      conn (sqlite3.Connection): Connection to the SQLite database.
+     |  
+     |  Methods:
+     |      __init__: Initializes the Database object.
+     |      buildTable: Builds the necessary tables in the database if they don't exist.
+     |      insertCustomer: Inserts a new customer into the 'customers' table.
+     |      getEmail: Retrieves customer information based on their email address.
+     |      getReservations: Retrieves reservations for a specific customer.
+     |      deleteReservation: Deletes a reservation from the 'reservations' table.
+     |      getAdminEmail: Retrieves administrator information based on their email address.
+     |      isVerified: Verifies the login credentials of a customer or administrator.
+     |      getCustomerInfo: Retrieves customer IDs and names from the 'customers' table.
+     |      getResInfo: Retrieves reservation IDs, check-in/out dates, and payment status from the 'reservations' table.
+     |      
+     |      _init__(dbFile="defaultDatabase.db"): Initializes the Database object.
+     |      buildTable(): Creates necessary tables in the database if they don't exist.
+     |      insertPayment(payment): Inserts payment information into the 'payments' table.
+     |      insertCustomer(customer): Inserts a new customer into the 'customers' table.
+     |      getById(id): Retrieves customer information based on their customerId.
+     |      getEmail(email): Retrieves customer information based on their email address.
+     |      getReservations(customerId): Retrieves reservations for a specific customer.
+     |      deleteReservation(reserveId, email): Deletes a reservation from the 'reservations' table.
+     |      getAdminEmail(adminEmail): Retrieves administrator information based on their email address.
+     |      isVerified(checkForEmail, checkForHashPasswrd, isCustomer): Verifies login credentials of a customer or administrator.
+     |      getResInfo(reserveId): Retrieves reservation information from the 'reservations' table.
+     |      fetchHotelsByLocation(location): Fetches hotels based on a specific location.
+     |      fetchRoomByHotelAvail(hotel_name, checkin_date, checkout_date): Fetches available rooms for a specific hotel.
+     |      returnImgPath(): Returns the image paths for hotel photos.
+     |      insert_sample_data(): Inserts sample data into the database if the hotels table is empty.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, dbFile='defaultDatabase.db')
+     |      Initializes the Database object.
+     |      
+     |      Args:
+     |          dbFile (str): The name of the SQLite database file.
+     |  
+     |  buildTable(self)
+     |      Creates necessary tables in the database if they don't exist.
+     |  
+     |  deleteReservation(self, reserveId, email)
+     |      Deletes a reservation from the 'reservations' table.
+     |      
+     |      Args:
+     |          reserveId (int): The ID of the reservation to be deleted.
+     |          email (str): The email address of the customer.
+     |  
+     |  fetchHotelsByLocation(self, location)
+     |      Fetches hotels based on a specific location.
+     |      
+     |      Args:
+     |          location (str): The location of the hotels to fetch.
+     |      
+     |      Returns:
+     |          list: A list of dictionaries containing hotel information.
+     |  
+     |  fetchRoomByHotelAvail(self, hotel_name, checkin_date, checkout_date)
+     |      Fetches available rooms for a specific hotel.
+     |      
+     |      Args:
+     |          hotel_name (str): The name of the hotel.
+     |          checkin_date (str): The check-in date.
+     |          checkout_date (str): The check-out date.
+     |      
+     |      Returns:
+     |          list: A list of dictionaries containing room information.
+     |  
+     |  getAdminEmail(self, adminEmail)
+     |      Retrieves administrator information based on their email address.
+     |      
+     |      Args:
+     |          adminEmail (str): The email address of the administrator.
+     |      
+     |      Returns:
+     |          Administrator: An Administrator object containing the administrator's information, or None if not found.
+     |  
+     |  getById(self, id)
+     |      Retrieves customer information based on their customerId.
+     |      
+     |      Args:
+     |          customerId (str): The customerId of the customer.
+     |      
+     |      Returns:
+     |          Customer: A Customer object containing the customer's information, or None if not found.
+     |  
+     |  getEmail(self, email)
+     |      Retrieves customer information based on their email address.
+     |      
+     |      Args:
+     |          email (str): The email address of the customer.
+     |      
+     |      Returns:
+     |          Customer: A Customer object containing the customer's information, or None if not found.
+     |  
+     |  getResInfo(self, reserveId)
+     |      Retrieves reservation information from the 'reservations' table.
+     |      
+     |      Args:
+     |          reserveId (int): The ID of the reservation.
+     |      
+     |      Returns:
+     |          list: A list of tuples containing customer IDs, customer names, reservation IDs, check-in/out dates, and payment status.
+     |  
+     |  getReservations(self, customerId)
+     |      Retrieves reservations for a specific customer.
+     |      
+     |      Args:
+     |          customerId (int): The ID of the customer.
+     |      
+     |      Returns:
+     |          list: A list of check-in dates for the customer's reservations.
+     |  
+     |  insertCustomer(self, customer)
+     |      Inserts a new customer into the 'customers' table.
+     |      
+     |      Args:
+     |          customer (Customer): The Customer object to be inserted into the database.
+     |  
+     |  insertPayment(self, payment)
+     |      Inserts payment information into the 'payments' table.
+     |      
+     |      Args:
+     |          payment (Payment): The Payment object containing payment information.
+     |  
+     |  insertReservation(self, reservation, email)
+     |      Inserts a new reservation into the 'reservations' table.
+     |      
+     |      Args:
+     |          
+     |          customerName (str): The ID of the customer making the reservation.
+     |          roomId (str): The ID of the room being reserved.
+     |          paidId (int): The ID of the payment associated with the reservation.
+     |          checkIn (str): The check-in date of the reservation.
+     |          checkOut (str): The check-out date of the reservation.
+     |          paid (float): The amount paid for the reservation.
+     |          payDate (str): The date when the payment was made.
+     |  
+     |  insert_sample_data(self)
+     |      Insert sample data if the hotels table is empty.
+     |  
+     |  isVerified(self, checkForEmail, checkForHashPasswrd, isCustomer)
+     |      Verifies the login credentials of a customer or administrator.
+     |      
+     |      Args:
+     |          checkForEmail (str): The email address to be verified.
+     |          checkForHashPasswrd (str): The hashed password to be verified.
+     |          isCustomer (int): Indicates whether the user is a customer (1) or an administrator (0).
+     |      
+     |      Returns:
+     |          bool: True if the credentials are verified, False otherwise.
+     |  
+     |  returnImgPath(self)
+     |      Returns the image paths for hotel photos.
+     |      
+     |      Returns:
+     |          list: A list of image paths.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+
+FILE
+    /Users/gregcalderon/Desktop/380 CompSys/COMP380-Project/database.py
+
+
