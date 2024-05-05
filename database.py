@@ -3,6 +3,7 @@ from tkinter import messagebox
 import sqlite3
 from customer import Customer
 from administrator import Administrator
+
 import hashlib
 
 class Database:
@@ -187,10 +188,7 @@ class Database:
             # print("customer id is: ", customer[0])
             # customerId = customer[0]
             foundCustomer = Customer(customer[0],customer[1],customer[2],customer[3],customer[4],customer[5])
-            
-            # cursor.execute('''SELECT checkIn FROM reservations WHERE customerId=?''', (customerId,))
-            # reservations = cursor.fetchall()
-            # print(reservations)     
+               
             return foundCustomer
         else:
             return None 
@@ -219,7 +217,8 @@ class Database:
         print("reservations are: ", reservations)
         return reservations
     
-    def deleteReservation(self, reserveId):
+    
+    def deleteReservation(self, reserveId, email):
         """
         Deletes a reservation from the 'reservations' table.
 
@@ -227,9 +226,20 @@ class Database:
             reserveId (int): The ID of the reservation to be deleted.
         """
         cursor = self.conn.cursor()
+        
+        print("email is: ", email)
+        customer = self.getEmail(email)
+        
+        
         try:
             cursor.execute('''DELETE FROM reservations WHERE reserveId=?''', (reserveId,))
             self.conn.commit()
+            if customer is not None:
+                customer.addReservations(self.getReservations(customer.id))
+            else:
+                messagebox.showerror("Error", "Customer not found")
+                return
+            
             messagebox.showinfo("Success", "Reservation cancelled successfully")
         except sqlite3.Error as e:
             messagebox.showerror("Error", f"Failed to cancel reservation: {e}")
@@ -331,8 +341,10 @@ class Database:
     #     except sqlite3.OperationalError as e:
     #         messagebox.showerror("Error", f"Database operation failed: {e}") 
             
-            
-    def insertReservation(self, reservation):
+
+    
+      
+    def insertReservation(self, reservation, email):
         """
         Inserts a new reservation into the 'reservations' table.
 
@@ -346,14 +358,21 @@ class Database:
             paid (float): The amount paid for the reservation.
             payDate (str): The date when the payment was made.
         """
+        
         cursor = self.conn.cursor()
+        customer = self.getEmail(email)
+       
+        
         try:
             cursor.execute('''INSERT INTO reservations (customerId,customerName, hotelName, roomId, roomNum, checkIn, checkOut, location, paid)
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)''',
                         (reservation.customerId, reservation.name, reservation.hotelName, reservation.roomId, reservation.roomNum,
                             reservation.checkIn, reservation.checkOut,  reservation.location,reservation.cost))
             self.conn.commit()
+            customer.reservations.clear()
+            customer.addReservations(self.getReservations(reservation.customerId))
             messagebox.showinfo("Success", "Reservation added.")
+          
         except sqlite3.IntegrityError:
             messagebox.showerror("Error", "Integrity constraint violation: Duplicate reservation ID.")
         except sqlite3.OperationalError as e:

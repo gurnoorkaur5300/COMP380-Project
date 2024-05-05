@@ -11,7 +11,7 @@ import tkmacosx
 
 
 class Payment(tk.Toplevel):
-    def __init__(self,controller, master=None):
+    def __init__(self,controller, n_accountPage = None, master=None):
         """
         This class represents the account page.
         :author: Martin Gallegos Cordero
@@ -29,9 +29,11 @@ class Payment(tk.Toplevel):
         super().__init__(master)
         self.controller= controller
         self.database = Database()
+        self.accountPage = n_accountPage
         self.title("Payment")
         self.geometry("600x600")
         self.__customerId = None
+        self.__customerEmail = None
         self.__reserveName = None
         self.__cost = None
         self.__roomId = None
@@ -41,9 +43,10 @@ class Payment(tk.Toplevel):
         self.__checkIn = None
         self.__checkOut = None
     
-    def setReservationInfo(self, n_customerId, n_customerName, n_roomId, n_roomNum, n_hotelName, n_cost, n_location, n_checkIn, n_checkOut):
+    def setReservationInfo(self, n_customerId, n_customerName, n_email, n_roomId, n_roomNum, n_hotelName, n_cost, n_location, n_checkIn, n_checkOut):
         self.__customerId = n_customerId
         self.__reserveName = n_customerName
+        self.__email = n_email
         self.__hotelName = n_hotelName
         self.__location = n_location
         self.__roomId = n_roomId
@@ -178,11 +181,16 @@ class Payment(tk.Toplevel):
         
         newReservation = Reservation(self.__customerId, self.__reserveName, self.__roomId, self.__roomNum, self.__hotelName, self.__cost, self.__location, self.__checkIn, self.__checkOut)
         
-        self.database.insertReservation(newReservation)
-
-
-
-
+        self.database.insertReservation(newReservation, self.__email)
+        try:
+            self.accountPage.clearReserveFrame()
+            self.accountPage.loadReservation()
+            
+            
+        except Exception as e:
+            print(f"Error reloading reservations: {e}")
+     
+     
     def validateName(self, name):
         """
         Validates the user's first and last name.
@@ -265,7 +273,6 @@ class Payment(tk.Toplevel):
             self.resetToDefault(self.clientAddress, self.defaultMessages[3])
             return False
         return True
-
 
     def resetToDefault(self, widget, defaultMessage):
         """

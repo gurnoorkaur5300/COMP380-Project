@@ -43,6 +43,7 @@ class ViewReservation(Page):
     
         self.__id = None
         self.__name = None
+        self.__email = None
         self.__roomId = None
         self.__roomNum = None
         self.__hotelName = None
@@ -59,9 +60,6 @@ class ViewReservation(Page):
         self.reservationLabel = tk.Label(self, text="", font=("Arial", 24),justify=tk.LEFT)
         self.reservationLabel.pack(fill=tk.X, pady=15)
         
-    # @property
-    # def isNew(self):
-    #     return self.isNew
 
     @property
     def customerName(self):
@@ -77,6 +75,9 @@ class ViewReservation(Page):
         
     def setReserveId(self, n_reserveId):
         self.__reserveId = n_reserveId
+        
+    def setCustomerEmail(self, n_customerEmail):
+        self.__email = n_customerEmail
     
 
     def setRoomInfo(self, n_roomId, n_roomNum, n_hotelName, n_location, n_cost, n_checkIn, n_checkOut):
@@ -142,120 +143,21 @@ class ViewReservation(Page):
         """
         Opens the payment page.
         """
-        payWindow = Payment(self) 
+        payWindow = Payment(self, self.controller.accountPage) 
         # print("the id is: ", self.__id)
-        payWindow.setReservationInfo(self.__id, self.__name, self.__roomId, self.__roomNum, self.__hotelName, self.__cost, self.__location, self.__checkIn, self.__checkOut)
+        payWindow.setReservationInfo(self.__id, self.__name, self.__email, self.__roomId, self.__roomNum, self.__hotelName, self.__cost, self.__location, self.__checkIn, self.__checkOut)
          
 
     def cancelReservation(self, reserveId):
         """
         Opens the cancel reservation window
         """
-        self.database.deleteReservation(reserveId)     
-    
-
-    
-
-# def confirmReservation(self):
-#     """
-#     Confirms the customer's reservation and populates the reservation class
-
-#     call the payment window and pass reservation to his page
-#     """
-
-#         # def showPayment(self, database):
-#         #     """
-#         #     Opens the payment page.
-#         #     """
-#         #     if self.isUserVar.get() == 1:
-#         #         Payment(self, database)
-#         #     else:
-#         #         messagebox.showerror("ERROR", "Unauthorized Action")
-
-
-#         # newReservation = Reservation(
-#         #     customerName=self.customer.name,
-#         #     room=self.room,
-#         #     checkInDate=self.home.checkinDate,
-#         #     checkOutDate=self.home.checkoutDate,
+        self.controller.accountPage.clearReserveFrame()
+        self.database.deleteReservation(reserveId, self.__email)
+        
+        self.controller.accountPage.loadReservation()
             
-#         # )
+    
 
     
-       
 
-#     # def cancelReservation(self):
-#         """
-#         Cancels the current reservation process (return to home page) and removes 
-#         reservation info from database(if the reservation has already been made)
-        
-#         are you sure you want to cancel this reservation if the reservation exists
-
-#         call deleteReservation
-
-#         call reset function to delete summary data
-#         """     
-#         # self.controller.showFrame("Home")
-
-
-#     def setSummary(self, n_customer):
-#         """
-#         Sets the reservation summary information that will be displayed.
-
-#         Args:
-#             n_customer: The customer object whose account information will be displayed.
-#         """
-#         self.customer = n_customer
-        
-#         self.columnconfigure(0, weight=1)
-#         self.columnconfigure(1, weight=0)
-
-         
-#         infoBox = tk.Frame(self)
-#         infoBox.grid(row=0,column=0,padx=(35,35), pady=75,sticky="ew")
-
-
-#         labelsInfo = [
-#         ("Name:", self.customer.name),
-#         ("Location:", self.room.location),
-#         ("Room:", self.room.roomNum),
-#         ("Check-in Date:", self.home.checkinDate),
-#         ("Check-out Date:", self.home.checkoutDate),
-#         ("Cost:", self.room.cost),
-#         ]
-
-#         self.infoLabels = []
-
-#         for i, (labelText, value) in enumerate(labelsInfo):
-#             label = tk.Label(infoBox, text=labelText, font=("Arial", 24, "bold"), bg="white", fg="black")
-#             label.grid(row=i, column=0, padx=15, sticky="e")
-
-#             valueLabel = tk.Label(infoBox, text=value, bg="white", fg="black", anchor="w", font=("Ariel",24), width=50)
-#             valueLabel.grid(row=i, column=1, pady=15, sticky="w")
-#             self.infoLabels.append(valueLabel)
-
-
-#         # confirmButton = tk.Button(
-#         #         self,
-#         #         text="Confirm",
-#         #         borderwidth=0,
-#         #         font=(
-#         #             "Arial",
-#         #             32),fg="black",
-#         #         activeforeground="blue",
-#         #         command=self.confirmReservation)
-#         # confirmButton.place(relx=0.3, rely=.8, anchor=tk.CENTER)
-        
-
-#         # cancelButton = tk.Button(
-#         #         self,
-#         #         text="Cancel Booking",
-#         #         borderwidth=0,
-#         #         font=(
-#         #             "Arial",
-#         #             16),
-#         #         fg="black",
-#         #         activeforeground="blue",
-#         #         command=self.cancelReservation)
-#         # cancelButton.place(relx=0.7, rely=.8, anchor=tk.CENTER)
-        
