@@ -35,7 +35,7 @@ class PageHeader:
         self.color = {"nero": "#252726", "beige": "#F5F5DC", "orange": "#FF8700"}
         
         #pages this header will go on 
-        pages = [controller.loginPage, controller.adminPage, controller.accountPage]
+        pages = [controller.loginPage, controller.adminPage, controller.accountPage, controller.viewReservation]
         #array of reset fuctions for all pages 
         self.resetFunctions=[]
 
@@ -89,6 +89,12 @@ class PageHeader:
             controller.isAdmin = False
             controller.adminPage.reset()
             controller.showFrame("Home")
+        elif currPage == "ViewReservation":
+            controller.isLoggedIn = True
+            controller.isAdmin = True
+            controller.adminPage.reset()
+            # controller.viewReservation.reset()
+            controller.showFrame("Admin")
     
     # set the label for the page header
     def setPageType(self, pageName):

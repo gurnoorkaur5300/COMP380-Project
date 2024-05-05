@@ -118,9 +118,11 @@ class App(tk.Tk):
             self.accountPage.clearAccountPage()
 
         # Show specific pages
-        if pageName in ["Home","Policies", "HotelsView", "Room", "ViewReservation"]:
+        if pageName in ["Home","Policies", "HotelsView", "Room"]:
             self.showNavbar()
         elif pageName ==  "Account" and self.isLoggedIn and not self.isAdmin:
+            self.showNavbar()
+        elif pageName == "ViewReservation" and self.isLoggedIn and not self.isAdmin:
             self.showNavbar()
         
 
@@ -149,7 +151,9 @@ class App(tk.Tk):
             self.pageHeader = PageHeader(self, self)
             self.pageHeader.setPageType(pageName)
             
-
+        elif pageName == "ViewReservation" and self.isAdmin and self.isLoggedIn:
+            self.pageHeader = PageHeader(self, self)
+            self.pageHeader.setPageType(pageName)
         # Get the page from the frames dictionary
         page = self.frames.get(pageName)
         if page:    

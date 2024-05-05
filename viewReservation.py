@@ -157,6 +157,33 @@ class ViewReservation(Page):
         
         self.controller.accountPage.loadReservation()
             
+    def reset(self):
+        """
+        Resets the ViewReservation page by clearing all the information displayed on the page.
+        """
+        self.__id = None
+        self.__name = None
+        self.__email = None
+        self.__roomId = None
+        self.__roomNum = None
+        self.__hotelName = None
+        self.__location = None
+        self.__cost = None
+        self.__reserveId = None
+        self.__checkIn = None
+        self.__checkOut = None
+
+        # Clear the reservation label
+        self.reservationLabel.config(text="")
+
+        # Clear the confirm and cancel buttons
+        if hasattr(self, 'confirmButton'):
+            self.confirmButton.destroy()
+        if hasattr(self, 'cancelButton'):
+            self.cancelButton.destroy()
+
+        # Update button states
+        self.updateBtn()
     
 
     
