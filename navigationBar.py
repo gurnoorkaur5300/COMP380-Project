@@ -7,7 +7,7 @@ class NavigationBar(tk.Frame):
     """
     This class represents the navigation bar component.
     :author: Gregory Calderon
-    :version: 1.0
+    :version: 3.0
     
     Attributes:
         parent: The parent widget to which the navigation bar belongs.

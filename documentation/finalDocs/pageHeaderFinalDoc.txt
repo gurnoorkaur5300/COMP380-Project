@@ -1,0 +1,65 @@
+Help on module pageHeader:
+
+NAME
+    pageHeader
+
+CLASSES
+    builtins.object
+        PageHeader
+    
+    class PageHeader(builtins.object)
+     |  PageHeader(parent, controller)
+     |  
+     |  This class represents the header component for pages.
+     |  :author: Gregory Calderon
+     |  :version: 3.0
+     |  
+     |  Attributes:
+     |      parent: The parent widget to which the header belongs.
+     |      controller: The controller object responsible for managing page navigation.
+     |      color (dict): A dictionary containing color codes.
+     |      mainFrame (tk.Frame): The main frame of the header.
+     |      resetFunctions (list): A list of reset functions for all pages.
+     |      pageIs (str): The current page being displayed.
+     |      pageLabel (tk.Label): The label displaying the current page.
+     |      closeBtn (tk.Button): The close button to return to the home page.
+     |  
+     |  Methods:
+     |      __init__(parent, controller): Initializes the PageHeader object.
+     |      resetPages(controller): Resets all page values and fields to default values.
+     |      setPageType(pageName): Sets the label for the page header.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, parent, controller)
+     |      Initializes the PageHeader object.
+     |      
+     |      Args:
+     |          parent: The parent widget to which the header belongs.
+     |          controller: The controller object responsible for managing page navigation.
+     |  
+     |  resetPages(self, controller)
+     |      Resets all page values and fields to default values.
+     |      
+     |      Args:
+     |          controller: The controller object responsible for managing page navigation.
+     |  
+     |  setPageType(self, pageName)
+     |      Sets the label for the page header.
+     |      
+     |      Args:
+     |          pageName (str): The name of the page.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+
+FILE
+    /Users/gregcalderon/Desktop/380 CompSys/COMP380-Project/pageHeader.py
+
+

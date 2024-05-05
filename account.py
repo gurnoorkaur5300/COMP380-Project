@@ -9,7 +9,7 @@ class Account(Page):
     """
     This class represents the account page.
     :author: Gregory Calderon
-    :version: 2.0
+    :version: 3.0
 
     Attributes:
         parent: The parent widget to which the account page belongs.
@@ -60,14 +60,12 @@ class Account(Page):
             n_customer: The customer object whose account information will be displayed.
         """
         self.customer = n_customer
-        
+    
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=0)
-
          
         infoBox = tk.Frame(self)
         infoBox.grid(row=0,column=0,padx=(35,35), pady=75,sticky="ew")
-
 
         labelsInfo = [
         ("Id:", self.customer.id),
@@ -87,21 +85,40 @@ class Account(Page):
             valueLabel.grid(row=i, column=1, pady=15, sticky="w")
             self.infoLabels.append(valueLabel)
 
-       
-
         self.reservationFrame = tk.Frame(self)
         self.reservationFrame.grid(row=1, column=0, padx=(35,35), sticky="ew")
-        
-       
-        
+          
         self.loadReservation()
     
     def clearReserveFrame(self):
+        """
+        Clears all widgets in the reservation frame.
+
+        This method iterates through all widgets inside the reservation frame and destroys them.
+
+        Args:
+            self: The object instance.
+
+        Returns:
+            None
+        """
         for widget in self.reservationFrame.winfo_children():
             widget.destroy()
        
     def loadReservation(self):
-        print("loading")
+        """
+        Loads reservations into the reservation frame.
+
+        This method retrieves reservations from the database for the current customer and displays them as buttons in the reservation frame.
+        Each button, when clicked, will call the showReservation method with the corresponding reservation ID.
+
+        Args:
+            self: The object instance.
+
+        Returns:
+            None
+        """
+        # print("loading")
         reservationsLabel = tk.Label(self.reservationFrame, text="Reservations:", font=("Arial", 24, "bold"), bg="white", fg="black")
         reservationsLabel.grid(row=0, column=0, sticky="e", padx=15)
         self.customer.reservations.clear()
@@ -114,6 +131,19 @@ class Account(Page):
             
         
     def showReservation(self, reserveId):
+        """
+        Displays details of a reservation.
+
+        This method retrieves information about a reservation from the database based on the provided reservation ID.
+        It then sets various attributes of the ViewReservation controller before showing the ViewReservation frame.
+
+        Args:
+            self: The object instance.
+            reserveId (int): The ID of the reservation to be displayed.
+
+        Returns:
+            None
+        """
         resInfoTuple = self.database.getResInfo(reserveId)
         self.controller.viewReservation.setCustomerEmail(self.customer.email)
         self.controller.viewReservation.setCustomerName(self.customer.name)
@@ -128,14 +158,9 @@ class Account(Page):
         """
         Resets the administrative page.
         """
-        #clear spreadsheet
         self.clearAccountPage()
-        #reset global variables
-        # global isLoggedIn, isAdmi
-        
         if self.controller.isAdmin:
             self.controller.showFrame("Admin")
         elif not self.controller.isAdmin:
             self.controller.showFrame("Home")
-        #     self.controller.isLoggedIn = False
-        # self.controller.isAdmin = False
+       

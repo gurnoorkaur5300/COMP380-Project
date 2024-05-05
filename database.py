@@ -9,8 +9,8 @@ import hashlib
 class Database:
     """
     Manages interactions with the SQLite database.
-    :author: Gregory Calderon and Gurnoor Kaur
-    :version: 2.0
+    :author: Gregory Calderon with sample data provide by Gurnoor Kaur
+    :version: 3.0
 
     Attributes:
         conn (sqlite3.Connection): Connection to the SQLite database.
@@ -26,6 +26,22 @@ class Database:
         isVerified: Verifies the login credentials of a customer or administrator.
         getCustomerInfo: Retrieves customer IDs and names from the 'customers' table.
         getResInfo: Retrieves reservation IDs, check-in/out dates, and payment status from the 'reservations' table.
+        
+        _init__(dbFile="defaultDatabase.db"): Initializes the Database object.
+        buildTable(): Creates necessary tables in the database if they don't exist.
+        insertPayment(payment): Inserts payment information into the 'payments' table.
+        insertCustomer(customer): Inserts a new customer into the 'customers' table.
+        getById(id): Retrieves customer information based on their customerId.
+        getEmail(email): Retrieves customer information based on their email address.
+        getReservations(customerId): Retrieves reservations for a specific customer.
+        deleteReservation(reserveId, email): Deletes a reservation from the 'reservations' table.
+        getAdminEmail(adminEmail): Retrieves administrator information based on their email address.
+        isVerified(checkForEmail, checkForHashPasswrd, isCustomer): Verifies login credentials of a customer or administrator.
+        getResInfo(reserveId): Retrieves reservation information from the 'reservations' table.
+        fetchHotelsByLocation(location): Fetches hotels based on a specific location.
+        fetchRoomByHotelAvail(hotel_name, checkin_date, checkout_date): Fetches available rooms for a specific hotel.
+        returnImgPath(): Returns the image paths for hotel photos.
+        insert_sample_data(): Inserts sample data into the database if the hotels table is empty.
     """
     def __init__(self, dbFile="defaultDatabase.db"):
         """
@@ -117,6 +133,12 @@ class Database:
         self.conn.commit()
     
     def insertPayment(self, payment):
+        """
+        Inserts payment information into the 'payments' table.
+
+        Args:
+            payment (Payment): The Payment object containing payment information.
+        """
         cursor = self.conn.cursor()
         try:
             cursor.execute('''INSERT INTO payments (customerName, cardNumber, securityHash, expireDate, address, city, zip, amount, paidDate) VALUES (?,?,?,?,?,?,?,?,?)''', (payment.name, payment.number, payment.code, payment.expireDate, payment.address, payment.city, payment.zip, payment.paidAmount, payment.currentDate))
@@ -224,6 +246,7 @@ class Database:
 
         Args:
             reserveId (int): The ID of the reservation to be deleted.
+            email (str): The email address of the customer.
         """
         cursor = self.conn.cursor()
         
@@ -294,23 +317,12 @@ class Database:
             print("user hash", str(user.hashPass))
             return False
         
-
-    # def getCustomerInfo(self):
-    #     """
-    #     Retrieves customer IDs and names from the 'customers' table.
-
-    #     Returns:
-    #         list: A list of tuples containing customer IDs and names.
-    #     """
-    #     cursor=self.conn.cursor()
-    #     cursor.execute("SELECT customerId, name FROM customers")
-    #     customers = cursor.fetchall()
-    #     return customers
-
-    
     def getResInfo(self, reserveId):
         """
-        Retrieves reservation information from the 'reservations' table, 
+        Retrieves reservation information from the 'reservations' table.
+
+        Args:
+            reserveId (int): The ID of the reservation.
 
         Returns:
             list: A list of tuples containing customer IDs, customer names, reservation IDs, check-in/out dates, and payment status.
@@ -341,8 +353,6 @@ class Database:
     #     except sqlite3.OperationalError as e:
     #         messagebox.showerror("Error", f"Database operation failed: {e}") 
             
-
-    
       
     def insertReservation(self, reservation, email):
         """
@@ -380,11 +390,31 @@ class Database:
 
 
     def fetchHotelsByLocation(self, location):
+        """
+        Fetches hotels based on a specific location.
+
+        Args:
+            location (str): The location of the hotels to fetch.
+
+        Returns:
+            list: A list of dictionaries containing hotel information.
+        """
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM hotels WHERE location=?", (location,))
         return [{'hotelName': row[1], 'amenities': row[3].split(', '), 'price_range': row[4], 'photoLink': row[5]} for row in cursor.fetchall()]
 
     def fetchRoomByHotelAvail(self, hotel_name, checkin_date, checkout_date):
+        """
+        Fetches available rooms for a specific hotel.
+
+        Args:
+            hotel_name (str): The name of the hotel.
+            checkin_date (str): The check-in date.
+            checkout_date (str): The check-out date.
+
+        Returns:
+            list: A list of dictionaries containing room information.
+        """
         cursor = self.conn.cursor()
         query = """
         SELECT r.roomId, r.roomNum, r.hotelName, r.location, r.cost FROM rooms r
@@ -398,6 +428,12 @@ class Database:
         return [{'roomId': row[0], 'roomNum': row[1], 'hotelName': row[2], 'location': row[3], 'cost': row[4]} for row in cursor.fetchall()]
 
     def returnImgPath(self):
+        """
+        Returns the image paths for hotel photos.
+
+        Returns:
+            list: A list of image paths.
+        """
         cursor = self.conn.cursor()
         cursor.execute("SELECT photoLink FROM hotels")
         
