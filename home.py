@@ -4,8 +4,6 @@ from PIL import Image, ImageTk
 from tkcalendar import Calendar
 import threading
 from page import Page
-from hotels import Hotels
-from hotelsView import HotelsView
 from database import Database  # Assume Database class handles all database interactions
 
 
@@ -98,42 +96,4 @@ class Home(Page):
         self.checkinVar.set("")
         self.checkoutVar.set("")  
 
-    # def display_hotels(self, hotels, checkin, checkout):
-    #     hotels_frame = tk.Frame(self, bg='white')
-    #     hotels_frame.pack(pady=20)
-
-    #     for hotel in hotels:
-    #         hotel_frame = tk.Frame(hotels_frame, borderwidth=2, relief="solid", padx=20, pady=20)
-    #         hotel_frame.pack(pady=10, fill=tk.X)
-            
-    #         # print(hotel)
-    #         photoPath = hotel['photoLink']
-    #         try:
-    #             image = Image.open(photoPath)
-    #             image = image.resize((100, 100))
-    #             img = ImageTk.PhotoImage(image)
-    #             img_label = tk.Label(hotel_frame, image=img)
-    #             img_label.image = img
-    #             img_label.pack(side=tk.LEFT, padx=10)
-    #         except Exception as e:
-    #             print("Error opening or resizing image:", e)
-            
-
-    #         hotel_info = f"{hotel['name']} - {hotel['price_range']}\nAmenities: {', '.join(hotel['amenities'])}"
-    #         hotel_label = tk.Label(hotel_frame, text=hotel_info, justify=tk.LEFT)
-    #         hotel_label.pack(side=tk.LEFT, padx=10)
-
-    #         show_rooms_button = ttk.Button(hotel_frame, text="Show Rooms", command=lambda h=hotel['name']: self.show_rooms(h, checkin, checkout))
-    #         show_rooms_button.pack(side=tk.RIGHT, padx=10)
-
-    # def show_rooms(self, hotel_name, checkin, checkout):
-    #     rooms = self.db.fetch_rooms_by_hotel_and_availability(hotel_name, checkin, checkout)
-    #     for room in rooms:
-    #         print(room)
-    #     if not rooms:
-    #         messagebox.showinfo("Rooms", "No available rooms for the selected dates.")
-    #         return
-    #     messagebox.showinfo("Rooms", f"Available rooms for {hotel_name}:\n" + '\n'.join([f"Room {room['roomNum']} at ${room['cost']}" for room in rooms]))
-
-  
-
+    

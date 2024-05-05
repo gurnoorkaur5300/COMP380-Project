@@ -145,8 +145,7 @@ class Database:
             self.conn.commit()
             messagebox.showinfo("Success", "Payment Accepted")
         except sqlite3.OperationalError as e:
-            messagebox.showerror("Error", f"Database operation failed: {e}")
-            
+            messagebox.showerror("Error", f"Database operation failed: {e}")         
             
     def insertCustomer(self, customer): 
         """
@@ -164,8 +163,6 @@ class Database:
             messagebox.showerror("Error", "Email already in use. Please try a different email.")
         except sqlite3.OperationalError as e:
             messagebox.showerror("Error", f"Database operation failed: {e}") 
-
-
 
     def getById(self, id):
         """
@@ -191,7 +188,6 @@ class Database:
             print("not found")
             return None 
         
-
     def getEmail(self, email):
         """
         Retrieves customer information based on their email address.
@@ -215,8 +211,6 @@ class Database:
         else:
             return None 
         
-
-
     def getReservations(self, customerId):
         """
         Retrieves reservations for a specific customer.
@@ -238,8 +232,7 @@ class Database:
         
         print("reservations are: ", reservations)
         return reservations
-    
-    
+      
     def deleteReservation(self, reserveId, email):
         """
         Deletes a reservation from the 'reservations' table.
@@ -333,8 +326,41 @@ class Database:
         reservationsInfo = cursor.fetchall()
         print("reservation info: ", reservationsInfo)
         return reservationsInfo
+    
+    def getAllResInfo(self):
+        """
+        Retrieves reservation information from the 'reservations' table.
 
+        Args:
+            reserveId (int): The ID of the reservation.
 
+        Returns:
+            list: A list of tuples containing customer IDs, customer names, reservation IDs, check-in/out dates, and payment status.
+        """
+       
+        cursor = self.conn.cursor()
+        cursor.execute('''SELECT customerId, customerName, reserveId, checkIn, checkOut,Paid FROM reservations''')
+        reservationsInfo = cursor.fetchall()
+        print("reservation info: ", reservationsInfo)
+        return reservationsInfo
+
+    def getCustomerInfo(self):
+        cursor = self.conn.cursor()
+        """
+        Retrieves customer information from the database.
+
+        Returns:
+            list: A list of dictionaries, where each dictionary represents a customer and contains their information.
+        """
+        try: 
+            cursor.execute('''SELECT customerId, name FROM customers''')
+            customers = cursor.fetchall()
+            return customers
+        except Exception as e:
+            print(f"Error returning customer's info: {e}")
+        finally:
+            cursor.close()
+            
     
     # def insertRoom(self, room):
     #     """Inserts a new room into the 'room' table.
