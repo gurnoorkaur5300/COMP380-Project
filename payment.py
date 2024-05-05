@@ -11,7 +11,7 @@ import tkmacosx
 
 
 class Payment(tk.Toplevel):
-    def __init__(self,controller, n_accountPage = None, master=None):
+    def __init__(self,controller,paymentCallback, n_accountPage = None, master=None):
         """
         This class represents the account page.
         :author: Martin Gallegos Cordero and Gregory Calderon
@@ -27,6 +27,9 @@ class Payment(tk.Toplevel):
 
         self.currentDate = datetime.now()
         super().__init__(master)
+
+        self.paymentCallback = paymentCallback
+
         self.controller= controller
         self.database = Database()
         self.accountPage = n_accountPage
@@ -177,7 +180,10 @@ class Payment(tk.Toplevel):
        
         newPayment = PaymentClass(cardNameValue, cardNumberValue, expirationDateValue, hashCode, clientAddressValue, zipCodeValue, cityNameValue, self.currentDate, self.__cost)
         self.database.insertPayment(newPayment)
+        self.paymentCallback()
         self.closePayment()
+        
+    
         
         newReservation = Reservation(self.__customerId, self.__reserveName, self.__roomId, self.__roomNum, self.__hotelName, self.__cost, self.__location, self.__checkIn, self.__checkOut)
         
@@ -330,7 +336,7 @@ class Payment(tk.Toplevel):
     def showSuccessMessage(self, title, message):
         messagebox.showerror(title, message)    
     
-     
+    
 
     def closePayment(self):
         self.destroy() 

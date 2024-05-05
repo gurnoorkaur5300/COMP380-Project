@@ -139,13 +139,26 @@ class ViewReservation(Page):
         self.confirmButton.config(state=confirmBtnState)
         self.cancelButton.config(state=cancelBtnState)
 
+    def paymentSuccessfulCallback(self):
+        # This function will be called when payment is successful
+        # Redirect to the home page
+        self.controller.showFrame("Home")
+
     def showPayment(self):
         """
         Opens the payment page.
         """
-        payWindow = Payment(self, self.controller.accountPage) 
-        # print("the id is: ", self.__id)
+        payWindow = Payment(self.controller, self.paymentSuccessfulCallback, self.controller.accountPage)
+        # Pass the callback function to the Payment class
         payWindow.setReservationInfo(self.__id, self.__name, self.__email, self.__roomId, self.__roomNum, self.__hotelName, self.__cost, self.__location, self.__checkIn, self.__checkOut)
+    
+    # def showPayment(self):
+    #     """
+    #     Opens the payment page.
+    #     """
+    #     payWindow = Payment(self, self.controller.accountPage) 
+    #     # print("the id is: ", self.__id)
+    #     payWindow.setReservationInfo(self.__id, self.__name, self.__email, self.__roomId, self.__roomNum, self.__hotelName, self.__cost, self.__location, self.__checkIn, self.__checkOut)
          
 
     def cancelReservation(self, reserveId):
@@ -156,6 +169,11 @@ class ViewReservation(Page):
         self.database.deleteReservation(reserveId, self.__email)
         
         self.controller.accountPage.loadReservation()
+        
+        if self.controller.isAdmin:
+            self.controller.showFrame("Admin")
+        else:
+            self.controller.showFrame("Home")
             
     def reset(self):
         """
