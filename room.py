@@ -136,5 +136,12 @@ class Room(Page):
             event: The event object.
         """
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-        
+
+
+    def clearRooms(self):
+        """
+        Clear all the widgets related to displaying hotels.
+        """
+        if hasattr(self, 'roomFrame'):
+            self.roomsFrame.destroy()    
         
