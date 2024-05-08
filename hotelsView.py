@@ -75,7 +75,7 @@ class HotelsView(Page):
 
     def populateHotels(self):
         for hotel in self.hotels:
-            self.hotelFrame = tk.Frame(self.innerFrame, borderwidth=2, relief="solid", padx =50, pady=20)
+            self.hotelFrame = tk.Frame(self.innerFrame, borderwidth=2, relief="solid", padx =150, pady=20)
             self.hotelFrame.pack(pady=10, fill=tk.X)
                  
             # print(hotel)
@@ -92,11 +92,11 @@ class HotelsView(Page):
             
 
             self.hotelInfo = f"{hotel['hotelName']} - {hotel['price_range']}\nAmenities: {', '.join(hotel['amenities'])}"
-            self.hotelLabel = tk.Label(self.hotelFrame, text=self.hotelInfo, justify=tk.LEFT)
+            self.hotelLabel = tk.Label(self.hotelFrame, text=self.hotelInfo, justify=tk.LEFT, font=20)
             self.hotelLabel.pack(side=tk.LEFT, padx=10)
 
             showRoomsButton = ttk.Button(self.hotelFrame, text="Show Rooms", command=lambda hotelName=hotel['hotelName']: self.showRooms(hotelName, self.checkIn, self.checkOut))
-            showRoomsButton.pack(side=tk.RIGHT, padx=10)
+            showRoomsButton.pack(side=tk.RIGHT, padx=50)
 
     def showRooms(self, hotelName, checkin, checkout):
         rooms = self.db.fetchRoomByHotelAvail(hotelName, checkin, checkout)

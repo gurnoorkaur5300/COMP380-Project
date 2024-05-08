@@ -1,4 +1,3 @@
-
 import tkinter as tk
 from tkinter import ttk
 from page import Page
@@ -100,11 +99,11 @@ class Room(Page):
             location = room['location']
             cost = room['cost']
 
-            self.roomLabel = tk.Label(self.roomFrame, text=f"Room Id: {roomId}\nRoom Number: {roomNum}\nHotelName: {hotelName}\nLocation: {location}\nCost: {cost}", justify=tk.LEFT)
-            self.roomLabel.pack(side=tk.LEFT, padx=10)
+            self.roomLabel = tk.Label(self.roomFrame, text=f"Room Id: {roomId}\nRoom Number: {roomNum}\nHotelName: {hotelName}\nLocation: {location}\nCost: {cost}", justify=tk.LEFT, font= 20)
+            self.roomLabel.pack(side=tk.LEFT, padx=60)
 
             bookRoomsButton = ttk.Button(self.roomFrame, text="Book Now",command=lambda: self.bookRoom(roomId, roomNum, hotelName, location, cost))
-            bookRoomsButton.pack(side=tk.RIGHT, padx=10)
+            bookRoomsButton.pack(side=tk.RIGHT, padx=(210,5))
         
     def bookRoom(self, roomId, roomNum, hotelName, location, cost):
         """
@@ -144,4 +143,3 @@ class Room(Page):
         """
         if hasattr(self, 'roomFrame'):
             self.roomsFrame.destroy()    
-        

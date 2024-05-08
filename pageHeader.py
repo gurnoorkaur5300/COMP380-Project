@@ -1,10 +1,11 @@
 import tkinter as tk
+import tkmacosx
 
 class PageHeader:
     """
     This class represents the header component for pages.
     :author: Gregory Calderon
-    :version: 3.0
+    :version: 1.0
 
     Attributes:
         parent: The parent widget to which the header belongs.
@@ -35,7 +36,7 @@ class PageHeader:
         self.color = {"nero": "#252726", "beige": "#F5F5DC", "orange": "#FF8700"}
         
         #pages this header will go on 
-        pages = [controller.loginPage, controller.adminPage, controller.accountPage, controller.viewReservation]
+        pages = [controller.loginPage, controller.adminPage]
         #array of reset fuctions for all pages 
         self.resetFunctions=[]
 
@@ -55,7 +56,7 @@ class PageHeader:
         self.pageLabel.grid(row=0, column=1, sticky="e") 
 
         #close button on header. should close page and return to home while also clearing all page values and resettig fields to defualt values
-        self.closeBtn = tk.Button(self.mainFrame, text="❌", bg=self.color["nero"], activebackground=self.color["nero"], bd=0, command=lambda: self.resetPages(controller), height=3,padx=20, pady=10)
+        self.closeBtn = tkmacosx.Button(self.mainFrame, text="❌", activebackground=self.color["nero"], bd=0, command=lambda: self.resetPages(controller), height=75,padx=5, pady=10)
         self.closeBtn.grid(row=0, column=0, padx=10, pady=(10,10),sticky="nw")
         
         # get all the reset functions
@@ -71,30 +72,9 @@ class PageHeader:
         Args:
             controller: The controller object responsible for managing page navigation.
         """ 
-        currPage = self.pageIs
-        print("currPage is ", currPage)
-        resetFunction = getattr(controller, f"{currPage.lower()}Page_", None)
-        if resetFunction and callable(resetFunction):
-        # for resetFunction in self.resetFunctions:
+        for resetFunction in self.resetFunctions:
             resetFunction()
-        # self.mainFrame.destroy()
-        if currPage == "Login" :
-            controller.loginPage.reset()
-            controller.showFrame("Home")
-        elif currPage == "Account" and self.controller.isAdmin:
-            controller.showFrame("Admin")
-            controller.accountPage.reset()
-        elif currPage == "Admin":
-            controller.isLoggedIn = False
-            controller.isAdmin = False
-            controller.adminPage.reset()
-            controller.showFrame("Home")
-        elif currPage == "ViewReservation":
-            controller.isLoggedIn = True
-            controller.isAdmin = True
-            controller.adminPage.reset()
-            # controller.viewReservation.reset()
-            controller.showFrame("Admin")
+        controller.showFrame("Home")
     
     # set the label for the page header
     def setPageType(self, pageName):
@@ -106,4 +86,3 @@ class PageHeader:
         """
         self.pageIs= pageName
         self.pageLabel.config(text=self.pageIs)
-        
