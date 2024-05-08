@@ -72,11 +72,11 @@ class Admin(Page):
             if self.spreadsheet.get_children():
                 return
             
-            customers = self.database.getCustomerInfo()
+            # customers = self.database.getCustomerInfo()
             reservations = self.database.getAllResInfo()
             
-            for customer in customers:
-                self.spreadsheet.insert("", "end", values=customer)
+            # for customer in customers:
+            #     self.spreadsheet.insert("", "end", values=customer)
 
             for reservation in reservations:
                 self.spreadsheet.insert("", "end", values=reservation)

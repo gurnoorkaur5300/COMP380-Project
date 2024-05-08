@@ -113,7 +113,7 @@ class Payment(tk.Toplevel):
             bg = "white", fg ="black",  
             activeforeground="blue", 
             command= self.getData)
-        payButton.pack(side=tk.LEFT, padx=70)
+        payButton.pack(side=tk.LEFT, padx=60)
 
         cancelButton = tkmacosx.Button(
             self,
@@ -124,7 +124,7 @@ class Payment(tk.Toplevel):
             fg ="black",  
             activeforeground="blue", 
             command= self.closePayment)
-        cancelButton.pack(side=tk.RIGHT, padx=70)
+        cancelButton.pack(side=tk.RIGHT, padx=60)
 
 
         self.defaultMessages = ["Enter full name on card", "Enter card number","Enter security code", "Enter address", "Enter city", "Enter zip code","Enter expiration date"]

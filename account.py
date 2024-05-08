@@ -126,8 +126,8 @@ class Account(Page):
         for i, reservation in enumerate(self.customer.reservations):
             reserveId = reservation.split(":")[0].strip()
             
-            reservationButton = tk.Button(self.reservationFrame, text=reservation, command=lambda: self.showReservation(reserveId), anchor="center", bg="white", fg="black", font=(18), width=10)
-            reservationButton.grid(row= 0, column=i+1, sticky='w')
+            reservationButton = tk.Button(self.reservationFrame, text=reservation, command=lambda: self.showReservation(reserveId), anchor="center", bg="white", fg="black", font=(18), width=14)
+            reservationButton.grid(row= 0, column=i+1, sticky='w', padx=5)
             
         
     def showReservation(self, reserveId):
