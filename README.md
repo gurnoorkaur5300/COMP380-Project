@@ -45,14 +45,10 @@ This command launches the homepage where users can browse hotels, create account
 
 - **Operating System**: Compatible with Mac OS and Windows.
 - **Python**: Version 3.8 or newer.
-- **Hardware**: Performance dependent on machine and internet capabilities.
+- **Hardware**: Performance dependent on machine.
 
 ## Features
 
 - Browse hotels and make reservations.
 - Manage user accounts (both customer and admin).
 - Secure password handling with SHA256 hashing.
-
-```
-
-```
